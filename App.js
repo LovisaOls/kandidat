@@ -1,6 +1,8 @@
 
 import React from 'react';
 import {  } from 'react-native';
+
+import MyProfileScreen from '../kandidat/Screens/MyProfileScreen';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import RegistrationScreen from './Screens/RegistrationScreen';
 import { NavigationContainer } from '@react-navigation/native'
@@ -21,6 +23,6 @@ export default function App() {
     
   );
 
-  
+
 
 }
