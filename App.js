@@ -19,7 +19,7 @@ export default function App() {
 
   return (
 
-    <WelcomeScreen/>
+    <RegistrationScreen/>
     
   );
 
