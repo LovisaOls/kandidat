@@ -1,13 +1,14 @@
 
 import React from 'react';
 import {  } from 'react-native';
-import WelcomeScreen from './Screens/WelcomeScreen';
+
+import MyProfileScreen from '../kandidat/Screens/MyProfileScreen';
 
 export default function App() {
   return (
-    <WelcomeScreen/>
-  );
 
-  
+    <MyProfileScreen/>
+    
+  );
 
 }
