@@ -1,6 +1,9 @@
 
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
+import firebase from "firebase/app";
+import "firebase/database";
+require("firebase/auth");
 import {
   StyleSheet,
   Text,
@@ -10,10 +13,24 @@ import {
   Button,
   TouchableOpacity,
 } from "react-native";
- 
-export default function WelcomeScreen() {
+import { useReducer } from "react";
+
+export default function WelcomeScreen({navigation}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
+  let user;
+  const loginButtonPressed = () => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((response) => {
+      firebase.database().ref('/users/'+response.user.uid)
+      .once('value',snap =>{
+        user = snap.val();
+      })
+      .then(() => {
+        navigation.navigate('Profile', {user: user})
+    })
+
+    })};
  
   return (
     <View style={styles.container}>
@@ -25,6 +42,7 @@ export default function WelcomeScreen() {
           style={styles.TextInput}
           placeholder="Email"
           onChangeText={(email) => setEmail(email)}
+          autoCapitalize="none"
         />
       </View>
  
@@ -34,10 +52,11 @@ export default function WelcomeScreen() {
           placeholder="Password"
           secureTextEntry={true}
           onChangeText={(password) => setPassword(password)}
+          autoCapitalize="none"
         />
       </View>
  
-      <TouchableOpacity style={styles.loginBtn} onPress={() => console.log(email)}>
+      <TouchableOpacity style={styles.loginBtn} onPress={() => loginButtonPressed()}>
         <Text style={styles.loginText}>LOGIN</Text>
     
       </TouchableOpacity>
