@@ -7,6 +7,10 @@ import WelcomeScreen from './Screens/WelcomeScreen';
 import RegistrationScreen from './Screens/RegistrationScreen';
 import config from "./Firebase/config";
 import firebase from "firebase/app";
+import CoachHome from './Screens/CoachHome';
+import FeedScreen from './Screens/FeedScreen';
+import TacticsCoach from './Screens/TacticsCoach';
+import ScheduleCoach from './Screens/ScheduleCoach';
 
 export default function App() {
   if (!firebase.apps.length) {
@@ -15,7 +19,7 @@ export default function App() {
 
   return (
 
-    <RegistrationScreen/>
+    <ScheduleCoach/>
     
   );
 
