@@ -10,15 +10,16 @@ import {
 import BottomMenu from "../Screens/BottomMenu";
 import TopMenu from "../Screens/TopMenu";
 
-export default function MyProfileScreen({navigation, user}) {
-
+export default function MyProfileScreen({route, navigation}) {
+    let {user} = route.params;
+    console.log(user);
     return (
         <View style={styles.container}>
 
             <TopMenu />
             <View style={styles.profileIcon}>
                 <Image style={styles.image} source={require("../assets/Profile.png")} />
-                <Text style={styles.name} > Lovisa Olsson</Text>
+                <Text style={styles.name}>{user.firstName} {user.lastName}</Text>
             </View>
 
             <View style={styles.teams}>

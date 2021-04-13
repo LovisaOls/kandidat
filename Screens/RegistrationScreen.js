@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
-import React, { useState } from 'react'
-import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import ImagePicker from 'react-native-image-picker'
-
+import React, { useState } from 'react';
+import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
  
 import firebase from "firebase/app";
 import "firebase/database";
@@ -32,13 +29,11 @@ export default function RegistrationScreen({navigation}) {
                         firstName: firstName,
                         lastName: lastName})
                     .then(() => {
-                        navigation.navigate('Welcome'
-                   /*      {user: {
+                        navigation.navigate('Profile', {user:{
                             id: response.user.uid,
                             email: email,
                             firstName: firstName,
-                            lastName: lastName}}) */
-                        )
+                            lastName: lastName}})
                     })
                     .catch((error) => {
                         alert(error)
@@ -48,14 +43,13 @@ export default function RegistrationScreen({navigation}) {
                 alert(error)
         });
     } 
-
     const onCancelPress = () => {
-        console.log('GO BACK!!');
+        navigation.navigate('Welcome')
     }
 
     return (
         <View style={styles.container}>
-                <KeyboardAwareScrollView
+                <SafeAreaView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Text style = {styles.title} >Create Account</Text>
@@ -78,7 +72,7 @@ export default function RegistrationScreen({navigation}) {
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='E-mail'
+                    placeholder='Email Address'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
                     value={email}
@@ -112,7 +106,7 @@ export default function RegistrationScreen({navigation}) {
                     <Text style = {styles.cancelText}> Cancel </Text>
                 </TouchableOpacity>
 
-            </KeyboardAwareScrollView>
+            </SafeAreaView>
         </View>
     )
 }
@@ -121,7 +115,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 100,
+        backgroundColor: '#fff',
         justifyContent: 'center',
         textAlign: 'center'
     },
