@@ -9,7 +9,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({navigation}) {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -32,11 +32,13 @@ export default function RegistrationScreen() {
                         firstName: firstName,
                         lastName: lastName})
                     .then(() => {
-                        navigation.navigate('Home', {user: {
+                        navigation.navigate('Welcome'
+                   /*      {user: {
                             id: response.user.uid,
                             email: email,
                             firstName: firstName,
-                            lastName: lastName}})
+                            lastName: lastName}}) */
+                        )
                     })
                     .catch((error) => {
                         alert(error)

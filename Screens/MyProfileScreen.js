@@ -10,14 +10,12 @@ import {
 import BottomMenu from "../Screens/BottomMenu";
 import TopMenu from "../Screens/TopMenu";
 
-export default function MyProfileScreen() {
-
+export default function MyProfileScreen({navigation, user}) {
 
     return (
         <View style={styles.container}>
 
             <TopMenu />
-
             <View style={styles.profileIcon}>
                 <Image style={styles.image} source={require("../assets/Profile.png")} />
                 <Text style={styles.name} > Lovisa Olsson</Text>
