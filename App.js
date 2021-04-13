@@ -9,6 +9,10 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import config from "./Firebase/config";
 import firebase from "firebase/app";
+import CoachHome from './Screens/CoachHome';
+import FeedScreen from './Screens/FeedScreen';
+import TacticsCoach from './Screens/TacticsCoach';
+import ScheduleCoach from './Screens/ScheduleCoach';
 
 const Stack = createStackNavigator();
 
@@ -19,7 +23,7 @@ export default function App() {
 
   return (
 
-    <RegistrationScreen/>
+    <ScheduleCoach/>
     
   );
 
