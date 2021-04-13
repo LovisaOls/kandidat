@@ -25,11 +25,17 @@
     "react-native-image-crop-picker": "^0.36.0",
     "react-native-image-picker": "^3.3.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
+    "react-native-navigation": "^7.13.0",
     "react-native-progress": "^4.1.2",
     "react-native-reanimated": "^1.13.3",
     "react-native-safe-area-context": "^3.1.9",
     "react-native-screens": "^2.15.2",
+<<<<<<< HEAD
     "react-native-web": "~0.13.12"
+=======
+    "react-native-web": "~0.13.12",
+    "react-navigation": "^4.4.4"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

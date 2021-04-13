@@ -1,6 +1,8 @@
 
 import React from 'react';
 import {  } from 'react-native';
+
+import MyProfileScreen from '../kandidat/Screens/MyProfileScreen';
 import WelcomeScreen from './Screens/WelcomeScreen';
 import RegistrationScreen from './Screens/RegistrationScreen';
 import config from "./Firebase/config";
@@ -17,6 +19,6 @@ export default function App() {
     
   );
 
-  
+
 
 }
