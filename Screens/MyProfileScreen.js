@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 30,
         margin: 10,
-
     },
 
     topImage: {
