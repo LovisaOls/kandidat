@@ -17,34 +17,45 @@ export default function CoachHome() {
     return (
         <View style={styles.container}>
 
-            <TopMenu/>
+            <TopMenu />
 
-            <View style={styles.TeamInfo}>
+            <View style={styles.TeamInfoHeader}>
                 <Image style={styles.image} source={require("../assets/TestTeamLogga.png")} />
-                <Text style={styles.name} > Team ID: </Text>
-                <Text style={styles.name} > City: </Text>
+
+                <View style={styles.TeamInfo}>
+                    <Text style={styles.name} > Team ID: </Text>
+                    <Text style={styles.name} > Players: </Text>
+                    <Text style={styles.name} > Coaches: </Text>
+                </View>
+            </View>
+            <View style={styles.viewMembers}>
+                <TouchableOpacity style={styles.membersBtn}>
+                    <Text style={styles.membersText}> View Team Members </Text>
+                </TouchableOpacity>
+
             </View>
 
 
             <SafeAreaView style={styles.MyMemberRequests}>
                 <Text style={styles.TheRequests}> Membership Requests </Text>
-            <View style={styles.TheBtns}>
-                <Text  style={styles.RequestsName} >Dolle</Text>
-                <TouchableOpacity style={styles.AcceptBtn}>
-                    <Text style={styles.Accept}> ✓ </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.DeclineBtn}>
-                    <Text style={styles.Decline}> X </Text>
-                </TouchableOpacity>
+                <View style={styles.TheBtns}>
+                    <Text style={styles.RequestsName} >Dolle</Text>
+                    <TouchableOpacity style={styles.AcceptBtn}>
+                        <Text style={styles.Accept}> ✓ </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.DeclineBtn}>
+                        <Text style={styles.Decline}> X </Text>
+                    </TouchableOpacity>
                 </View>
             </SafeAreaView>
 
 
             <View style={styles.GameStats}>
-                <TouchableOpacity>
-                    <Text style={styles.StatsText}>
-                        GameStatistics
+                <Text style={styles.StatsText}>
+                    GameStatistics
                     </Text>
+                <TouchableOpacity style={styles.addStatsBtn}>
+                    <Text style={styles.addStats}>+</Text>
                 </TouchableOpacity>
             </View>
 
@@ -65,15 +76,21 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         margin: 10,
     },
-/* ____________________________________________ */
+    /* ____________________________________________ */
 
-    TeamInfo: {
-        marginTop: 30,
+    TeamInfoHeader: {
+        marginTop: 10,
         flexDirection: "row",
     },
 
+    TeamInfo: {
+        marginTop: 10,
+        marginLeft: 20,
+        flexDirection: "column",
+    },
+
     image: {
-        marginBottom: 50,
+        marginBottom: 20,
         height: 100,
         width: 100,
     },
@@ -81,6 +98,27 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
     },
+    /* _____________________________________________ */
+
+    viewMembers: {
+
+    },
+
+    membersBtn: {
+        width: "80%",
+        marginBottom: 50,
+        backgroundColor: "green",
+        borderRadius: 25,
+        height: 30,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    membersText: {
+        fontSize: 20,
+        color: "white",
+    },
+
 
     /* _____________________________________________ */
 
@@ -90,10 +128,12 @@ const styles = StyleSheet.create({
         borderColor: "green",
         borderWidth: 1,
         padding: 10,
+        marginTop: 10,
     },
 
     TheRequests: {
         fontSize: 20,
+        fontWeight: "bold"
     },
     RequestsName: {
         fontSize: 20,
@@ -124,9 +164,10 @@ const styles = StyleSheet.create({
         backgroundColor: "red",
         marginLeft: 10,
         marginTop: 10,
+
     },
 
-/* --------------------------------------------- */
+    /* --------------------------------------------- */
 
     GameStats: {
         marginTop: 50,
@@ -134,14 +175,28 @@ const styles = StyleSheet.create({
         borderRadius: 1,
         borderColor: "green",
         borderWidth: 1,
+        flexDirection: "row",
+
     },
 
     StatsText: {
         fontSize: 20,
         padding: 10,
+        fontWeight: "bold"
     },
 
-/* --------------------------------------------- */
+    addStatsBtn: {
+            width: "10%",
+            borderRadius: 25,
+            height: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "green",
+            marginLeft: 50,
+            marginTop: 10,
+    },
+
+    /* --------------------------------------------- */
 
     bottomMenu: {
         position: "absolute",

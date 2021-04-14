@@ -47,7 +47,7 @@ export default function ScheduleCoach() {
                 <TouchableOpacity>
                     <Text style={styles.todayText}>
                         Here will the the info about the choosen day on schedule show.
-                        It will not be available if they hav'nt picked any day
+                        It will not be avail if they hav'nt picked any day
                     </Text>
                 </TouchableOpacity>
             </View>
