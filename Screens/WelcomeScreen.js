@@ -9,7 +9,7 @@ export default function WelcomeScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  let user;
+  let user; // Är det såhär man vill skriva verkligen??
   const loginButtonPressed = () => {
     firebase.auth().signInWithEmailAndPassword(email, password).then((response) => {
       firebase.database().ref('/users/'+response.user.uid)
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     alignItems: "center",
+    justifyContent: 'center'
   },
   inputView: {
     fontSize: 16,
