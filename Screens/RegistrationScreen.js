@@ -60,7 +60,6 @@ export default function RegistrationScreen({navigation}) {
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setFirstName(text)}
                     value={firstName}
-                    autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
@@ -68,7 +67,6 @@ export default function RegistrationScreen({navigation}) {
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setLastName(text)}
                     value={lastName}
-                    autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
