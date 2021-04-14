@@ -12,6 +12,8 @@ import RegistrationScreen from './Screens/RegistrationScreen';
 import ScheduleCoach from './Screens/ScheduleCoach';
 import TacticsCoach from './Screens/TacticsCoach';
 import WelcomeScreen from './Screens/WelcomeScreen';
+import TeamRegistration from './Screens/TeamRegistration';
+import Settings from './Screens/Settings';
 
 
 const Stack = createStackNavigator();
@@ -24,6 +26,16 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen
+        name="Settings"
+        component={Settings}>
+        </Stack.Screen>
+
+        <Stack.Screen
+        name="TeamRegistration"
+        component={TeamRegistration}>
+        </Stack.Screen>
+
       <Stack.Screen
         name="Welcome"
         component={WelcomeScreen}
@@ -63,15 +75,8 @@ export default function App() {
         component={ScheduleCoach}
         >
       </Stack.Screen>
-
-
-
       </Stack.Navigator>
 
     </NavigationContainer>
-    
   );
-
-
-
 }
