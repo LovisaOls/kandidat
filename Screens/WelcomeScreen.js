@@ -33,8 +33,9 @@ export default function WelcomeScreen({navigation}) {
       <SafeAreaView style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
 
+        <View style={styles.theLogo}>
           <Image style={styles.image} source={require("../assets/Logga.png")} />
-
+        </View>
           <TextInput
             style={styles.inputView}
             placeholder='Email address'
@@ -78,11 +79,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
  
+  theLogo: {
+    alignItems: "center",
+    marginTop: 100,
+  },
+
   image: {
     marginBottom: 40,
-    height: 100,
-    width: 100,
-    alignItems: 'center',
+    height: 150,
+    width: 150,
+    alignItems: "center",
     justifyContent: 'center'
   },
   inputView: {
@@ -122,5 +128,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     fontWeight: 'bold'
-  }
+  },
+  
 });

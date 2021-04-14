@@ -13,7 +13,7 @@ export default function BottomMenu() {
 
 
             <View style={styles.bottom}>
-                <TouchableOpacity >
+                <TouchableOpacity>
                     <Image style={styles.bottomImage} source={require("../assets/Home.png")} />
                 </TouchableOpacity>
                 <TouchableOpacity >
@@ -21,10 +21,10 @@ export default function BottomMenu() {
                 </TouchableOpacity>
                 <TouchableOpacity >
                     <Image style={styles.bottomImage} source={require("../assets/Schedule.png")} />
-                </TouchableOpacity> 
-      <TouchableOpacity>
+                </TouchableOpacity>
+                <TouchableOpacity>
                     <Image style={styles.bottomImage} source={require("../assets/Tactic.png")} />
-                </TouchableOpacity> 
+                </TouchableOpacity>
             </View>
         </View>
 

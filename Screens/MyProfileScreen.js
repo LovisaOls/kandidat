@@ -13,6 +13,14 @@ import TopMenu from "../Screens/TopMenu";
 export default function MyProfileScreen({route, navigation}) {
     let {user} = route.params;
     console.log(user);
+
+
+/*     const onHomePressed = () => {
+        navigation.navigate('CoachHome')
+    };
+    onPress={() => onHomePressed()}
+ */
+
     return (
         <View style={styles.container}>
 
@@ -24,7 +32,7 @@ export default function MyProfileScreen({route, navigation}) {
 
             <View style={styles.teams}>
                 <Text style={styles.teamsText}> My Teams </Text>
-                <TouchableOpacity style={styles.addTeamBtn}>
+                <TouchableOpacity style={styles.addTeamBtn} >
                     <Text style={styles.addTeam}>+</Text>
                 </TouchableOpacity>
             </View>
