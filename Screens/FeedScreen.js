@@ -10,36 +10,25 @@ import {
 import BottomMenu from "../Screens/BottomMenu";
 import TopMenu from "../Screens/TopMenu";
 
-export default function MyProfileScreen({route, navigation}) {
-    let {user} = route.params;
-    console.log(user);
+export default function FeedScreen() {
 
-
-/*     const onHomePressed = () => {
-        navigation.navigate('CoachHome')
-    };
-    onPress={() => onHomePressed()}
- */
 
     return (
         <View style={styles.container}>
 
             <TopMenu />
-            <View style={styles.profileIcon}>
-                <Image style={styles.image} source={require("../assets/Profile.png")} />
-                <Text style={styles.name}>{user.firstName} {user.lastName}</Text>
-            </View>
 
-            <View style={styles.teams}>
-                <Text style={styles.teamsText}> My Teams </Text>
-                <TouchableOpacity style={styles.addTeamBtn} >
-                    <Text style={styles.addTeam}>+</Text>
+           
+            <View style={styles.feeds}>
+                <Text style={styles.feedText}> Feed </Text>
+                <TouchableOpacity style={styles.addFeedBtn}>
+                    <Text style={styles.addFeed}>+</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.addedTeams}>
+            <View style={styles.publishedFeeds}>
                 <TouchableOpacity>
-                    <Text style={styles.addedTeamsText}>
+                    <Text style={styles.theText}>
                         BrommaP
                     </Text>
 
@@ -60,42 +49,17 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         margin: 10,
     },
-
-    top: {
+/* ------------------------------------------ */
+    feeds: {
         flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 30,
-        margin: 10,
+        marginTop: 10,
     },
 
-    topImage: {
-        height: 40,
-        width: 40,
-    },
-
-    profileIcon: {
-        marginTop: 30,
-        flexDirection: "row",
-    },
-
-    image: {
-        marginBottom: 50,
-        height: 100,
-        width: 100,
-    },
-    name: {
-        fontSize: 20,
-        textAlign: "center",
-    },
-    teams: {
-        flexDirection: "row",
-    },
-
-    teamsText: {
+    feedText: {
         fontSize: 30,
     },
 
-    addTeamBtn: {
+    addFeedBtn: {
         width: "15%",
         borderRadius: 25,
         height: 40,
@@ -104,7 +68,10 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         marginLeft: 40,
     },
-    addedTeams: {
+
+/* ------------------------------------------ */
+
+    publishedFeeds: {
         marginTop: 50,
         marginLeft: 10,
         marginRight: 30,
@@ -114,10 +81,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
-    addedTeamsText: {
+    theText: {
         fontSize: 20,
         padding: 10,
     },
+
+    /* ------------------------------------------ */
 
     bottomMenu: {
         position: "absolute",
@@ -125,6 +94,4 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         width: "100%",
     },
-
-
 });

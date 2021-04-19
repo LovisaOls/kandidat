@@ -6,7 +6,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function TopMenu() {
+import firebase from "firebase/app";
+import "firebase/database";
+require("firebase/auth");
+
+export default function TopMenu({navigation}) {
+
+  const onSettingsPressed = () => {
+    console.log('Settings')
+  }
 
   return (
     <View style={styles.container}>
@@ -15,8 +23,8 @@ export default function TopMenu() {
       <TouchableOpacity>
       <Image style={styles.topImage} source={require("../assets/MyProfile.png")} />
       </TouchableOpacity>
-      <TouchableOpacity>
-      <Image style={styles.topImage} source={require("../assets/Settings.png")} />
+      <TouchableOpacity onPress ={() => onSettingsPressed()}>
+        <Image style={styles.topImage} source={require("../assets/Settings.png")}/>
       </TouchableOpacity>
       </View>
       </View>

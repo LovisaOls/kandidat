@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
-import React, { useState } from 'react'
-import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import ImagePicker from 'react-native-image-picker'
-
+import React, { useState } from 'react';
+import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
  
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({navigation}) {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -32,7 +29,7 @@ export default function RegistrationScreen() {
                         firstName: firstName,
                         lastName: lastName})
                     .then(() => {
-                        navigation.navigate('Home', {user: {
+                        navigation.navigate('Profile', {user:{
                             id: response.user.uid,
                             email: email,
                             firstName: firstName,
@@ -46,14 +43,13 @@ export default function RegistrationScreen() {
                 alert(error)
         });
     } 
-
     const onCancelPress = () => {
-        console.log('GO BACK!!');
+        navigation.navigate('Welcome')
     }
 
     return (
         <View style={styles.container}>
-                <KeyboardAwareScrollView
+                <SafeAreaView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
                 <Text style = {styles.title} >Create Account</Text>
@@ -64,7 +60,6 @@ export default function RegistrationScreen() {
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setFirstName(text)}
                     value={firstName}
-                    autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
@@ -72,11 +67,10 @@ export default function RegistrationScreen() {
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setLastName(text)}
                     value={lastName}
-                    autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='E-mail'
+                    placeholder='Email Address'
                     placeholderTextColor="#aaaaaa"
                     onChangeText={(text) => setEmail(text)}
                     value={email}
@@ -110,7 +104,7 @@ export default function RegistrationScreen() {
                     <Text style = {styles.cancelText}> Cancel </Text>
                 </TouchableOpacity>
 
-            </KeyboardAwareScrollView>
+            </SafeAreaView>
         </View>
     )
 }
@@ -119,7 +113,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        marginTop: 100,
+        backgroundColor: '#fff',
         justifyContent: 'center',
         textAlign: 'center'
     },
