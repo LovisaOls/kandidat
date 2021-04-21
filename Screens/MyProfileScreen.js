@@ -5,35 +5,37 @@ export default function MyProfileScreen({ route, navigation }) {
   let { user } = route.params;
   console.log(user);
 
-  /*     const onHomePressed = () => {
-        navigation.navigate('CoachHome')
-    };
-    onPress={() => onHomePressed()}
- */
+    return (
+        <View style={styles.container}>
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.profileIcon}>
-        <Image style={styles.image} source={require("../assets/Profile.png")} />
-        <Text style={styles.name}>
-          {user.firstName} {user.lastName}
-        </Text>
-      </View>
+            <TopMenu />
+            <View style={styles.profileIcon}>
+                <Image style={styles.image} source={require("../assets/Profile.png")} />
+                <Text style={styles.name}>{user.firstName} {user.lastName}</Text>
+            </View>
 
-      <View style={styles.teams}>
-        <Text style={styles.teamsText}> My Teams </Text>
-        <TouchableOpacity style={styles.addTeamBtn}>
-          <Text style={styles.addTeam}>+</Text>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.teams}>
+                <Text style={styles.teamsText}> My Teams </Text>
+                <TouchableOpacity style={styles.addTeamBtn} >
+                    <Text style={styles.addTeam}>+</Text>
+                </TouchableOpacity>
+            </View>
 
-      <View style={styles.addedTeams}>
-        <TouchableOpacity>
-          <Text style={styles.addedTeamsText}>BrommaP</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+            <View style={styles.addedTeams}>
+                <TouchableOpacity>
+                    <Text style={styles.addedTeamsText}>
+                        BrommaP
+                    </Text>
+
+                </TouchableOpacity>
+            </View>
+
+            <View style={styles.bottomMenu}>
+                <BottomMenu />
+            </View>
+        </View>
+
+    );
 }
 
 const styles = StyleSheet.create({
