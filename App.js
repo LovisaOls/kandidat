@@ -12,9 +12,11 @@ import RegistrationScreen from './Screens/RegistrationScreen';
 import ScheduleCoach from './Screens/ScheduleCoach';
 import TacticsCoach from './Screens/TacticsCoach';
 import WelcomeScreen from './Screens/WelcomeScreen';
-import TestSchedule from './Screens/TestSchedule';
+//import TestSchedule from './Screens/TestSchedule';
 import TeamRegistration from './Screens/TeamRegistration';
 import Settings from './Screens/Settings';
+import Feed from './Screens/Feed';
+import CreateFeed from './Screens/CreateFeed';
 
 
 const Stack = createStackNavigator();
@@ -27,6 +29,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}}>
+
+      <Stack.Screen
+        name="Feed"
+        component={Feed}>
+        </Stack.Screen>
+
+      <Stack.Screen
+        name="CreateFeed"
+        component={CreateFeed}>
+        </Stack.Screen>
+        
 
       <Stack.Screen
         name="Settings"
@@ -82,11 +95,6 @@ export default function App() {
         >
       </Stack.Screen>
 
-      <Stack.Screen
-        name="TestSchedule"
-        component={TestSchedule}
-        >
-      </Stack.Screen>
       </Stack.Navigator>
 
     </NavigationContainer>
