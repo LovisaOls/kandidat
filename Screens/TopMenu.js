@@ -10,7 +10,7 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function TopMenu({navigation}) {
+export default function TopMenu() {
 
   const onSettingsPressed = () => {
     console.log('Settings')

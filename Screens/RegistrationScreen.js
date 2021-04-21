@@ -40,7 +40,7 @@ export default function RegistrationScreen() {
         });
     } 
     const onCancelPress = () => {
-        navigation.navigate('Welcome')
+        Actions.welcome()
     }
 
     return (

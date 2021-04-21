@@ -5,12 +5,14 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function CreateFeed({navigation}) {
+import {Actions} from 'react-native-router-flux';
+
+export default function CreateFeed() {
     const [textValue, setValue] = useState("");
     const dateTime = new Date();
 
     const onCancelPostPressed = () => {
-        navigation.navigate("Feed")
+        Actions.Feed();
     }
 
     const onPostInFeedPressed = () => {
@@ -21,10 +23,11 @@ export default function CreateFeed({navigation}) {
             text: textValue,
             createdOn: dateTime.getTime()})
         .then(() => {
-            navigation.navigate("Feed", {post: {
+            // Skapa en reducer + action!! BOB
+            /* navigation.navigate("Feed", {post: {
                 name: "Namn",
                 text: textValue,
-                createdOn: dateTime.getTime()}})
+                createdOn: dateTime.getTime()}}) */
         })
         .catch((error) => {
             alert(error)
