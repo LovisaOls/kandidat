@@ -1,19 +1,9 @@
-
 import React from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    Image,
-    TouchableOpacity,
-} from "react-native";
-import BottomMenu from "../Screens/BottomMenu";
-import TopMenu from "../Screens/TopMenu";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 
-export default function MyProfileScreen({route, navigation}) {
-    let {user} = route.params;
-    console.log(user);
-
+export default function MyProfileScreen({ route, navigation }) {
+  let { user } = route.params;
+  console.log(user);
 
     return (
         <View style={styles.container}>
@@ -49,76 +39,67 @@ export default function MyProfileScreen({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#fff",
-        margin: 10,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    margin: 10,
+  },
 
-    top: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginTop: 30,
-        margin: 10,
-    },
+  top: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 30,
+    margin: 10,
+  },
 
-    topImage: {
-        height: 40,
-        width: 40,
-    },
+  topImage: {
+    height: 40,
+    width: 40,
+  },
 
-    profileIcon: {
-        marginTop: 30,
-        flexDirection: "row",
-    },
+  profileIcon: {
+    marginTop: 30,
+    flexDirection: "row",
+  },
 
-    image: {
-        marginBottom: 50,
-        height: 100,
-        width: 100,
-    },
-    name: {
-        fontSize: 20,
-        textAlign: "center",
-    },
-    teams: {
-        flexDirection: "row",
-    },
+  image: {
+    marginBottom: 50,
+    height: 100,
+    width: 100,
+  },
+  name: {
+    fontSize: 20,
+    textAlign: "center",
+  },
+  teams: {
+    flexDirection: "row",
+  },
 
-    teamsText: {
-        fontSize: 30,
-    },
+  teamsText: {
+    fontSize: 30,
+  },
 
-    addTeamBtn: {
-        width: "15%",
-        borderRadius: 25,
-        height: 40,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "green",
-        marginLeft: 40,
-    },
-    addedTeams: {
-        marginTop: 50,
-        marginLeft: 10,
-        marginRight: 30,
-        borderStyle: "dashed",
-        borderRadius: 1,
-        borderColor: "green",
-        borderWidth: 1,
-    },
+  addTeamBtn: {
+    width: "15%",
+    borderRadius: 25,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    marginLeft: 40,
+  },
+  addedTeams: {
+    marginTop: 50,
+    marginLeft: 10,
+    marginRight: 30,
+    borderStyle: "dashed",
+    borderRadius: 1,
+    borderColor: "green",
+    borderWidth: 1,
+  },
 
-    addedTeamsText: {
-        fontSize: 20,
-        padding: 10,
-    },
-
-    bottomMenu: {
-        position: "absolute",
-        bottom: 0,
-        justifyContent: "space-between",
-        width: "100%",
-    },
-
-
+  addedTeamsText: {
+    fontSize: 20,
+    padding: 10,
+  },
 });
