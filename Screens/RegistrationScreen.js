@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import {Text, TextInput, TouchableOpacity, View, SafeAreaView } from 'react-native';
- 
+import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
+import {Actions} from 'react-native-router-flux';
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function RegistrationScreen({navigation}) {
+export default function RegistrationScreen() {
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -29,11 +29,7 @@ export default function RegistrationScreen({navigation}) {
                         firstName: firstName,
                         lastName: lastName}) 
                     .then(() => {
-                        navigation.navigate('Profile', {user:{
-                            id: response.user.uid,
-                            email: email,
-                            firstName: firstName,
-                            lastName: lastName}})
+                        Actions.profile();
                     })
                     .catch((error) => {
                         alert(error)
