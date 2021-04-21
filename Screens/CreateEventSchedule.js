@@ -1,107 +1,111 @@
 import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
-import {Actions} from 'react-native-router-flux';
+import {Text, TextInput, TouchableOpacity, View, SafeAreaView,} from 'react-native';
+
+ 
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function RegistrationScreen() {
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+export default function CreateEventSchedule({navigation}) {
+    const [title, setTitle] = useState('')
+    const [type, setType] = useState('')
+    const [date, setDate] = useState('')
+    const [time, setTime] = useState('')
+    const [place, setPlace] = useState('')
+    const [description, setDescription] = useState('')
 
-    const onRegisterPress = () => {
-        if (password !== confirmPassword) {
-            alert("Passwords are not the same")
-            return
-        }
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((response) => {
-        firebase.database().ref('/users/' + response.user.uid)
+    const onCreatePress = () => {
+
+
+        firebase.database().ref('/events/').push()
                     .set({
-                        id: response.user.uid,
-                        email: email,
-                        firstName: firstName,
-                        lastName: lastName}) 
+                        title: title,
+                        type: type,
+                        date: date,
+                        time: time,
+                        place: place,
+                        description: description,
+                    })
                     .then(() => {
-                        Actions.profile();
+                        this.props.navigation.navigate('TestSchedule')
                     })
                     .catch((error) => {
                         alert(error)
                     });
-            })
-            .catch((error) => {
-                alert(error)
-        });
+
+        
     } 
-    const onCancelPress = () => {
-        navigation.navigate('Welcome')
-    }
 
     return (
+
+            
         <View style={styles.container}>
                 <SafeAreaView
                 style={{ flex: 1, width: '100%' }}
                 keyboardShouldPersistTaps="always">
-                <Text style = {styles.title} >Create Account</Text>
+                <Text style = {styles.title} >Create Event</Text>
 
                 <TextInput
                     style={styles.input}
-                    placeholder='First Name'
+                    placeholder='Title'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setFirstName(text)}
-                    value={firstName}
+                    onChangeText={(text) => setTitle(text)}
+                    value={title}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='Last Name'
+                    placeholder='Type'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setLastName(text)}
-                    value={lastName}
+                    onChangeText={(text) => setType(text)}
+                    value={type}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder='Email Address'
+                    placeholder='Date'
                     placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
+                    onChangeText={(text) => setDate(text)}
+                    value={date}
                     autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Password'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
+                    placeholder='Time'
+                    onChangeText={(text) => setTime(text)}
+                    value={time}
                     autoCapitalize="none"
                 />
                 <TextInput
                     style={styles.input}
                     placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Confirm Password'
-                    onChangeText={(text) => setConfirmPassword(text)}
-                    value={confirmPassword}
+                    placeholder='Place'
+                    onChangeText={(text) => setPlace(text)}
+                    value={place}
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholderTextColor="#aaaaaa"
+                    placeholder='Description'
+                    onChangeText={(text) => setDescription(text)}
+                    value={description}
                     autoCapitalize="none"
                 />
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}> Register </Text>
+                    onPress={() => onCreatePress()}>
+                    <Text style={styles.buttonTitle}> Create </Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity onPress={() => onCancelPress()}> 
+                <TouchableOpacity onPress={() => navigation.navigate('TestSchedule')}> 
                     <Text style = {styles.cancelText}> Cancel </Text>
                 </TouchableOpacity>
 
+
             </SafeAreaView>
         </View>
+
     )
 }
 

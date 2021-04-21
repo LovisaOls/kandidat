@@ -1,8 +1,8 @@
 
 //import { NavigationContainer } from '@react-navigation/native';
 import firebase from "firebase/app";
-import * as React from 'react';
-import { } from 'react-native';
+import * as React from "react";
+import { } from "react-native";
 import config from "./Firebase/config";
 import CoachHome from './Screens/CoachHome';
 import FeedScreen from './Screens/FeedScreen';
@@ -42,4 +42,25 @@ export default function App() {
       </Router>
     </Provider>
   );
+    {/* <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="BottomMenu" component={BottomMenu}></Stack.Screen>
+        <Stack.Screen name="CoachHome" component={CoachHome}></Stack.Screen>
+        <Stack.Screen name="Settings" component={Settings}></Stack.Screen>
+        <Stack.Screen name="TeamRegistration" component={TeamRegistration}></Stack.Screen>
+        <Stack.Screen name="Welcome" component={WelcomeScreen}></Stack.Screen>
+        <Stack.Screen name="Profile" component={MyProfileScreen}></Stack.Screen>
+        <Stack.Screen name="ScheduleCoach" component={ScheduleCoach}></Stack.Screen>
+        <Stack.Screen name="Registration" component={RegistrationScreen} //options={{ title: "Registration"}} 
+        ></Stack.Screen>
+        <Stack.Screen name="CreateFeed" component={CreateFeed}></Stack.Screen>
+        <Stack.Screen name="Feed" component={Feed}></Stack.Screen>
+        <Stack.Screen name="TacticsCoach" component={TacticsCoach}></Stack.Screen>
+        <Stack.Screen name="TestSchedule" component={TestSchedule}></Stack.Screen>
+        <Stack.Screen name="CreateEventSchedule" component={CreateEventSchedule}></Stack.Screen>
+
+
+</Stack.Navigator>
+</NavigationContainer> */}
+
 }
