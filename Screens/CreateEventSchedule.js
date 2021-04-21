@@ -7,7 +7,9 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-export default function CreateEventSchedule({navigation}) {
+import {Actions} from 'react-native-router-flux';
+
+export default function CreateEventSchedule() {
     const [title, setTitle] = useState('')
     const [type, setType] = useState('')
     const [date, setDate] = useState('')
@@ -28,7 +30,7 @@ export default function CreateEventSchedule({navigation}) {
                         description: description,
                     })
                     .then(() => {
-                        this.props.navigation.navigate('TestSchedule')
+                        Actions.TestSchedule()
                     })
                     .catch((error) => {
                         alert(error)
@@ -98,7 +100,7 @@ export default function CreateEventSchedule({navigation}) {
                     <Text style={styles.buttonTitle}> Create </Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity onPress={() => navigation.navigate('TestSchedule')}> 
+                <TouchableOpacity onPress={() => Actions.TestSchedule()}> 
                     <Text style = {styles.cancelText}> Cancel </Text>
                 </TouchableOpacity>
 

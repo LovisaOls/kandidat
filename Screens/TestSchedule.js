@@ -1,15 +1,13 @@
 import React, { Component, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Agenda } from 'react-native-calendars';
-import BottomMenu from './BottomMenu';
 import TopMenu from './TopMenu';
 
+import {Actions} from 'react-native-router-flux';
 
 import firebase from "firebase/app";
 
-
 export default class TestSchedule extends Component {
-
 
     constructor(props) {
         super(props);
@@ -31,7 +29,7 @@ export default class TestSchedule extends Component {
                 </View>
                 <Text></Text>
                 <View>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate("CreateEventSchedule")}>
+                    <TouchableOpacity onPress={() => Actions.CreateEventSchedule()}>
                         <Text>Create Event</Text>
                     </TouchableOpacity>
                 </View>
@@ -71,9 +69,6 @@ export default class TestSchedule extends Component {
                     rowHasChanged={this.rowHasChanged.bind(this)}
                 />
 
-                <View>
-                    <BottomMenu />
-                </View>
             </SafeAreaView>
         );
     }

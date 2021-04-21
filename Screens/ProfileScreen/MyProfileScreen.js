@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
 } from "react-native";
 import TeamComponent from './TeamComponent';
-import BottomMenu from "../BottomMenu";
 import TopMenu from "../TopMenu";
 import { Actions } from 'react-native-router-flux';
 import { fetchTeams } from "../../actions";
@@ -63,9 +62,7 @@ function MyProfileScreen() {
                     <Text style={styles.addTeam}> SIGN OUT</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.bottomMenu}>
-                <BottomMenu />
-            </View>
+
         </View>
 
     );
@@ -135,14 +132,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 10,
     },
-
-    bottomMenu: {
-        position: "absolute",
-        bottom: 0,
-        justifyContent: "space-between",
-        width: "100%",
-    },
-
 
 });
 

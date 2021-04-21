@@ -3,15 +3,15 @@ import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, FlatList, Refre
 
 import firebase from "firebase/app";
 import "firebase/database";
-import { Navigation } from "react-native-navigation";
+import {Actions} from 'react-native-router-flux';
 require("firebase/auth");
 
-export default function Feed({navigation}) {
+export default function Feed() {
     const [isLoading, setLoading] = useState(false);
     const [listData, setListData] = useState([]);
 
     const onCreateFeedPressed = () => {
-        navigation.navigate("CreateFeed")
+        Actions.CreateFeed();
     }
 
     useEffect(() => {
