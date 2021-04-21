@@ -1,31 +1,27 @@
 import React, { useState } from "react";
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
 import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView} from "react-native";
-import { useReducer } from "react";
+import { useDispatch, useSelector, connect } from 'react-redux';
+import {signIn} from '../actions/index';
+import { Actions } from 'react-native-router-flux';
 
-export default function WelcomeScreen({navigation}) {
+
+function WelcomeScreen(){
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  let user; // Är det såhär man vill skriva verkligen??
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.currentUser);
+
+
   const loginButtonPressed = () => {
-    firebase.auth().signInWithEmailAndPassword(email, password).then((response) => {
-      firebase.database().ref('/users/'+response.user.uid)
-      .once('value',snap =>{
-        user = snap.val();
-      })
-      .then(() => {
-        console.log(user)
-        console.log('navigera till profil')
-        navigation.navigate('Profile', {user})
-      })
-    })
+    dispatch(signIn(email,password))
+    console.log('user i welcome',user)
+
   };
   
   const onRegisterPressed = () => {
-      navigation.navigate('Registration')
+      Actions.registration();
   };
  
   return (
@@ -131,3 +127,5 @@ const styles = StyleSheet.create({
   },
   
 });
+
+export default WelcomeScreen;

@@ -1,5 +1,6 @@
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector} from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -7,45 +8,61 @@ import {
     Image,
     TouchableOpacity,
 } from "react-native";
-import BottomMenu from "../Screens/BottomMenu";
-import TopMenu from "../Screens/TopMenu";
+import TeamComponent from './TeamComponent';
+import BottomMenu from "../BottomMenu";
+import TopMenu from "../TopMenu";
+import { Actions } from 'react-native-router-flux';
+import { fetchTeams } from "../../actions";
+import firebase from "firebase/app";
+import "firebase/database";
+require("firebase/auth");
 
-export default function MyProfileScreen({route, navigation}) {
-    let {user} = route.params;
-    console.log(user);
+function MyProfileScreen() {
+    const dispatch = useDispatch();
+    const currentUser = useSelector(state => state.currentUser);
+    console.log(currentUser);
+    //console.log('teams currentU', currentUser.teams)
 
-
-/*     const onHomePressed = () => {
-        navigation.navigate('CoachHome')
-    };
-    onPress={() => onHomePressed()}
- */
-
+    const onAddTeamPressed = () =>{
+        Actions.teamRegistration();
+    }
+    const onSignOut = () => {
+        firebase.auth().signOut().then(() => {
+            // Sign-out successful.
+            console.log('Signed Out')
+            Actions.loading();
+          }).catch((error) => {
+            // An error happened.
+          });
+    }
     return (
         <View style={styles.container}>
-
             <TopMenu />
             <View style={styles.profileIcon}>
-                <Image style={styles.image} source={require("../assets/Profile.png")} />
-                <Text style={styles.name}>{user.firstName} {user.lastName}</Text>
+                <Image style={styles.image} source={require("../../assets/Profile.png")} />
+                <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
             </View>
 
             <View style={styles.teams}>
                 <Text style={styles.teamsText}> My Teams </Text>
-                <TouchableOpacity style={styles.addTeamBtn} >
+                <TouchableOpacity style={styles.addTeamBtn} onPress={() => onAddTeamPressed()} >
                     <Text style={styles.addTeam}>+</Text>
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.addedTeams}>
-                <TouchableOpacity>
-                    <Text style={styles.addedTeamsText}>
-                        BrommaP
-                    </Text>
-
+           {/* <View style={styles.addedTeams}>
+                {teams && teams.map(team => {
+                    return (
+                        <TeamComponent team = {team} key={team.teamId}/>    
+                    )
+                })}
+            </View>
+ */}
+            <View>
+                <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
+                    <Text style={styles.addTeam}> SIGN OUT</Text>
                 </TouchableOpacity>
             </View>
-
             <View style={styles.bottomMenu}>
                 <BottomMenu />
             </View>
@@ -57,7 +74,6 @@ export default function MyProfileScreen({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         margin: 10,
     },
 
@@ -82,6 +98,7 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         height: 100,
         width: 100,
+        borderRadius: 50
     },
     name: {
         fontSize: 20,
@@ -128,3 +145,5 @@ const styles = StyleSheet.create({
 
 
 });
+
+export default MyProfileScreen;

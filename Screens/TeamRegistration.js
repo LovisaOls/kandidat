@@ -1,29 +1,34 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, SafeAreaView, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import {useSelector, useDispatch} from 'react-redux';
+import {Actions} from 'react-native-router-flux';
 
 import firebase from "firebase/app";
 import "firebase/database";
+require("firebase/auth");
 
-export default function TeamRegistration({navigation}) {
+function TeamRegistration() {
     const [teamName, setTeamName] = useState('')
     const [city, setCity] = useState('')
+    const currentUser = useSelector(state => state.currentUser);
 
     const addTeamButtonPressed = () => {
-        console.log("Team added with teamID")
-        firebase.database().ref('/teams/').push().
+        firebase.database().ref('/teams').push().
             set({
                 teamName: teamName,
-                city: city})
-            .then(() => {
-                navigation.navigate('Profile', {team:{
-                    teamName: teamName,
-                    city: city}})
-            }) 
-            .catch((error) => {
-                alert(error)
-            }); 
-        }
+                city: city,
+                coach: currentUser.id
+            }).then(
+                firebase.database().ref('/users/' + currentUser.id + '/teams'). //KAnske INTE TEAM ID för så sparas allt i samma?? eller?
+                set({
+                    teamId:'12345' //HUR FÅR VI TAG I DET ENS???
+                })
+                .then(
+                    Actions.profile()
+                )
+            )
+    }
 
     return (
         <View style={styles.container}>
@@ -97,3 +102,5 @@ const styles = StyleSheet.create({
     },
 })
 
+
+export default TeamRegistration;
