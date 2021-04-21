@@ -15,12 +15,6 @@ export default function MyProfileScreen({route, navigation}) {
     console.log(user);
 
 
-/*     const onHomePressed = () => {
-        navigation.navigate('CoachHome')
-    };
-    onPress={() => onHomePressed()}
- */
-
     return (
         <View style={styles.container}>
 
