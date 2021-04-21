@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
+import {Text, TextInput, TouchableOpacity, View, SafeAreaView } from 'react-native';
  
 import firebase from "firebase/app";
 import "firebase/database";
@@ -27,7 +27,7 @@ export default function RegistrationScreen({navigation}) {
                         id: response.user.uid,
                         email: email,
                         firstName: firstName,
-                        lastName: lastName})
+                        lastName: lastName}) 
                     .then(() => {
                         navigation.navigate('Profile', {user:{
                             id: response.user.uid,
