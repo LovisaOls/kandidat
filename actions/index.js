@@ -2,8 +2,9 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-import { Actions } from 'react-native-router-flux'; 
+import { Actions } from 'react-native-router-flux';
 
+//Kallas i welcome screen
 export const signIn = (email, password) => {
     return (dispatch) => {
         //Make async call to database 
@@ -26,6 +27,7 @@ export const signIn = (email, password) => {
     };
 };
 
+//Kallas i loading screen
 export const setCurrentUser = (userId) => {
     return (dispatch) => {
         firebase.database().ref('/users/'+ userId).on('value', snapshot => {
@@ -35,19 +37,31 @@ export const setCurrentUser = (userId) => {
     }
 }
 
-export const addTeam = (name, city, userId) => {
-    return (dispatch) =>{
-        firebase.database().ref('/teams/').push().
-            set({
-                teamName: name,
-                city: city,
-                coach: userId
-            })
-
-        firebase.database().ref('/users/' + userId + '/teams').
-            set({
-                teamId:'12345'
-            })
+export const registerUser = (email, password, firstName, lastName) => {
+    return(dispatch) => {
+        firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then((response) => {
+        firebase.database().ref('/users/' + response.user.uid)
+                .set({
+                    id: response.user.uid,
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName}) 
+                .then(() => {
+                    firebase.database().ref('/users/'+response.user.uid).on('value', snapshot => {
+                        dispatch({ type: 'SIGN_IN', currentUser: snapshot.val()})
+                    })
+                    Actions.profile();
+                })
+                .catch((error) => {
+                    alert(error)
+                });
+        })
+        .catch((error) => {
+            alert(error)
+        });
     }
 }
 
@@ -57,14 +71,3 @@ export const teamChosen = (team) => {
         dispatch({type:'TEAM_CHOSEN', currentTeam: team})
     }
 }
-
-export const fetchTeams = (userId) => {
-    return (dispatch) => {
-      firebase.database().ref('/users/')
-      .ref.orderByChild('Id').equalTo(userId).on('value', snapshot => {
-        dispatch({ type: 'GET_TEAMS', teams: snapshot.val().teams });
-      });
-      console.log('teams i action',teams)
-    };
-  };
-  

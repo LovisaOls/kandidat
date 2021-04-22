@@ -11,7 +11,6 @@ import {
 import TeamComponent from './TeamComponent';
 import TopMenu from "../TopMenu";
 import { Actions } from 'react-native-router-flux';
-import { fetchTeams } from "../../actions";
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
@@ -19,8 +18,7 @@ require("firebase/auth");
 function MyProfileScreen() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
-    console.log(currentUser);
-    //console.log('teams currentU', currentUser.teams)
+    const {teams} = useSelector(state => state.currentUser);
 
     const onAddTeamPressed = () =>{
         Actions.teamRegistration();
@@ -29,7 +27,7 @@ function MyProfileScreen() {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
             console.log('Signed Out')
-            Actions.loading();
+            Actions.welcome();
           }).catch((error) => {
             // An error happened.
           });
@@ -41,22 +39,17 @@ function MyProfileScreen() {
                 <Image style={styles.image} source={require("../../assets/Profile.png")} />
                 <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
             </View>
-
             <View style={styles.teams}>
                 <Text style={styles.teamsText}> My Teams </Text>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onAddTeamPressed()} >
                     <Text style={styles.addTeam}>+</Text>
                 </TouchableOpacity>
             </View>
-
-           {/* <View style={styles.addedTeams}>
-                {teams && teams.map(team => {
-                    return (
-                        <TeamComponent team = {team} key={team.teamId}/>    
-                    )
-                })}
+            <View style={styles.addedTeams}>
+                    {teams && Object.keys(teams).map((teamId, i) => (
+                        <TeamComponent key={i} teamId={teams[teamId].teamId}/>
+                    ))}
             </View>
- */}
             <View>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
                     <Text style={styles.addTeam}> SIGN OUT</Text>
@@ -128,10 +121,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
 
-    addedTeamsText: {
-        fontSize: 20,
-        padding: 10,
-    },
+
 
 });
 
