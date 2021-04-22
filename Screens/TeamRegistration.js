@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, SafeAreaView, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {useSelector, useDispatch} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
+import addTeam from '../actions/index';
+
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -12,22 +14,29 @@ function TeamRegistration() {
     const [teamName, setTeamName] = useState('')
     const [city, setCity] = useState('')
     const currentUser = useSelector(state => state.currentUser);
+    const dispatch = useDispatch();
 
     const addTeamButtonPressed = () => {
-        firebase.database().ref('/teams').push().
-            set({
+        if(teamName!='' && city!=''){
+            const teamRef = firebase.database().ref('/teams/').push();        
+            teamRef.set({
                 teamName: teamName,
                 city: city,
                 coach: currentUser.id
+            })
+            
+            firebase.database().ref('/users/' + currentUser.id + '/teams/' + teamRef.key)
+            .set({
+                teamId: teamRef.key
             }).then(
-                firebase.database().ref('/users/' + currentUser.id + '/teams'). //KAnske INTE TEAM ID för så sparas allt i samma?? eller?
-                set({
-                    teamId:'12345' //HUR FÅR VI TAG I DET ENS???
-                })
-                .then(
-                    Actions.profile()
-                )
+                Actions.profile()
             )
+        }
+    }
+
+    
+    const onCancelPress = () => {
+        Actions.profile()
     }
 
     return (
@@ -59,6 +68,10 @@ function TeamRegistration() {
                     <Text>
                         Add team
                     </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => onCancelPress()}> 
+                    <Text style = {styles.cancelText}> Cancel </Text>
                 </TouchableOpacity>
             </SafeAreaView>
         </View>
@@ -100,6 +113,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    cancelText: {
+        fontSize: 16,
+        color: 'blue',
+        margin: 10,
+        alignContent:'center',
+        justifyContent: 'center',
+        textAlign: 'center'
+    }
 })
 
 

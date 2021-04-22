@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import {Text, TextInput, TouchableOpacity, View, SafeAreaView, TouchableHighlight } from 'react-native';
 import {Actions} from 'react-native-router-flux';
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
+import { registerUser } from '../actions';
+import { useDispatch} from 'react-redux';
+
 
 export default function RegistrationScreen() {
     const [firstName, setFirstName] = useState('')
@@ -12,32 +12,15 @@ export default function RegistrationScreen() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    
+    const dispatch = useDispatch();
 
     const onRegisterPress = () => {
         if (password !== confirmPassword) {
             alert("Passwords are not the same")
             return
         }
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(email, password)
-            .then((response) => {
-        firebase.database().ref('/users/' + response.user.uid)
-                    .set({
-                        id: response.user.uid,
-                        email: email,
-                        firstName: firstName,
-                        lastName: lastName}) 
-                    .then(() => {
-                        Actions.profile();
-                    })
-                    .catch((error) => {
-                        alert(error)
-                    });
-            })
-            .catch((error) => {
-                alert(error)
-        });
+        dispatch(registerUser(email, password, firstName, lastName));
     } 
     const onCancelPress = () => {
         Actions.welcome()

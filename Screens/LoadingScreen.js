@@ -8,8 +8,6 @@ import {useDispatch } from 'react-redux';
 import { Actions } from 'react-native-router-flux'; 
 import {setCurrentUser} from '../actions/index'
 
-
-
 function LoadingScreen(){
     const dispatch = useDispatch();
     useEffect(() => {

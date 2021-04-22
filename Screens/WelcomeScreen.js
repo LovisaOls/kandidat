@@ -16,8 +16,6 @@ function WelcomeScreen(){
 
   const loginButtonPressed = () => {
     dispatch(signIn(email,password))
-    console.log('user i welcome',user)
-
   };
   
   const onRegisterPressed = () => {
