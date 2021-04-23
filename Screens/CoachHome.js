@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
+import TopMenu from '../Screens/TopMenu'
 
 export default function CoachHome() {
   return (
     <View style={styles.container}>
+      <TopMenu/>
 
       <View style={styles.TeamInfoHeader}>
         <Image

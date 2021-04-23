@@ -29,14 +29,14 @@ function TeamRegistration() {
             .set({
                 teamId: teamRef.key
             }).then(
-                Actions.profile()
+                Actions.Profile()
             )
         }
     }
 
     
     const onCancelPress = () => {
-        Actions.profile()
+        Actions.Profile()
     }
 
     return (
