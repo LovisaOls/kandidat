@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet, FlatList, RefreshControl, Alert } from "react-native";
+import TopMenu from '../Screens/TopMenu';
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -29,8 +30,8 @@ export default function Feed() {
 }
 
     return (
-    <SafeAreaView style={styles.container}>
-        <Text style={styles.title} >Feed</Text>
+    <View style={styles.container}>
+        <TopMenu/>
         <FlatList
         refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={async () => {
@@ -85,21 +86,15 @@ export default function Feed() {
 
         </TouchableOpacity>
 
-    </SafeAreaView>
+    </View>
     )    
 }
 
 const styles = StyleSheet.create({
-     title: {
-        fontSize: 24,
-        justifyContent: 'center',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        margin: 10,
-    },
     container: {
         backgroundColor: "white",
         flex: 1,
+        margin: 10,
     },
     commentBox: {
         flex: 1,

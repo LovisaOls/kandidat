@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -18,23 +18,31 @@ require("firebase/auth");
 function MyProfileScreen() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
-    const {teams} = useSelector(state => state.currentUser);
+    const { teams } = useSelector(state => state.currentUser);
 
-    const onAddTeamPressed = () =>{
+    const onAddTeamPressed = () => {
         Actions.teamRegistration();
     }
+
+    const goBackButton = () => {
+        Actions.BottomMenu();
+    }
+
+    const goToFeedOSV = () => {
+        Actions.BottomMenu();
+    }
+
     const onSignOut = () => {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
             console.log('Signed Out')
-            Actions.welcome();
-          }).catch((error) => {
+            Actions.Welcome();
+        }).catch((error) => {
             // An error happened.
-          });
+        });
     }
     return (
         <View style={styles.container}>
-            <TopMenu />
             <View style={styles.profileIcon}>
                 <Image style={styles.image} source={require("../../assets/Profile.png")} />
                 <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
@@ -46,15 +54,21 @@ function MyProfileScreen() {
                 </TouchableOpacity>
             </View>
             <View style={styles.addedTeams}>
-                    {teams && Object.keys(teams).map((teamId, i) => (
-                        <TeamComponent key={i} teamId={teams[teamId].teamId}/>
-                    ))}
+                {teams && Object.keys(teams).map((teamId, i) => (
+                    <TeamComponent key={i} teamId={teams[teamId].teamId} />
+                ))}
             </View>
             <View>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
                     <Text style={styles.addTeam}> SIGN OUT</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.goBackButton} onPress={() => goBackButton()} >
+                <Text> GO BACK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.goForwardButton} onPress={() => goToFeedOSV()} >
+                <Text> GO to feed osv osv</Text>
+            </TouchableOpacity>
 
         </View>
 
@@ -119,6 +133,24 @@ const styles = StyleSheet.create({
         borderRadius: 1,
         borderColor: "green",
         borderWidth: 1,
+    },
+    goBackButton: {
+        width: "15%",
+        borderRadius: 25,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "pink",
+        marginLeft: 40,
+    },
+    goForwardButton: {
+        width: "15%",
+        borderRadius: 25,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "tomato",
+        marginLeft: 40,
     },
 
 

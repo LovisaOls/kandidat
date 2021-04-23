@@ -19,7 +19,7 @@ function LoadingScreen(){
             } else {
               // No user is signed in.
               console.log('no user --> sign in')
-              Actions.welcome();
+              Actions.Welcome();
             }
         });
     });

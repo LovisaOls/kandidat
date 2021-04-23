@@ -32,6 +32,7 @@ export default function CreateFeed() {
         .catch((error) => {
             alert(error)
         });
+        Actions.BottomMenu();
 }
     
 

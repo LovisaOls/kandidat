@@ -23,7 +23,7 @@ export default function RegistrationScreen() {
         dispatch(registerUser(email, password, firstName, lastName));
     } 
     const onCancelPress = () => {
-        Actions.welcome()
+        Actions.Welcome()
     }
 
     return (

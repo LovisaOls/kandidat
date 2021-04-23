@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { Actions } from "react-native-router-flux";
 
 import TopMenu from "../Screens/TopMenu";
 
@@ -29,9 +30,12 @@ export default function Settings() {
     console.log("ja");
   };
 
+  const goBackButton = () => {
+    Actions.BottomMenu();
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <TopMenu></TopMenu>
       <Text style={styles.title}>Settings</Text>
 
       <TouchableOpacity
@@ -46,6 +50,13 @@ export default function Settings() {
         onPress={() => signOutButton()}
       >
         <Text>Sign Out</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => goBackButton()}
+      >
+        <Text>Go Back</Text>
+
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -75,6 +86,16 @@ const styles = StyleSheet.create({
   },
   signOutButton: {
     backgroundColor: "green",
+    marginTop: 20,
+    marginLeft: 50,
+    marginRight: 50,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  goBackButton: {
+    backgroundColor: "blue",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,

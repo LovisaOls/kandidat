@@ -16,7 +16,8 @@ export const signIn = (email, password) => {
                 firebase.database().ref('/users/'+response.user.uid).on('value', snapshot => {
                     dispatch({ type: 'SIGN_IN', currentUser: snapshot.val()})
                 })
-                Actions.profile();
+                // Om man vill komma till feed, osv ändra Profile() till BottomMenu()
+                Actions.Profile();
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -33,7 +34,7 @@ export const setCurrentUser = (userId) => {
         firebase.database().ref('/users/'+ userId).on('value', snapshot => {
             dispatch({ type: 'SIGN_IN', currentUser: snapshot.val()})
         })
-        Actions.profile();
+        Actions.Profile();
     }
 }
 
@@ -53,7 +54,7 @@ export const registerUser = (email, password, firstName, lastName) => {
                     firebase.database().ref('/users/'+response.user.uid).on('value', snapshot => {
                         dispatch({ type: 'SIGN_IN', currentUser: snapshot.val()})
                     })
-                    Actions.profile();
+                    Actions.Profile();
                 })
                 .catch((error) => {
                     alert(error)
