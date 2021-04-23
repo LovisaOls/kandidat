@@ -12,7 +12,7 @@ export default function CreateFeed() {
     const dateTime = new Date();
 
     const onCancelPostPressed = () => {
-        Actions.Feed();
+        Actions.BottomMenu();
     }
 
     const onPostInFeedPressed = () => {

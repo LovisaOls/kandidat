@@ -71,8 +71,6 @@ export default function Feed() {
                         <Text style={styles.likeCommentText}>Comment</Text>
                     </TouchableOpacity>
                 </View>
-
-
             </View>}>
 
             keyExtractor={(item) => (item.createdOn + "")}

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Actions } from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/Ionicons";
+
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -27,10 +29,10 @@ export default function TopMenu() {
 
       <View style={styles.top}>
         <TouchableOpacity onPress={() => onProfilePressed()}>
-          <Image style={styles.topImage} source={require("../assets/MyProfile.png")} />
+          <Icon name="ios-people-outline" size={40}></Icon>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => onSettingsPressed()}>
-          <Image style={styles.topImage} source={require("../assets/Settings.png")} />
+          <Icon name="ios-settings-outline" size={40}></Icon>        
         </TouchableOpacity>
       </View>
     </View>
