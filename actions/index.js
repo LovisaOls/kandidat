@@ -34,7 +34,7 @@ export const setCurrentUser = (userId) => {
         firebase.database().ref(`/users/${userId}`).on('value', snapshot => {
             dispatch({ type: 'SET_CURRENT_USER', currentUser: snapshot.val()})
         })
-        Actions.profile()
+        Actions.Profile();
     }
 }
 

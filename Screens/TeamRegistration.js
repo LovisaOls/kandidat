@@ -23,7 +23,7 @@ function TeamRegistration() {
     }
     
     const onCancelPress = () => {
-        Actions.profile()
+        Actions.Profile()
     }
 
     return (
