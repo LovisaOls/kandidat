@@ -27,7 +27,13 @@ export default function Settings() {
   };
 
   const signOutButton = () => {
-    console.log("ja");
+    firebase.auth().signOut().then(() => {
+      // Sign-out successful.
+      console.log('Signed Out')
+        Actions.Welcome();
+      }).catch((error) => {
+      // An error happened.
+  });
   };
 
   const goBackButton = () => {
