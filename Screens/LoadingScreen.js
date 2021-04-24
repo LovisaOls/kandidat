@@ -2,8 +2,8 @@ import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 import React, {useEffect} from 'react';
-import { Image, StyleSheet, View} from 'react-native';
-import {useDispatch } from 'react-redux';
+import { Image, StyleSheet, View, Dimensions} from 'react-native';
+import {useDispatch} from 'react-redux';
 
 import { Actions } from 'react-native-router-flux'; 
 import {setCurrentUser} from '../actions/index'
@@ -15,13 +15,20 @@ function LoadingScreen(){
             if (user) {
               // User is signed in.
                 console.log('user is already signed in')
-                dispatch(setCurrentUser(user.uid))
+                //Väntar 2 sekunder
+                setTimeout(() => {
+                  dispatch(setCurrentUser(user.uid))
+                }, 2000);
+              
             } else {
               // No user is signed in.
               console.log('no user --> sign in')
-              Actions.Welcome();
+              //Väntar 2 sekunder
+              setTimeout(() => {
+                Actions.welcome();
+              }, 2000);
             }
-        });
+        })
     });
 
         return (
@@ -34,18 +41,21 @@ function LoadingScreen(){
         );
         
 }
-
+const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
     image: {
-        marginBottom: 40,
-        height: 150,
-        width: 150,
-        alignItems: "center",
-        justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+
       },
     theLogo: {
+        height: screenHeight,
+        width: screenWidth,
+        backgroundColor:'white',
         alignItems: "center",
-        marginTop: 100,
+        padding: 10,
+        margin:10
       },
 });
 

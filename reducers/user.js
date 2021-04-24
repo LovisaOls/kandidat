@@ -2,7 +2,7 @@ const initState = {};
 
 const userReducer = (state = initState, action) => {
      switch(action.type){
-        case 'SIGN_IN':
+        case 'SET_CURRENT_USER':
             return action.currentUser;
         default: 
             return state;

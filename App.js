@@ -1,5 +1,4 @@
 
-import { NavigationContainer } from '@react-navigation/native';
 import firebase from "firebase/app";
 import * as React from "react";
 import { } from "react-native";

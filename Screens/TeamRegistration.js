@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, SafeAreaView, TextInput } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import {useSelector, useDispatch} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
-import addTeam from '../actions/index';
+import {registerTeam} from '../actions/index';
 
 
 import firebase from "firebase/app";
@@ -18,22 +18,9 @@ function TeamRegistration() {
 
     const addTeamButtonPressed = () => {
         if(teamName!='' && city!=''){
-            const teamRef = firebase.database().ref('/teams/').push();        
-            teamRef.set({
-                teamName: teamName,
-                city: city,
-                coach: currentUser.id
-            })
-            
-            firebase.database().ref('/users/' + currentUser.id + '/teams/' + teamRef.key)
-            .set({
-                teamId: teamRef.key
-            }).then(
-                Actions.Profile()
-            )
+           dispatch(registerTeam(currentUser.id, teamName, city));
         }
     }
-
     
     const onCancelPress = () => {
         Actions.Profile()
