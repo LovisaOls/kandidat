@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector, useStore} from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import TeamComponent from './TeamComponent';
 import TopMenu from "../TopMenu";
+import {fetchUserTeams} from '../../actions/index';
 import { Actions } from 'react-native-router-flux';
 import firebase from "firebase/app";
 import "firebase/database";
@@ -18,8 +19,18 @@ require("firebase/auth");
 function MyProfileScreen() {
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
-    const {teams} = useSelector(state => state.currentUser);
 
+
+    /* useEffect(() => {
+            dispatch(fetchUserTeams(currentUser.Id));
+    }, [dispatch]); */
+
+    const currentTeams = useSelector(state => state.currentTeams);
+
+    console.log("Current teams:");
+    console.log(currentTeams);
+
+    //FUNKTIONER
     const onAddTeamPressed = () =>{
         Actions.teamRegistration();
     }
@@ -32,12 +43,13 @@ function MyProfileScreen() {
             // An error happened.
           });
     }
+
     return (
         <View style={styles.container}>
             <TopMenu />
             <View style={styles.profileIcon}>
                 <Image style={styles.image} source={require("../../assets/Profile.png")} />
-                <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
+                <Text style={styles.name}> {currentUser.firstName} {currentUser.lastName}</Text>
             </View>
             <View style={styles.teams}>
                 <Text style={styles.teamsText}> My Teams </Text>
@@ -45,10 +57,12 @@ function MyProfileScreen() {
                     <Text style={styles.addTeam}>+</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.addedTeams}>
-                    {teams && Object.keys(teams).map((teamId, i) => (
-                        <TeamComponent key={i} teamId={teams[teamId].teamId}/>
-                    ))}
+            <View style={styles.teamContainer}>
+              {/*  {currentTeams && currentTeams.map(team =>{
+                    return(
+                        <TeamComponent team = {team}/>
+                    )})
+                } */}
             </View>
             <View>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
@@ -111,17 +125,13 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         marginLeft: 40,
     },
-    addedTeams: {
-        marginTop: 50,
-        marginLeft: 10,
-        marginRight: 30,
-        borderStyle: "dashed",
-        borderRadius: 1,
-        borderColor: "green",
-        borderWidth: 1,
-    },
-
-
+    teamContainer:{
+        marginTop: 5,
+        marginBottom:5,
+        borderStyle: 'solid',
+        borderColor: 'green',
+        borderRadius:10
+    }
 
 });
 

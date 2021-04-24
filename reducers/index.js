@@ -4,7 +4,7 @@ import teamReducer from './team';
 
 export const rootReducer = combineReducers({
     currentUser: userReducer,
-    currentTeam: teamReducer
+    currentTeams: teamReducer
 });
 
 export default rootReducer;

@@ -1,5 +1,4 @@
 
-import { NavigationContainer } from '@react-navigation/native';
 import firebase from "firebase/app";
 import * as React from "react";
 import { } from "react-native";
@@ -22,12 +21,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
-//import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
-//const Tab = createBottomTabNavigator();
-
 
 function BottomMenu() {
   return (
