@@ -1,4 +1,3 @@
-import {useSelector} from 'react-redux';
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
@@ -15,9 +14,8 @@ export const signIn = (email, password) => {
                 // Signed in
                 firebase.database().ref(`/users/${response.user.uid}`).on('value', snapshot => {
                     dispatch({type: 'SET_CURRENT_USER', currentUser: snapshot.val()})
-                }).then(
-                    Actions.profile()
-                )
+                })
+                Actions.Profile()
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -54,9 +52,9 @@ export const registerUser = (email, password, firstName, lastName) => {
                 .then(() => {
                     firebase.database().ref(`/users/${response.user.uid}`).on('value', snapshot => {
                         dispatch({ type: 'SET_CURRENT_USER', currentUser: snapshot.val()})
-                    }).then(
-                        Actions.profile()
-                    )
+                    })
+                    Actions.Profile()
+                    
                 })
                 .catch((error) => {
                     alert(error)
@@ -80,37 +78,40 @@ export const registerTeam = (userId, teamName, city) => {
             coach: userId,
             members: {}
         }).then(
+            //lägger in userId som member i laget
             firebase.database().ref(`/teams/${teamKey}/members/`).child(userId).set(true)
         )
         .then( () => {
-            console.log('team added to db');
-            Actions.profile()
+            //Lägger in lagId hos user
+            firebase.database().ref(`/users/${userId}/teams/`).child(teamKey).set(true)
             dispatch({type:'ADD_TEAM'})
+            Actions.Profile()
         })
     }
 }
 
 export const fetchUserTeams = (userId) => {
     return(dispatch) => {
-        const values = [];
-        firebase.database().ref('/teams').ref
-            .child('members')
-            .orderByKey()
-            .equalTo(userId)
-            .on('value', snapshot => {
-                if (snapshot.exists()) {
-                    snapshot.forEach((child) => {
-                        values.push(child.val());
-                    });
-                    console.log('lagen:',values);
-                } else {
+        let teamIds = {};
+        firebase.database().ref(`/users/${userId}/teams`).on('value', snapshot => {
+                teamIds = snapshot.val()
+        })
+
+        let userTeams = [];
+        if(teamIds){
+            {Object.keys(teamIds).map(teamId => {
+                firebase.database()
+                    .ref(`/teams/${teamId}`)
+                    .on('value', snapshot => {
+                        if(snapshot.exists){
+                            const team = snapshot.val();
+                            userTeams.push(team)
+                        } else {
                     console.log("No data available");
-                }
-            })
-           /*  let userTeams = snapshot.val()
-            console.log('userTeams:', userTeams) */
-            //dispatch({type:'FETCH_TEAMS', userTeams: userTeams});
-        
+                }})
+             }) } 
+        }
+        dispatch({type:'FETCH_TEAMS', userTeams: userTeams});
     }
 }
 
