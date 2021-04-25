@@ -51,6 +51,7 @@ export default function App() {
       <Router>
         <Stack>
           <Scene key="root" hideNavBar={true}>
+            <Scene key="loading" component={LoadingScreen} />
             <Scene key="BottomMenu" tabs={true} activeTintColor="#A247D4" hideNavBar={true}>
               <Scene
                 key="coachHome"
@@ -83,7 +84,6 @@ export default function App() {
             </Scene>
 
             {/* loading måste ligga överst */}
-            <Scene key="loading" component={LoadingScreen} />
             <Scene key="registration" component={RegistrationScreen} title="Registration" />
             <Scene key="teamRegistration" component={TeamRegistration} title="Team Registration" />
             <Scene key="TacticsCoach" component={TacticsCoach} />

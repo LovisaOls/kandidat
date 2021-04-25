@@ -1,3 +1,7 @@
+import firebase from "firebase/app";
+import "firebase/database";
+require("firebase/auth");
+
 import React from "react";
 import {
   View,

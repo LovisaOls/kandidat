@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, Image, TextInput, TouchableOpacity, SafeAreaView
 import { useDispatch, useSelector, connect } from 'react-redux';
 import {signIn} from '../actions/index';
 import { Actions } from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/Ionicons";
 
 
 function WelcomeScreen(){
@@ -25,21 +26,28 @@ function WelcomeScreen(){
   return (
     <View style={styles.container}>
       <SafeAreaView style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
+        keyboardShouldPersistTaps="always">
 
         <View style={styles.theLogo}>
           <Image style={styles.image} source={require("../assets/Logga.png")} />
         </View>
+
+        <View style={styles.inputView}>
+          <Icon name="mail-outline" color={"#aaaaaa"} size={18}></Icon>
           <TextInput
-            style={styles.inputView}
+            marginLeft={5}
             placeholder='Email address'
             placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEmail(text)}
             value = {email}
             autoCapitalize="none"
           /> 
+        </View>
+        
+        <View style={styles.inputView}>
+          <Icon name="key-outline" color={"#aaaaaa"} size={18}></Icon>
           <TextInput
-            style={styles.inputView}
+            marginLeft={5}
             placeholderTextColor="#aaaaaa"
             secureTextEntry
             placeholder='Password'
@@ -47,7 +55,7 @@ function WelcomeScreen(){
             value={password}
             autoCapitalize="none"
           />
-
+        </View>
         <TouchableOpacity style={styles.loginBtn} onPress={() => loginButtonPressed()}>
           <Text style={styles.loginText}>Log In</Text>
         </TouchableOpacity>
@@ -85,18 +93,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: 'center'
   },
+
   inputView: {
-    fontSize: 16,
+    fontSize: 24,
     height: 48,
     borderRadius: 24,
     overflow: 'hidden',
-    backgroundColor: 'white',
     marginTop: 10,
     marginBottom: 10,
     marginLeft: 30,
     marginRight: 30,
     paddingLeft: 16,
-    borderWidth: 0.25
+    borderWidth: 0.25,
+    flexDirection:'row',
+    alignItems: "center",
+
   },
 
   forgot_button: {

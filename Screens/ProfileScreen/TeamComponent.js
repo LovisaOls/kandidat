@@ -1,20 +1,25 @@
 
 import React, { useEffect } from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Button} from "react-native";
-import { shouldUseActivityState } from 'react-native-screens';
 import {useDispatch, useSelector} from 'react-redux';
+import {Actions} from 'react-native-router-flux';
+import Icon from "react-native-vector-icons/Ionicons";
 
-const TeamComponent  = ({team}) =>{
+const TeamComponent  = ({team, teamId}) =>{
     const dispatch = useDispatch();
     const onTeamPressed = () =>{
-        dispatch(setCurrentTeam(team.teamId))
+        console.log('teamPressed:',team)
+        console.log('teamId', teamId)
+        Actions.BottomMenu();
+       // dispatch(setCurrentTeam(team.teamId))
     }
     return(
-        <View  style={styles.teamBox}>
-            <TouchableOpacity onPress ={ () => onTeamPressed()}>
+        <View  style={styles.teamBox} >
+            <TouchableOpacity style={styles.teamBox} onPress ={ () => onTeamPressed()}>
                 <Text style={styles.teamsText}>
                     {team.teamName}
                 </Text>
+                <Icon style={styles.teamsText} name="chevron-forward-outline"></Icon>
             </TouchableOpacity>
         </View>
         
@@ -25,15 +30,17 @@ const TeamComponent  = ({team}) =>{
 const styles = StyleSheet.create({
     teamsText: {
         fontSize: 20,
-        padding: 10,
+        padding: 15,
     },
+
     teamBox: {
+        width: '100%',
         borderRadius: 10,
-        borderColor: "green",
-        borderWidth: 0.25,
+        backgroundColor:'#D3D3D3',
         margin: 1,
-        flexDirection:'row'
-    },
+        flexDirection:'row',
+        justifyContent: 'space-between'
+    }
 
 });
 

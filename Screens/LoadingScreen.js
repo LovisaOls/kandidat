@@ -6,7 +6,7 @@ import { Image, StyleSheet, View, Dimensions} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 import { Actions } from 'react-native-router-flux'; 
-import {setCurrentUser} from '../actions/index'
+import {setCurrentUser, fetchUserTeams} from '../actions/index'
 
 function LoadingScreen(){
     const dispatch = useDispatch();
@@ -18,6 +18,7 @@ function LoadingScreen(){
                 //Väntar 2 sekunder
                 setTimeout(() => {
                   dispatch(setCurrentUser(user.uid))
+                  
                 }, 2000);
               
             } else {
@@ -25,7 +26,7 @@ function LoadingScreen(){
               console.log('no user --> sign in')
               //Väntar 2 sekunder
               setTimeout(() => {
-                Actions.welcome();
+                Actions.Welcome();
               }, 2000);
             }
         })

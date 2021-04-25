@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -9,24 +9,28 @@ import {
     TouchableOpacity,
 } from "react-native";
 import TeamComponent from './TeamComponent';
-import TopMenu from "../TopMenu";
 import {fetchUserTeams} from '../../actions/index';
+import TopMenu from "../TopMenu";
 import { Actions } from 'react-native-router-flux';
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
 function MyProfileScreen() {
-    const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
-
-
-    /* useEffect(() => {
-            dispatch(fetchUserTeams(currentUser.Id));
-    }, [dispatch]); */
-
+    const dispatch = useDispatch();
+/*     const fetchTeams = async () => {
+        setLoading(true);
+        await 
+        setLoading(true);
+    } */
+    useEffect(() => {
+        dispatch(fetchUserTeams(currentUser.id));
+    },[dispatch])
+    
+    const store = useStore();
+    console.log(store.getState());
     const currentTeams = useSelector(state => state.currentTeams);
-
     console.log("Current teams:");
     console.log(currentTeams);
 
@@ -66,11 +70,11 @@ function MyProfileScreen() {
                 </TouchableOpacity>
             </View>
             <View style={styles.teamContainer}>
-              {/*  {currentTeams && currentTeams.map(team =>{
+                {Object.keys(currentTeams).map(key =>{
                     return(
-                        <TeamComponent team = {team}/>
+                        <TeamComponent key={key} team = {currentTeams[key]} teamId ={key}/>
                     )})
-                } */}
+                }
             </View>
             <View>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
@@ -93,6 +97,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
+        marginTop:50
     },
 
     top: {
@@ -121,6 +126,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 20,
         textAlign: "center",
+        margin: 10
     },
     teams: {
         flexDirection: "row",
@@ -156,22 +162,22 @@ const styles = StyleSheet.create({
         borderWidth: 1,
     },
     goBackButton: {
-        width: "15%",
+        width: "50%",
         borderRadius: 25,
         height: 40,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "pink",
-        marginLeft: 40,
+        margin: 10
     },
     goForwardButton: {
-        width: "15%",
+        width: "50%",
         borderRadius: 25,
         height: 40,
+        margin: 10,
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "tomato",
-        marginLeft: 40,
     },
 
 
