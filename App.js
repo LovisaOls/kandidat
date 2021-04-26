@@ -94,6 +94,7 @@ export default function App() {
             {/* <Scene key="BottomMenu" component={BottomMenu}/> */}
 
             {/* loading måste ligga överst */}
+            <Scene key="TestSchedule" component={TestSchedule}/>
             <Scene key="loading" component={LoadingScreen}/>
             <Scene key="welcome" component={WelcomeScreen} title="Welcome" />
             <Scene key="registration" component={RegistrationScreen} title="Registration" />
@@ -104,7 +105,7 @@ export default function App() {
             <Scene key="CreateFeed" component={CreateFeed}/>
             <Scene key="Feed" component={Feed}/>
             <Scene key="TacticsCoach" component={TacticsCoach}/>
-            <Scene key="TestSchedule" component={TestSchedule}/>
+
             <Scene key="CreateEventSchedule" component={CreateEventSchedule}/>
           </Scene>
       </Router>
