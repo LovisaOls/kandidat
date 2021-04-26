@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Text, SafeAreaView, TextInput, StyleSheet,TouchableOpacity} from "react-native";
+import {useSelector} from 'react-redux';
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -11,6 +12,10 @@ export default function CreateFeed() {
     const [textValue, setValue] = useState("");
     const dateTime = new Date();
 
+    const currentUser = useSelector(state => state.currentUser);
+    const {activeTeam} = useSelector(state => state.currentTeams);
+
+
     const onCancelPostPressed = () => {
         Actions.Feed();
     }
@@ -19,7 +24,8 @@ export default function CreateFeed() {
         console.log("Posted in feed");
         firebase.database().ref('/feed/').push()
         .set({
-            name: "Namn",
+            author: currentUser.firstName + ' ' +currentUser.lastName,
+            teamId: activeTeam.teamId,
             text: textValue,
             createdOn: dateTime.getTime()})
         .then(() => {
@@ -32,6 +38,7 @@ export default function CreateFeed() {
         .catch((error) => {
             alert(error)
         });
+        Actions.BottomMenu();
 }
     
 

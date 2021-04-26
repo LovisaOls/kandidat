@@ -2,8 +2,7 @@ const initState = {};
 
 const userReducer = (state = initState, action) => {
      switch(action.type){
-        case 'SIGN_IN':
-            console.log('currentUser i reducer', action.currentUser)
+        case 'SET_CURRENT_USER':
             return action.currentUser;
         default: 
             return state;

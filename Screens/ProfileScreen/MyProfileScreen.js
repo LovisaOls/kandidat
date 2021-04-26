@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import {
     StyleSheet,
     Text,
@@ -9,59 +9,84 @@ import {
     TouchableOpacity,
 } from "react-native";
 import TeamComponent from './TeamComponent';
+import {fetchUserTeams} from '../../actions/index';
 import TopMenu from "../TopMenu";
 import { Actions } from 'react-native-router-flux';
-import { fetchTeams } from "../../actions";
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
 function MyProfileScreen() {
-    const dispatch = useDispatch();
     const currentUser = useSelector(state => state.currentUser);
-    console.log(currentUser);
-    //console.log('teams currentU', currentUser.teams)
+    const dispatch = useDispatch();
+/*     const fetchTeams = async () => {
+        setLoading(true);
+        await 
+        setLoading(true);
+    } */
+    useEffect(() => {
+        dispatch(fetchUserTeams(currentUser.id));
+    },[dispatch])
+    
+    const store = useStore();
+    console.log(store.getState());
+    const {userTeams} = useSelector(state => state.currentTeams);
+    console.log("Current teams:");
+    console.log(userTeams);
 
+    //FUNKTIONER
     const onAddTeamPressed = () =>{
         Actions.teamRegistration();
     }
+
+    const goBackButton = () => {
+        Actions.BottomMenu();
+    }
+
+    const goToFeedOSV = () => {
+        Actions.BottomMenu();
+    }
+
     const onSignOut = () => {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
             console.log('Signed Out')
-            Actions.loading();
-          }).catch((error) => {
+            Actions.Welcome();
+        }).catch((error) => {
             // An error happened.
-          });
+        });
     }
+
     return (
         <View style={styles.container}>
-            <TopMenu />
             <View style={styles.profileIcon}>
                 <Image style={styles.image} source={require("../../assets/Profile.png")} />
-                <Text style={styles.name}>{currentUser.firstName} {currentUser.lastName}</Text>
+                <Text style={styles.name}> {currentUser.firstName} {currentUser.lastName}</Text>
             </View>
-
             <View style={styles.teams}>
                 <Text style={styles.teamsText}> My Teams </Text>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onAddTeamPressed()} >
                     <Text style={styles.addTeam}>+</Text>
                 </TouchableOpacity>
             </View>
-
-           {/* <View style={styles.addedTeams}>
-                {teams && teams.map(team => {
-                    return (
-                        <TeamComponent team = {team} key={team.teamId}/>    
-                    )
-                })}
+            <View style={styles.teamContainer}>
+                {Object.keys(userTeams).map(key =>{
+                    return(
+                        <TeamComponent key={key} team = {userTeams[key]}/>
+                    )})
+                }
             </View>
- */}
             <View>
                 <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()} >
                     <Text style={styles.addTeam}> SIGN OUT</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity style={styles.goBackButton} onPress={() => goBackButton()} >
+                <Text> GO BACK</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.goForwardButton} onPress={() => goToFeedOSV()} >
+                <Text> GO to feed osv osv</Text>
+            </TouchableOpacity>
 
         </View>
 
@@ -72,6 +97,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         margin: 10,
+        marginTop:50
     },
 
     top: {
@@ -100,6 +126,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 20,
         textAlign: "center",
+        margin: 10
     },
     teams: {
         flexDirection: "row",
@@ -118,6 +145,13 @@ const styles = StyleSheet.create({
         backgroundColor: "green",
         marginLeft: 40,
     },
+    teamContainer:{
+        marginTop: 5,
+        marginBottom:5,
+        borderStyle: 'solid',
+        borderColor: 'green',
+        borderRadius:10
+    },
     addedTeams: {
         marginTop: 50,
         marginLeft: 10,
@@ -127,11 +161,26 @@ const styles = StyleSheet.create({
         borderColor: "green",
         borderWidth: 1,
     },
-
-    addedTeamsText: {
-        fontSize: 20,
-        padding: 10,
+    goBackButton: {
+        width: "50%",
+        borderRadius: 25,
+        height: 40,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "pink",
+        margin: 10
     },
+    goForwardButton: {
+        width: "50%",
+        borderRadius: 25,
+        height: 40,
+        margin: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "tomato",
+    },
+
+
 
 });
 
