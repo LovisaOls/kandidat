@@ -52,7 +52,7 @@ function WelcomeScreen(){
             secureTextEntry
             placeholder='Password'
             onChangeText={(text) => setPassword(text)}
-            value={password}
+            value= {password}
             autoCapitalize="none"
           />
         </View>
