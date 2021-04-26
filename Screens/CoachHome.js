@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import TopMenu from '../Screens/TopMenu'
-import {useSelector} from 'react-redux';
+import TopMenu from "../Screens/TopMenu";
+import { useSelector } from "react-redux";
 
 export default function CoachHome() {
-  const currentTeams = useSelector(state => state.currentTeams);
-  console.log('currentTeams i home', currentTeams)
+  const { activeTeam } = useSelector((state) => state.currentTeams);
+  console.log("activeTeam", activeTeam);
   return (
     <View style={styles.container}>
-      <TopMenu/>
+      <TopMenu />
 
       <View style={styles.TeamInfoHeader}>
         <Image
@@ -24,8 +24,11 @@ export default function CoachHome() {
         />
 
         <View style={styles.TeamInfo}>
-          <Text style={styles.name}> Team ID: {currentTeams.teamId}</Text>
-          <Text style={styles.name}> Players: {/* {Object.keys(currentTeams.members).length} */}</Text>
+          <Text style={styles.name}> Team ID: {activeTeam.teamId}</Text>
+          <Text style={styles.name}>
+            {" "}
+            Team members: {Object.keys(activeTeam.members).length}
+          </Text>
           <Text style={styles.name}> Coaches: </Text>
         </View>
       </View>

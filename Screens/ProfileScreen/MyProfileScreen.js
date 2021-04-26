@@ -30,9 +30,9 @@ function MyProfileScreen() {
     
     const store = useStore();
     console.log(store.getState());
-    const currentTeams = useSelector(state => state.currentTeams);
+    const {userTeams} = useSelector(state => state.currentTeams);
     console.log("Current teams:");
-    console.log(currentTeams);
+    console.log(userTeams);
 
     //FUNKTIONER
     const onAddTeamPressed = () =>{
@@ -70,9 +70,9 @@ function MyProfileScreen() {
                 </TouchableOpacity>
             </View>
             <View style={styles.teamContainer}>
-                {Object.keys(currentTeams).map(key =>{
+                {Object.keys(userTeams).map(key =>{
                     return(
-                        <TeamComponent key={key} team = {currentTeams[key]} teamId ={key}/>
+                        <TeamComponent key={key} team = {userTeams[key]}/>
                     )})
                 }
             </View>

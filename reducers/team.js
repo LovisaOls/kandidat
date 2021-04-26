@@ -8,13 +8,12 @@ const teamReducer = (state = initState, action) => {
         case 'ADD_TEAM':
             return state;
         case 'FETCH_TEAMS':
-            return (state.userTeams, action.userTeams);
+            return {...state, userTeams: action.userTeams}
         case 'SET_ACTIVE_TEAM':
-            return (state.activeTeam, action.activeTeam);
+            return {...state, activeTeam: action.activeTeam};
         default: 
             return state;
     }
 };
-
 
 export default teamReducer;
