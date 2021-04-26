@@ -8,8 +8,11 @@ import {
   SafeAreaView,
 } from "react-native";
 import TopMenu from '../Screens/TopMenu'
+import {useSelector} from 'react-redux';
 
 export default function CoachHome() {
+  const currentTeams = useSelector(state => state.currentTeams);
+  console.log('currentTeams i home', currentTeams)
   return (
     <View style={styles.container}>
       <TopMenu/>
@@ -21,8 +24,8 @@ export default function CoachHome() {
         />
 
         <View style={styles.TeamInfo}>
-          <Text style={styles.name}> Team ID: </Text>
-          <Text style={styles.name}> Players: </Text>
+          <Text style={styles.name}> Team ID: {currentTeams.teamId}</Text>
+          <Text style={styles.name}> Players: {/* {Object.keys(currentTeams.members).length} */}</Text>
           <Text style={styles.name}> Coaches: </Text>
         </View>
       </View>
@@ -76,12 +79,11 @@ const styles = StyleSheet.create({
 
   image: {
     marginBottom: 20,
-    height: 100,
-    width: 100,
+    height: 80,
+    width: 80,
   },
   name: {
-    fontSize: 20,
-    textAlign: "center",
+    fontSize: 18,
   },
   /* _____________________________________________ */
 

@@ -4,14 +4,14 @@ import {StyleSheet, Text, TouchableOpacity, View, Button} from "react-native";
 import {useDispatch, useSelector} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 import Icon from "react-native-vector-icons/Ionicons";
+import {setActiveTeam} from '../../actions/index'
 
-const TeamComponent  = ({team, teamId}) =>{
+const TeamComponent  = ({team}) =>{
     const dispatch = useDispatch();
     const onTeamPressed = () =>{
         console.log('teamPressed:',team)
-        console.log('teamId', teamId)
-        Actions.BottomMenu();
-       // dispatch(setCurrentTeam(team.teamId))
+        console.log('teamId', team.teamId)
+        dispatch(setActiveTeam(team.teamId))
     }
     return(
         <View  style={styles.teamBox} >
