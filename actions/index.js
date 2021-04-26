@@ -73,6 +73,7 @@ export const registerTeam = (userId, teamName, city) => {
         const teamKey = teamRef.key;
         console.log('teamKey:', teamKey)
         teamRef.set({
+            teamId: teamKey,
             teamName: teamName,
             city: city,
             coach: userId,
@@ -90,6 +91,9 @@ export const registerTeam = (userId, teamName, city) => {
     }
 }
 
+
+//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuelt.
+//Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
     return(dispatch) => {
         let teamIds = {};
@@ -121,9 +125,11 @@ export const joinTeam = () =>{
     }
 }
 
-export const teamChosen = (team) => {
-    return (dispatch, getState) => {
-        //Make async call to database 
-        dispatch({type:'TEAM_CHOSEN', currentTeam: team})
-    }
+export const setActiveTeam = (teamId) => {
+        return (dispatch) => {
+            firebase.database().ref(`/teams/${teamId}`).on('value', snapshot => {
+                dispatch({ type: 'SET_ACTIVE_TEAM', activeTeam: snapshot.val()})
+            })
+            Actions.BottomMenu();
+        }    
 }
