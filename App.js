@@ -69,14 +69,14 @@ export default function App() {
                 key="settings"
                 hideNavBar={true}
                 title="Schedule"
-                component={CreateEventSchedule}
+                component={TestSchedule}
                 icon={iconCalendar}
               />
               <Scene
                 key="TacticsCoach"
                 hideNavBar={true}
                 title=" Tactics"
-                component={TacticsCoach}
+                component={CreateTactic}
                 icon={iconTactic}
               />
             </Scene>

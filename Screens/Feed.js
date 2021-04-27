@@ -31,7 +31,6 @@ export default function Feed() {
   }, [dispatch]);
 
   const feedPosts = useSelector((state) => state.feedPosts);
-  console.log(feedPosts);
 
   const onCreateFeedPressed = () => {
     Actions.CreateFeed();

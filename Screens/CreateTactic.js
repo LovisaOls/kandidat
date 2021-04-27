@@ -4,7 +4,7 @@ import FootballField from 'react-native-football-lineup';
  
 var home = {
   name: 'POR',
-  module: '4-4-2-3',
+  module: '4-3-3',
   team: [
     [
       {
@@ -174,15 +174,15 @@ var away = {
   ],
 };
  
-export default class App extends Component {
-  render() {
+export default function CreateTactic() {
+
     return (
       <View style={styles.container}>
         <FootballField home={home} away={away} />
       </View>
     );
   }
-}
+
  
 const styles = StyleSheet.create({
   container: {
