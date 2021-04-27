@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,12 +6,37 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
+
+import { Modalize } from "react-native-modalize";
+import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../Screens/TopMenu";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTeamMembers } from "../actions/index";
 
 export default function CoachHome() {
+  const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  console.log("activeTeam", activeTeam);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchTeamMembers(activeTeam.teamId));
+  }, [dispatch]);
+
+  const { teamMembers } = useSelector((state) => state.currentTeams);
+  console.log("teamMembers", teamMembers);
+
+  const modalRef = useRef(null);
+
+  const onOpen = () => {
+    const modal = modalRef.current;
+
+    if (modal) {
+      modal.open();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TopMenu />
@@ -24,18 +49,25 @@ export default function CoachHome() {
 
         <View style={styles.TeamInfo}>
           <Text style={styles.name}> Team ID: {activeTeam.teamId}</Text>
-          <Text style={styles.name}>
-            {" "}
-            Team members: {Object.keys(activeTeam.members).length}
-          </Text>
+
+          <View style={styles.memberBox}>
+            <Text style={styles.name}>
+              {" "}
+              Team members: {Object.keys(teamMembers).length}
+            </Text>
+            <TouchableOpacity style={styles.viewButton} onPress={onOpen}>
+              <Text style={styles.viewButtonText}> View </Text>
+            </TouchableOpacity>
+          </View>
+
           <Text style={styles.name}> Coaches: </Text>
         </View>
       </View>
-      <View style={styles.viewMembers}>
+      {/*  <View style={styles.viewMembers}>
         <TouchableOpacity style={styles.membersBtn}>
           <Text style={styles.membersText}> View Team Members </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <SafeAreaView style={styles.MyMemberRequests}>
         <Text style={styles.TheRequests}> Membership Requests </Text>
@@ -56,6 +88,40 @@ export default function CoachHome() {
           <Text style={styles.addStats}>+</Text>
         </TouchableOpacity>
       </View>
+      <>
+        <Modalize
+          ref={modalRef}
+          snapPoint={500}
+          modalHeight={screenHeight * 0.8}
+        >
+          <View style={styles.modal}>
+            <Text style={styles.title}> Team members </Text>
+            {teamMembers &&
+              Object.keys(teamMembers).map((key) => {
+                return teamMembers[key].id == activeTeam.coach ? (
+                  <View style={styles.viewMembers}>
+                    <View>
+                      <Text>Coach!!!</Text>
+                      <Text>
+                        {teamMembers[key].firstName} {teamMembers[key].lastName}
+                      </Text>
+                    </View>
+                    <Text>{teamMembers[key].email}</Text>
+                  </View>
+                ) : (
+                  <View style={styles.viewMembers}>
+                    <View>
+                      <Text>
+                        {teamMembers[key].firstName} {teamMembers[key].lastName}
+                      </Text>
+                    </View>
+                    <Text>{teamMembers[key].email}</Text>
+                  </View>
+                );
+              })}
+          </View>
+        </Modalize>
+      </>
     </View>
   );
 }
@@ -68,6 +134,11 @@ const styles = StyleSheet.create({
   },
   /* ____________________________________________ */
 
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   TeamInfoHeader: {
     marginTop: 10,
     flexDirection: "row",
@@ -88,22 +159,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   /* _____________________________________________ */
-
-  viewMembers: {},
-
-  membersBtn: {
-    width: "80%",
-    marginBottom: 50,
-    backgroundColor: "green",
-    borderRadius: 25,
-    height: 30,
+  memberBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
   },
-
   membersText: {
     fontSize: 20,
     color: "white",
+  },
+  viewButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  viewButtonText: {
+    color: "purple",
+    fontSize: 20,
+  },
+  viewMembers: {
+    width: "100%",
+    borderRadius: 10,
+    backgroundColor: "#D3D3D3",
+    margin: 1,
+    padding: 15,
+  },
+  modal: {
+    padding: 20,
   },
 
   /* _____________________________________________ */

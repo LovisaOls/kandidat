@@ -143,6 +143,7 @@ export const fetchUserTeams = (userId) => {
         });
       }
     }
+    console.log("lagen som skickas:", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
@@ -193,6 +194,36 @@ export const fetchEvents = (teamId) => {
       .equalTo(teamId)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
+  });
+
+}}
+
+    
+export const fetchTeamMembers = (teamId) => {
+  return (dispatch) => {
+    let teamMemberIds = [];
+    firebase
+      .database()
+      .ref(`/teams/${teamId}/members`)
+      .on("value", (snapshot) => {
+        teamMemberIds = Object.keys(snapshot.val());
       });
+    console.log("teamMemberIds:", teamMemberIds);
+
+    let teamMembers = [];
+    teamMemberIds.forEach((userId) => {
+      firebase
+        .database()
+        .ref(`/users/${userId}`)
+        .on("value", (snapshot) => {
+          if (snapshot.exists) {
+            const member = snapshot.val();
+            teamMembers.push(member);
+          } else {
+            console.log("No data available");
+          }
+        });
+    });
+    dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
   };
 };
