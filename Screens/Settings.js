@@ -17,7 +17,6 @@ import TopMenu from "../Screens/TopMenu";
 
 export default function Settings() {
   const changePasswordButton = () => {
-    console.log("hej");
 
     Alert.alert(
       "New Password",

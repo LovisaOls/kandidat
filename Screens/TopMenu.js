@@ -14,7 +14,6 @@ require("firebase/auth");
 export default function TopMenu() {
 
   const onSettingsPressed = () => {
-    console.log(Actions.Settings());
     Actions.Settings();
   };
 

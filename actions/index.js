@@ -85,7 +85,6 @@ export const registerTeam = (userId, teamName, city) => {
   return (dispatch) => {
     const teamRef = firebase.database().ref("/teams/").push();
     const teamKey = teamRef.key;
-    console.log("teamKey:", teamKey);
     teamRef
       .set({
         teamId: teamKey,
@@ -181,6 +180,19 @@ export const fetchFeed = (teamId) => {
       .equalTo(teamId)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_FEED", feedPosts: snapshot.val() });
+      });
+  };
+};
+
+export const fetchEvents = (teamId) => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref("/events/")
+      .orderByChild("teamId")
+      .equalTo(teamId)
+      .on("value", (snapshot) => {
+        dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
       });
   };
 };

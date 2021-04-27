@@ -12,7 +12,6 @@ import { useSelector } from "react-redux";
 
 export default function CoachHome() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
-  console.log("activeTeam", activeTeam);
   return (
     <View style={styles.container}>
       <TopMenu />
