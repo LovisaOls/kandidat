@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
+import { Alert } from "react-native";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
@@ -150,13 +151,28 @@ export const fetchUserTeams = (userId) => {
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
-    console.log("join team");
-    firebase
-      .database()
-      .ref(`/teams/${teamId}/members/`)
-      .child(userId)
-      .set(true);
-    firebase.database().ref(`/users/${userId}/teams/`).child(teamId).set(true);
+    var validTeam = false;
+    var ref = firebase.database().ref("/teams/");
+    ref.once("value").then(function (snapshot) {
+      if (snapshot.child(teamId).exists()) {
+        validTeam = true;
+      } else {
+        Alert.alert("Invalid TeamId");
+      }
+    });
+    if (validTeam) {
+      firebase
+        .database()
+        .ref(`/teams/${teamId}/members/`)
+        .child(userId)
+        .set(true);
+      firebase
+        .database()
+        .ref(`/users/${userId}/teams/`)
+        .child(teamId)
+        .set(true);
+      Actions.Profile();
+    }
   };
 };
 
