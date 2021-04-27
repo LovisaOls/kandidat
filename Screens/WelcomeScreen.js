@@ -41,7 +41,7 @@ function WelcomeScreen() {
         <View style={styles.inputView}>
           <Icon name="mail-outline" color={"#aaaaaa"} size={18}></Icon>
           <TextInput
-            marginLeft={5}
+            style={styles.input}
             placeholder="Email address"
             placeholderTextColor="#aaaaaa"
             onChangeText={(text) => setEmail(text)}
@@ -53,7 +53,7 @@ function WelcomeScreen() {
         <View style={styles.inputView}>
           <Icon name="key-outline" color={"#aaaaaa"} size={18}></Icon>
           <TextInput
-            marginLeft={5}
+            style={styles.input}
             placeholderTextColor="#aaaaaa"
             secureTextEntry
             placeholder="Password"
@@ -66,7 +66,7 @@ function WelcomeScreen() {
           style={styles.loginBtn}
           onPress={() => loginButtonPressed()}
         >
-          <Text style={styles.loginText}>Log In</Text>
+          <Text style={styles.loginText}>Sign In</Text>
         </TouchableOpacity>
 
         <TouchableOpacity>
@@ -77,10 +77,6 @@ function WelcomeScreen() {
             Register
           </Text>
         </TouchableOpacity>
-        {/* 
-        <TouchableOpacity>
-          <Text style={styles.forgot_button}>Forgot Password?</Text>
-        </TouchableOpacity> */}
       </SafeAreaView>
     </View>
   );
@@ -108,10 +104,8 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
-    fontSize: 24,
     height: 48,
     borderRadius: 24,
-    overflow: "hidden",
     marginTop: 10,
     marginBottom: 10,
     marginLeft: 30,
@@ -120,6 +114,16 @@ const styles = StyleSheet.create({
     borderWidth: 0.25,
     flexDirection: "row",
     alignItems: "center",
+  },
+  input: {
+    fontSize: 16,
+    height: 48,
+    overflow: "hidden",
+    marginTop: 10,
+    marginBottom: 10,
+    marginLeft: 5,
+    marginRight: 30,
+    paddingLeft: 16,
   },
 
   forgot_button: {
