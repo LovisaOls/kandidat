@@ -12,19 +12,13 @@ require("firebase/auth");
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
-  /*     const fetchTeams = async () => {
-        setLoading(true);
-        await 
-        setLoading(true);
-    } */
+
   useEffect(() => {
     dispatch(fetchUserTeams(currentUser.id));
   }, [dispatch]);
 
-  const store = useStore();
-  console.log(store.getState());
   const { userTeams } = useSelector((state) => state.currentTeams);
-  console.log("Current teams:");
+  console.log("User teams:");
   console.log(userTeams);
 
   //FUNKTIONER
@@ -76,9 +70,10 @@ function MyProfileScreen() {
         </TouchableOpacity>
       </View>
       <View style={styles.teamContainer}>
-        {Object.keys(userTeams).map((key) => {
-          return <TeamComponent key={key} team={userTeams[key]} />;
-        })}
+        {userTeams &&
+          Object.keys(userTeams).map((key) => {
+            return <TeamComponent key={key} team={userTeams[key]} />;
+          })}
       </View>
       <View>
         <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()}>
