@@ -22,12 +22,18 @@ export default function CreateFeed() {
 
     const onPostInFeedPressed = () => {
         console.log("Posted in feed");
-        firebase.database().ref('/feed/').push()
-        .set({
-            author: currentUser.firstName + ' ' +currentUser.lastName,
+
+        const postRef = firebase.database().ref("/feed/").push();
+        const postKey = postRef.key;
+        console.log(postKey);
+
+        postRef.set({
+            author: currentUser.firstName + ' ' + currentUser.lastName,
             teamId: activeTeam.teamId,
             text: textValue,
-            createdOn: dateTime.getTime()})
+            createdOn: dateTime.getTime(),
+            postId: postKey,
+        })
         .then(() => {
             // Skapa en reducer + action!! BOB
             /* navigation.navigate("Feed", {post: {
@@ -41,7 +47,6 @@ export default function CreateFeed() {
         Actions.BottomMenu();
 }
     
-
     return (
         <SafeAreaView>
             <Text style={styles.title}>Create a Post</Text>

@@ -115,7 +115,7 @@ export const registerTeam = (userId, teamName, city) => {
   };
 };
 
-//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuelt.
+//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuellt.
 //Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
   return (dispatch) => {
@@ -201,6 +201,18 @@ export const fetchFeed = (teamId) => {
   };
 };
 
+<<<<<<< HEAD
+export const setActivePost = (teamId) => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref(`/teams/${teamId}`)
+      .on("value", (snapshot) => {
+        dispatch({ type: "SET_ACTIVE_POST", activePost: snapshot.val() });
+      });
+  };
+}
+=======
 export const fetchEvents = (teamId) => {
   return (dispatch) => {
     firebase
@@ -243,3 +255,4 @@ export const fetchTeamMembers = (teamId) => {
     dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
   };
 };
+>>>>>>> main
