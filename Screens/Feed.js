@@ -31,10 +31,13 @@ export default function Feed() {
   }, [dispatch]);
 
   const { feedPosts } = useSelector((state) => state.feedPosts);
-  console.log(feedPosts);
 
   const onCreateFeedPressed = () => {
     Actions.CreateFeed();
+  };
+
+  const onCommentPressed = (post) => {
+    Actions.Comment(post)
   };
 
   return (
@@ -72,7 +75,7 @@ export default function Feed() {
               <TouchableOpacity
                 style={styles.commentBox}
                 title="Comment"
-                onPress={() => Actions.Comment()}
+                onPress={() => onCommentPressed(feedPosts[item])}
               >
                 <Text style={styles.likeCommentText}>Comment</Text>
               </TouchableOpacity>

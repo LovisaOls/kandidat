@@ -12,6 +12,7 @@ import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
 import CreateComment from "./Screens/CreateComment";
+import CommentScreen from "./Screens/CommentScreen";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
 import CreateFeed from "./Screens/CreateFeed";
 import Feed from "./Screens/Feed";
@@ -102,7 +103,7 @@ export default function App() {
             <Scene key="Feed" component={Feed} />
             <Scene key="TacticsCoach" component={TacticsCoach} />
             <Scene key="CreateEventSchedule" component={CreateEventSchedule} />
-            <Scene key="Comment" component={CreateComment} />
+            <Scene key="Comment" component={CommentScreen} />
           </Scene>
         </Stack>
       </Router>

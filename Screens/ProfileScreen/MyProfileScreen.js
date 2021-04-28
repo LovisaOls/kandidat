@@ -24,8 +24,6 @@ function MyProfileScreen() {
   }, [dispatch]);
 
   const { userTeams } = useSelector((state) => state.currentTeams);
-  console.log("User teams:");
-  console.log(userTeams);
 
   //FUNKTIONER
   const onAddTeamPressed = () => {

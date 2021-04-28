@@ -142,7 +142,6 @@ export const fetchUserTeams = (userId) => {
           });
       });
     }
-    console.log("lagen som skickas:", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
@@ -197,16 +196,6 @@ export const fetchFeed = (teamId) => {
   };
 };
 
-export const setActivePost = (teamId) => {
-  return (dispatch) => {
-    firebase
-      .database()
-      .ref(`/teams/${teamId}`)
-      .on("value", (snapshot) => {
-        dispatch({ type: "SET_ACTIVE_POST", activePost: snapshot.val() });
-      });
-  };
-};
 export const fetchEvents = (teamId) => {
   return (dispatch) => {
     firebase
