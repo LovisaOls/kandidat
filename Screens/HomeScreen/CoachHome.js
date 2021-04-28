@@ -12,21 +12,22 @@ import {
 //import Clipboard from "@react-native-clipboard/clipboard";
 import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
-import TopMenu from "../Screens/TopMenu";
+import TopMenu from "../TopMenu";
+import MembershipRequests from "./MembershipRequests";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTeamMembers } from "../actions/index";
+import { fetchTeamMembers, setCurrentUser } from "../../actions/index";
 
 export default function CoachHome() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
-  console.log("activeTeam", activeTeam);
+  const currentUser = useSelector((state) => state.currentUser);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTeamMembers(activeTeam.teamId));
   }, [dispatch]);
 
   const { teamMembers } = useSelector((state) => state.currentTeams);
-  console.log("teamMembers", teamMembers);
 
   const modalRef = useRef(null);
 
@@ -43,11 +44,10 @@ export default function CoachHome() {
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <TopMenu />
-
       <View style={styles.TeamInfoHeader}>
         <Image
           style={styles.image}
-          source={require("../assets/TestTeamLogga.png")}
+          source={require("../../assets/TestTeamLogga.png")}
         />
 
         <View style={styles.TeamInfo}>
@@ -70,18 +70,16 @@ export default function CoachHome() {
           </View>
         </View>
       </View>
-      <View style={styles.MyMemberRequests}>
-        <Text style={styles.title}> Membership Requests </Text>
-        <View style={styles.TheBtns}>
-          <Text style={styles.RequestsName}>Dolle</Text>
-          <TouchableOpacity style={styles.AcceptBtn}>
-            <Text style={styles.buttonText}> ✓ </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.DeclineBtn}>
-            <Text style={styles.buttonText}> X </Text>
-          </TouchableOpacity>
+
+      {activeTeam.coach == currentUser.id ? (
+        <View style={styles.MyMemberRequests}>
+          <MembershipRequests />
         </View>
-      </View>
+      ) : (
+        <View>
+          <Text>You are not coach :PPP</Text>
+        </View>
+      )}
 
       <View style={styles.GameStats}>
         <Text style={styles.title}>Game Statistics</Text>

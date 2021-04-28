@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import TeamComponent from "./TeamComponent";
 import { fetchUserTeams } from "../../actions/index";
-import TopMenu from "../TopMenu";
 import { Actions } from "react-native-router-flux";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -89,18 +88,6 @@ function MyProfileScreen() {
           <Text style={styles.buttonText}> Sign Out</Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => goBackButton()}
-      >
-        <Text> GO BACK</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.goForwardButton}
-        onPress={() => goToFeedOSV()}
-      >
-        <Text> GO to feed osv osv</Text>
-      </TouchableOpacity> */}
     </SafeAreaView>
   );
 }
