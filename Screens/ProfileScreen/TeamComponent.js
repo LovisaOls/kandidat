@@ -3,30 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Button } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
-<<<<<<< HEAD
-import {setActiveTeam} from '../../actions/index'
-
-const TeamComponent  = ({team}) =>{
-    const dispatch = useDispatch();
-    
-    const onTeamPressed = () =>{
-        console.log('teamPressed:',team)
-        console.log('teamId', team.teamId)
-        dispatch(setActiveTeam(team.teamId))
-    }
-    return(
-        <View  style={styles.teamBox} >
-            <TouchableOpacity style={styles.teamBox} onPress ={ () => onTeamPressed()}>
-                <Text style={styles.teamsText}>
-                    {team.teamName}
-                </Text>
-                <Icon style={styles.teamsText} name="chevron-forward-outline"></Icon>
-            </TouchableOpacity>
-        </View>
-        
-=======
 import { setActiveTeam } from "../../actions/index";
->>>>>>> main
 
 const TeamComponent = ({ team }) => {
   const dispatch = useDispatch();
