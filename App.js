@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import * as React from "react";
 import {} from "react-native";
 import config from "./Firebase/config";
-import CoachHome from "./Screens/CoachHome";
+import CoachHome from "./Screens/HomeScreen/CoachHome";
 import MyProfileScreen from "./Screens/ProfileScreen/MyProfileScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import TacticsCoach from "./Screens/TacticsCoach";
@@ -11,7 +11,7 @@ import TestSchedule from "./Screens/TestSchedule";
 import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
-import CommentScreen from "./Screens/CommentScreen"
+import CommentScreen from "./Screens/CommentScreen";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
 import CreateFeed from "./Screens/CreateFeed";
 import Feed from "./Screens/Feed";
