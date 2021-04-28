@@ -11,7 +11,6 @@ import TestSchedule from "./Screens/TestSchedule";
 import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
-import CreateComment from "./Screens/CreateComment";
 import CommentScreen from "./Screens/CommentScreen";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
 import CreateFeed from "./Screens/CreateFeed";
