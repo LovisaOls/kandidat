@@ -57,7 +57,7 @@ export default function CoachHome() {
               <Icon name="copy-outline" size={16} color="purple"></Icon>
             </TouchableOpacity>
           </View>
-          <Text> {activeTeam.teamId}</Text>
+          <Text>{activeTeam.teamId}</Text>
 
           <View style={styles.memberBox}>
             <Text style={styles.name}>
@@ -66,9 +66,8 @@ export default function CoachHome() {
             <TouchableOpacity style={styles.viewButton} onPress={onOpen}>
               <Text style={styles.viewButtonText}> View </Text>
             </TouchableOpacity>
+            <Text style={styles.name}> Coaches: </Text>
           </View>
-
-          <Text style={styles.name}> Coaches: </Text>
         </View>
       </View>
       <View style={styles.MyMemberRequests}>
