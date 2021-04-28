@@ -8,8 +8,6 @@ import { setActiveTeam } from "../../actions/index";
 const TeamComponent = ({ team }) => {
   const dispatch = useDispatch();
   const onTeamPressed = () => {
-    console.log("teamPressed:", team);
-    console.log("teamId", team.teamId);
     dispatch(setActiveTeam(team.teamId));
   };
   return (

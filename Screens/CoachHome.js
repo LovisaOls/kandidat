@@ -19,14 +19,12 @@ import { fetchTeamMembers } from "../actions/index";
 export default function CoachHome() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
-  console.log("activeTeam", activeTeam);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTeamMembers(activeTeam.teamId));
   }, [dispatch]);
 
   const { teamMembers } = useSelector((state) => state.currentTeams);
-  console.log("teamMembers", teamMembers);
 
   const modalRef = useRef(null);
 
