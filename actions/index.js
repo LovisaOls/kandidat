@@ -201,7 +201,6 @@ export const fetchFeed = (teamId) => {
   };
 };
 
-<<<<<<< HEAD
 export const setActivePost = (teamId) => {
   return (dispatch) => {
     firebase
@@ -211,8 +210,7 @@ export const setActivePost = (teamId) => {
         dispatch({ type: "SET_ACTIVE_POST", activePost: snapshot.val() });
       });
   };
-}
-=======
+};
 export const fetchEvents = (teamId) => {
   return (dispatch) => {
     firebase
@@ -222,11 +220,10 @@ export const fetchEvents = (teamId) => {
       .equalTo(teamId)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
-  });
+      });
+  };
+};
 
-}}
-
-    
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
     let teamMemberIds = [];
@@ -255,4 +252,3 @@ export const fetchTeamMembers = (teamId) => {
     dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
   };
 };
->>>>>>> main
