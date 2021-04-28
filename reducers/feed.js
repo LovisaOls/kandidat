@@ -1,10 +1,14 @@
-const initState = {};
+const initState = {
+    activePost: {}
+};
 
 const feedReducer = (state = initState, action) => {
-     switch(action.type){
+    switch (action.type) {
         case 'FETCH_FEED':
-            return action.feedPosts;
-        default: 
+            return { ...state, feedPosts: action.feedPosts};
+        case 'SET_ACTIVE_POST':
+            return { ...state, activePost: action.activePost };
+        default:
             return state;
     }
 };

@@ -4,27 +4,24 @@ import {StyleSheet, Text, TouchableOpacity, View, Button} from "react-native";
 import {useDispatch, useSelector} from 'react-redux';
 import {Actions} from 'react-native-router-flux';
 import Icon from "react-native-vector-icons/Ionicons";
-import {setActiveTeam} from '../../actions/index'
+import {setActivePost} from '../actions/index';
 
-const TeamComponent  = ({team}) =>{
+const CommentComponent  = ({post}) =>{
     const dispatch = useDispatch();
     
-    const onTeamPressed = () =>{
-        console.log('teamPressed:',team)
-        console.log('teamId', team.teamId)
-        dispatch(setActiveTeam(team.teamId))
+    const onPostPressed = () =>{
+        console.log('postPressed',post)
+        console.log('teamId', post.postId)
+        dispatch(setActivePost(post.postId))
     }
     return(
         <View  style={styles.teamBox} >
-            <TouchableOpacity style={styles.teamBox} onPress ={ () => onTeamPressed()}>
+            <TouchableOpacity style={styles.teamBox} onPress ={ () => onPostPressed()}>
                 <Text style={styles.teamsText}>
-                    {team.teamName}
+                    hej
                 </Text>
-                <Icon style={styles.teamsText} name="chevron-forward-outline"></Icon>
             </TouchableOpacity>
         </View>
-        
-
     )
 }
 
@@ -45,4 +42,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default TeamComponent;
+export default CommentComponent;

@@ -30,7 +30,7 @@ export default function Feed() {
     dispatch(fetchFeed(activeTeam.teamId));
   }, [dispatch]);
 
-  const feedPosts = useSelector((state) => state.feedPosts);
+  const {feedPosts} = useSelector((state) => state.feedPosts);
   console.log(feedPosts);
 
   const onCreateFeedPressed = () => {
@@ -72,10 +72,7 @@ export default function Feed() {
               <TouchableOpacity
                 style={styles.commentBox}
                 title="Comment"
-                onPress={() =>
-                  Alert.prompt("Comment", "Comment on a Post", (comment) =>
-                    console.log(comment)
-                  )
+                onPress={() => Actions.Comment()
                 }
               >
                 <Text style={styles.likeCommentText}>Comment</Text>
