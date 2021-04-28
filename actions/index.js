@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
+import { Alert } from "react-native";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
@@ -85,7 +86,6 @@ export const registerTeam = (userId, teamName, city) => {
   return (dispatch) => {
     const teamRef = firebase.database().ref("/teams/").push();
     const teamKey = teamRef.key;
-    console.log("teamKey:", teamKey);
     teamRef
       .set({
         teamId: teamKey,
@@ -144,19 +144,35 @@ export const fetchUserTeams = (userId) => {
         });
       }
     }
+    console.log("lagen som skickas:", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
-    console.log("join team");
-    firebase
-      .database()
-      .ref(`/teams/${teamId}/members/`)
-      .child(userId)
-      .set(true);
-    firebase.database().ref(`/users/${userId}/teams/`).child(teamId).set(true);
+    var validTeam = false;
+    var ref = firebase.database().ref("/teams/");
+    ref.once("value").then(function (snapshot) {
+      if (snapshot.child(teamId).exists()) {
+        validTeam = true;
+      } else {
+        Alert.alert("Invalid TeamId");
+      }
+    });
+    if (validTeam) {
+      firebase
+        .database()
+        .ref(`/teams/${teamId}/members/`)
+        .child(userId)
+        .set(true);
+      firebase
+        .database()
+        .ref(`/users/${userId}/teams/`)
+        .child(teamId)
+        .set(true);
+      Actions.Profile();
+    }
   };
 };
 
@@ -185,6 +201,7 @@ export const fetchFeed = (teamId) => {
   };
 };
 
+<<<<<<< HEAD
 export const setActivePost = (teamId) => {
   return (dispatch) => {
     firebase
@@ -195,3 +212,47 @@ export const setActivePost = (teamId) => {
       });
   };
 }
+=======
+export const fetchEvents = (teamId) => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref("/events/")
+      .orderByChild("teamId")
+      .equalTo(teamId)
+      .on("value", (snapshot) => {
+        dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
+  });
+
+}}
+
+    
+export const fetchTeamMembers = (teamId) => {
+  return (dispatch) => {
+    let teamMemberIds = [];
+    firebase
+      .database()
+      .ref(`/teams/${teamId}/members`)
+      .on("value", (snapshot) => {
+        teamMemberIds = Object.keys(snapshot.val());
+      });
+    console.log("teamMemberIds:", teamMemberIds);
+
+    let teamMembers = [];
+    teamMemberIds.forEach((userId) => {
+      firebase
+        .database()
+        .ref(`/users/${userId}`)
+        .on("value", (snapshot) => {
+          if (snapshot.exists) {
+            const member = snapshot.val();
+            teamMembers.push(member);
+          } else {
+            console.log("No data available");
+          }
+        });
+    });
+    dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+  };
+};
+>>>>>>> main

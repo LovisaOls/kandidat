@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React, { useState } from 'react';
 import {Text, TextInput, TouchableOpacity, View, SafeAreaView,} from 'react-native';
-
+import {useSelector} from 'react-redux';
  
 import firebase from "firebase/app";
 import "firebase/database";
@@ -17,11 +17,15 @@ export default function CreateEventSchedule() {
     const [place, setPlace] = useState('')
     const [description, setDescription] = useState('')
 
+
+    const {activeTeam} = useSelector(state => state.currentTeams);
+
     const onCreatePress = () => {
 
 
         firebase.database().ref('/events/').push()
                     .set({
+                        teamId: activeTeam.teamId,
                         title: title,
                         type: type,
                         date: date,

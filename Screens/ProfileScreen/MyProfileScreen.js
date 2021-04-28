@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
 import TeamComponent from "./TeamComponent";
 import { fetchUserTeams } from "../../actions/index";
 import TopMenu from "../TopMenu";
@@ -12,19 +19,13 @@ require("firebase/auth");
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
-  /*     const fetchTeams = async () => {
-        setLoading(true);
-        await 
-        setLoading(true);
-    } */
+
   useEffect(() => {
     dispatch(fetchUserTeams(currentUser.id));
   }, [dispatch]);
 
-  const store = useStore();
-  console.log(store.getState());
   const { userTeams } = useSelector((state) => state.currentTeams);
-  console.log("Current teams:");
+  console.log("User teams:");
   console.log(userTeams);
 
   //FUNKTIONER
@@ -55,37 +56,40 @@ function MyProfileScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <View style={styles.profileIcon}>
         <Image
           style={styles.image}
           source={require("../../assets/Profile.png")}
         />
         <Text style={styles.name}>
-          {" "}
           {currentUser.firstName} {currentUser.lastName}
         </Text>
       </View>
-      <View style={styles.teams}>
-        <Text style={styles.teamsText}> My Teams </Text>
+      <View style={styles.myTeamsHeader}>
+        <Text style={styles.title}> My Teams </Text>
         <TouchableOpacity
           style={styles.addTeamBtn}
           onPress={() => onAddTeamPressed()}
         >
-          <Text style={styles.addTeam}>+</Text>
+          <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
-      </View>
-      <View style={styles.teamContainer}>
-        {Object.keys(userTeams).map((key) => {
-          return <TeamComponent key={key} team={userTeams[key]} />;
-        })}
       </View>
       <View>
-        <TouchableOpacity style={styles.addTeamBtn} onPress={() => onSignOut()}>
-          <Text style={styles.addTeam}> SIGN OUT</Text>
+        {userTeams &&
+          Object.keys(userTeams).map((key) => {
+            return <TeamComponent key={key} team={userTeams[key]} />;
+          })}
+      </View>
+      <View>
+        <TouchableOpacity
+          style={styles.signOutButton}
+          onPress={() => onSignOut()}
+        >
+          <Text style={styles.buttonText}> Sign Out</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.goBackButton}
         onPress={() => goBackButton()}
       >
@@ -96,8 +100,8 @@ function MyProfileScreen() {
         onPress={() => goToFeedOSV()}
       >
         <Text> GO to feed osv osv</Text>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </SafeAreaView>
   );
 }
 
@@ -105,26 +109,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 10,
-    marginTop: 50,
   },
-
-  top: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 30,
+  title: {
+    fontSize: 24,
+    justifyContent: "center",
+    textAlign: "center",
+    fontWeight: "bold",
     margin: 10,
   },
-
-  topImage: {
-    height: 40,
-    width: 40,
-  },
-
   profileIcon: {
     marginTop: 30,
     flexDirection: "row",
   },
-
   image: {
     marginBottom: 50,
     height: 100,
@@ -136,38 +132,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 10,
   },
-  teams: {
+  myTeamsHeader: {
     flexDirection: "row",
+    justifyContent: "space-between",
   },
-
   teamsText: {
     fontSize: 30,
   },
-
   addTeamBtn: {
     width: "15%",
-    borderRadius: 25,
+    borderRadius: 20,
     height: 40,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "green",
     marginLeft: 40,
   },
-  teamContainer: {
-    marginTop: 5,
-    marginBottom: 5,
-    borderStyle: "solid",
-    borderColor: "green",
-    borderRadius: 10,
-  },
-  addedTeams: {
-    marginTop: 50,
-    marginLeft: 10,
-    marginRight: 30,
-    borderStyle: "dashed",
-    borderRadius: 1,
-    borderColor: "green",
-    borderWidth: 1,
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
   },
   goBackButton: {
     width: "50%",
@@ -186,6 +170,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "tomato",
+  },
+  signOutButton: {
+    backgroundColor: "green",
+    marginTop: 20,
+    marginLeft: 50,
+    marginRight: 50,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

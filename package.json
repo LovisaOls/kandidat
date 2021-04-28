@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.7.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^11.2.0",
     "@react-navigation/bottom-tabs": "^5.11.10",
@@ -32,8 +33,10 @@
     "react-native-image-crop-picker": "^0.36.0",
     "react-native-image-picker": "^3.3.2",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",
+    "react-native-modalize": "^2.0.8",
     "react-native-navigation": "^7.13.0",
     "react-native-paper": "^3.12.0",
+    "react-native-popup-dialog": "^0.18.3",
     "react-native-progress": "^4.1.2",
     "react-native-reanimated": "^1.13.3",
     "react-native-router-flux": "^4.3.1",

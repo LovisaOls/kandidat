@@ -30,8 +30,12 @@ export default function Feed() {
     dispatch(fetchFeed(activeTeam.teamId));
   }, [dispatch]);
 
+<<<<<<< HEAD
   const {feedPosts} = useSelector((state) => state.feedPosts);
   console.log(feedPosts);
+=======
+  const feedPosts = useSelector((state) => state.feedPosts);
+>>>>>>> main
 
   const onCreateFeedPressed = () => {
     Actions.CreateFeed();
