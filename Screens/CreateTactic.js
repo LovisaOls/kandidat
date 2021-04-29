@@ -1,194 +1,102 @@
-import React, { Component } from 'react';
-import { View, StyleSheet } from 'react-native';
-import FootballField from 'react-native-football-lineup';
- 
-var home = {
-  name: 'POR',
-  module: '4-3-3',
-  team: [
-    [
-      {
-        number: 1,
-        name: 'blarr',
-      },
-    ],
-    [
-      {
-        number: 21,
-        name: 'Soares',
-      },
-      {
-        number: 3,
-        name: 'Pepe',
-      },
-      {
-        number: 6,
-        name: 'Fonte',
-      },
-      {
-        number: 5,
-        name: 'Guerriero',
-      },
-    ],
-    [
-      {
-        number: 14,
-        name: 'Calvalho',
-      },
-      {
-        number: 8,
-        name: 'Mountinho',
-      },
-      {
-        number: 11,
-        name: 'Silva',
-      },
-    ],
-    [
-      {
-        number: 16,
-        name: 'Fernandes',
-      },
-      {
-        number: 7,
-        name: 'Cristiano Ronaldo',
-      },
-      {
-        number: 17,
-        name: 'Guedes',
-      },
-    ],
-  ],
-  home_team_events: [
-    {
-      id: 203,
-      type_of_event: 'red-card',
-      player: 'Silva',
-      time: "3'",
-    },
-    {
-      id: 210,
-      type_of_event: 'yellow-card',
-      player: 'Fernandes',
-      time: "64'",
-    },
-    {
-      id: 210,
-      type_of_event: 'yellow-card',
-      player: 'Fonte',
-      time: "64'",
-    },
-    {
-      id: 206,
-      type_of_event: 'substitution-in',
-      player: 'Fonte',
-      time: "31'",
-    },
-  ],
-};
- 
-var away = {
-  name: 'SPA',
-  module: '3-5-2',
-  team: [
-    [
-      {
-        number: 1,
-        name: 'De Gea',
-      },
-    ],
-    [
-      {
-        number: 18,
-        name: 'Alba',
-      },
-      {
-        number: 15,
-        name: 'Ramos',
-      },
-      {
-        number: 3,
-        name: 'Pique',
-      },
-      {
-        number: 4,
-        name: 'Nacho',
-      },
-    ],
-    [
-      {
-        number: 8,
-        name: 'Koke',
-      },
-      {
-        number: 5,
-        name: 'Busquets',
-      },
-    ],
-    [
-      {
-        number: 6,
-        name: 'Iniesta',
-      },
-      {
-        number: 22,
-        name: 'Isco',
-      },
-      {
-        number: 21,
-        name: 'Silva',
-      },
-    ],
-    [
-      {
-        number: 19,
-        name: 'Costa',
-      },
-    ],
-  ],
-  away_team_events: [
-    {
-      id: 210,
-      type_of_event: 'yellow-card',
-      player: 'De Gea',
-      time: "12'",
-    },
-    {
-      id: 206,
-      type_of_event: 'substitution-in',
-      player: 'Iniesta',
-      time: "31'",
-    },
-    {
-      id: 206,
-      type_of_event: 'substitution-in',
-      player: 'Costa',
-      time: "32'",
-    },
-    {
-      id: 206,
-      type_of_event: 'red-card',
-      player: 'Silva',
-      time: "31'",
-    },
-  ],
-};
- 
-export default function CreateTactic() {
+import React from 'react';
+import { Text, View, StyleSheet, Image, ImageBackground } from 'react-native';
 
+
+
+
+export default function CreateTactic() {
+  
+ 
     return (
       <View style={styles.container}>
-        <FootballField home={home} away={away} />
+        <ImageBackground
+          source={require('../assets/footballfield.png')}
+          style={{
+            width: null,
+            height: null,
+            flex: 1,
+          }}>
+          <View style={{ backgroundColor: 'rgba(52, 52, 52, 0.45)', flex: 1 }}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(204, 70, 43, 0)',
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <Text
+                  style={[
+                    styles.text,
+                    {
+                      marginLeft: 10,
+                    },
+                  ]}>
+                  {"Barcelona"}
+                </Text>
+                <Text
+                  style={[
+                    styles.text,
+                    {
+                      position: 'absolute',
+                      right: 20,
+                    },
+                  ]}>
+                  {"3-5-2"}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
       </View>
     );
   }
 
- 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 35,
-    borderColor: '#fff',
-    backgroundColor: '#000',
+    marginTop: 120,
+  },
+  rowHome: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  rowAway: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  el: {
+    flexGrow: 1,
+    alignItems: 'center',
+  },
+  playHome: {
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: 'rgb(244, 67, 54)',
+    backgroundColor: 'rgba(244, 67, 54,0.5)',
+  },
+  playAway: {
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: 'rgb(3, 169, 244)',
+    backgroundColor: 'rgba(3, 169, 244,0.5)',
+  },
+  text: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+    fontSize: 15,
+    marginTop: 40
   },
 });
