@@ -25,7 +25,6 @@ export default function CreateFeed() {
 
         const postRef = firebase.database().ref("/feed/").push();
         const postKey = postRef.key;
-        console.log(postKey);
 
         postRef.set({
             author: currentUser.firstName + ' ' + currentUser.lastName,

@@ -128,51 +128,46 @@ export const fetchUserTeams = (userId) => {
       });
     let userTeams = [];
     if (teamIds) {
-      {
-        Object.keys(teamIds).map((teamId) => {
-          firebase
-            .database()
-            .ref(`/teams/${teamId}`)
-            .on("value", (snapshot) => {
-              if (snapshot.exists) {
-                const team = snapshot.val();
-                userTeams.push(team);
-              } else {
-                console.log("No data available");
-              }
-            });
-        });
-      }
+      Object.keys(teamIds).map((teamId) => {
+        firebase
+          .database()
+          .ref(`/teams/${teamId}`)
+          .on("value", (snapshot) => {
+            if (snapshot.exists) {
+              const team = snapshot.val();
+              userTeams.push(team);
+            } else {
+              console.log("No data available");
+            }
+          });
+      });
     }
-    console.log("lagen som skickas:", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
-    var validTeam = false;
-    var ref = firebase.database().ref("/teams/");
+    var ref = firebase.database().ref(`/teams/${teamId}`);
     ref.once("value").then(function (snapshot) {
-      if (snapshot.child(teamId).exists()) {
-        validTeam = true;
+      console.log("halloj snapshot", snapshot.val());
+      if (snapshot.val() !== null) {
+        console.log("hejsan hoppsan lillebror");
+        firebase
+          .database()
+          .ref(`/teams/${teamId}/members/`)
+          .child(userId)
+          .set(false);
+        firebase
+          .database()
+          .ref(`/users/${userId}/teams/`)
+          .child(teamId)
+          .set(false);
+        Actions.Profile();
       } else {
         Alert.alert("Invalid TeamId");
       }
     });
-    if (validTeam) {
-      firebase
-        .database()
-        .ref(`/teams/${teamId}/members/`)
-        .child(userId)
-        .set(true);
-      firebase
-        .database()
-        .ref(`/users/${userId}/teams/`)
-        .child(teamId)
-        .set(true);
-      Actions.Profile();
-    }
   };
 };
 
@@ -201,16 +196,6 @@ export const fetchFeed = (teamId) => {
   };
 };
 
-export const setActivePost = (teamId) => {
-  return (dispatch) => {
-    firebase
-      .database()
-      .ref(`/teams/${teamId}`)
-      .on("value", (snapshot) => {
-        dispatch({ type: "SET_ACTIVE_POST", activePost: snapshot.val() });
-      });
-  };
-};
 export const fetchEvents = (teamId) => {
   return (dispatch) => {
     firebase
@@ -250,5 +235,23 @@ export const fetchTeamMembers = (teamId) => {
         });
     });
     dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+  };
+};
+
+export const acceptMember = (userId, teamId) => {
+  return (dispatch) => {
+    var updates = {};
+    updates[`/users/${userId}/teams/${teamId}`] = true;
+    updates[`/teams/${teamId}/members/${userId}`] = true;
+    firebase.database().ref().update(updates);
+    dispatch({ type: "ACCEPT_MEMBER" });
+  };
+};
+
+export const declineMember = (userId, teamId) => {
+  return (dispatch) => {
+    firebase.database().ref(`/users/${userId}/teams/${teamId}`).remove();
+    firebase.database().ref(`/teams/${teamId}/members/${userId}`).remove();
+    dispatch({ type: "DECLINE_MEMBER" });
   };
 };

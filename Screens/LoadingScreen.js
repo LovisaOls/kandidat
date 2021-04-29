@@ -15,6 +15,7 @@ function LoadingScreen() {
       if (user) {
         // User is signed in.
         console.log("user is already signed in");
+        dispatch(fetchUserTeams(user.uid));
         //Väntar 2 sekunder
         setTimeout(() => {
           dispatch(setCurrentUser(user.uid));
