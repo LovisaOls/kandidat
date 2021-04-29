@@ -11,15 +11,39 @@ import {
   TextInput,
 } from "react-native";
 import TopMenu from "./TopMenu";
+import { Actions } from "react-native-router-flux";
 import { useDispatch, useSelector } from "react-redux";
+
+import { createComment } from "../actions/index";
 
 import "firebase/database";
 require("firebase/auth");
 
 export default function CommentScreen(post) {
+  const [commentText, setCommentText] = useState("");
+  const currentUser = useSelector((state) => state.currentUser);
+  const dispatch = useDispatch();
+
+  const onCreateComment = () => {
+    dispatch(
+      createComment(
+        post.postId,
+        commentText,
+        currentUser.firstName,
+        currentUser.lastName
+      )
+    );
+  };
+
+  const { feedPosts } = useSelector((state) => state.feedPosts);
+
+  const onCancelPress = () => {
+    Actions.Profile();
+  };
   return (
     <SafeAreaView style={styles.container}>
       <TopMenu />
+
       <View style={styles.postBox}>
         <View style={{ flexDirection: "column", alignItems: "center" }}>
           <View>
@@ -31,30 +55,41 @@ export default function CommentScreen(post) {
           </View>
         </View>
       </View>
-      <View style={styles.comBox}>
-        <Text styles={styles.title}>  </Text>
-      </View>
-      <FlatList></FlatList>
+
+      <FlatList
+        data={post.comments && Object.keys(post.comments)}
+        renderItem={({ item }) => (
+          <View style={styles.commentBorder}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View>
+                <Text>{post.comments[item].author}</Text>
+              </View>
+            </View>
+            <Text>{post.comments[item].text}</Text>
+          </View>
+        )}
+      ></FlatList>
+      
       <TextInput
-        placeholder={"Add text to your post"}
+        placeholder={"Type your comment here"}
         numberOfLines={5}
-        // value={textValue}
-        onChangeText={(res) => {
-          setValue(res);
-        }}
+        onChangeText={(text) => setCommentText(text)}
+        value={commentText}
       ></TextInput>
-      <TouchableOpacity style={styles.createFeedButton}>
+      <TouchableOpacity
+        style={styles.createCommentButton}
+        onPress={() => onCreateComment()}
+      >
         <Text>Create comment</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => onCancelPress()}>
+        <Text style={styles.cancel}> Cancel </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  postText: {
-    fontSize: 20,
-    padding: 15,
-  },
   title: {
     fontSize: 30,
     justifyContent: "center",
@@ -77,19 +112,19 @@ const styles = StyleSheet.create({
   },
   postName: {
     fontSize: 20,
+    padding: 5,
   },
   postText: {
     fontSize: 15,
     marginTop: 5,
+    padding: 5,
   },
   postDate: {
     fontSize: 12,
     color: "#333",
+    paddingLeft: 5,
   },
-  likeCommentBox: {
-    flexDirection: "row",
-  },
-  postBorder: {
+  commentBorder: {
     margin: 10,
     borderRadius: 5,
     padding: 10,
@@ -101,7 +136,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  createFeedButton: {
+  createCommentButton: {
     backgroundColor: "purple",
     marginTop: 20,
     marginLeft: 50,
@@ -110,5 +145,13 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  cancel: {
+    fontSize: 16,
+    color: "blue",
+    margin: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
   },
 });
