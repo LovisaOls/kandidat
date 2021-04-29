@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
+import { Alert } from "react-native";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
@@ -114,7 +115,7 @@ export const registerTeam = (userId, teamName, city) => {
   };
 };
 
-//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuelt.
+//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuellt.
 //Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
   return (dispatch) => {
@@ -127,36 +128,46 @@ export const fetchUserTeams = (userId) => {
       });
     let userTeams = [];
     if (teamIds) {
-      {
-        Object.keys(teamIds).map((teamId) => {
-          firebase
-            .database()
-            .ref(`/teams/${teamId}`)
-            .on("value", (snapshot) => {
-              if (snapshot.exists) {
-                const team = snapshot.val();
-                userTeams.push(team);
-              } else {
-                console.log("No data available");
-              }
-            });
-        });
-      }
+      Object.keys(teamIds).map((teamId) => {
+        firebase
+          .database()
+          .ref(`/teams/${teamId}`)
+          .on("value", (snapshot) => {
+            if (snapshot.exists) {
+              const team = snapshot.val();
+              userTeams.push(team);
+            } else {
+              console.log("No data available");
+            }
+          });
+      });
     }
-    console.log("lagen som skickas:", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
-    console.log("join team");
-    firebase
-      .database()
-      .ref(`/teams/${teamId}/members/`)
-      .child(userId)
-      .set(true);
-    firebase.database().ref(`/users/${userId}/teams/`).child(teamId).set(true);
+    var ref = firebase.database().ref(`/teams/${teamId}`);
+    ref.once("value").then(function (snapshot) {
+      console.log("halloj snapshot", snapshot.val());
+      if (snapshot.val() !== null) {
+        console.log("hejsan hoppsan lillebror");
+        firebase
+          .database()
+          .ref(`/teams/${teamId}/members/`)
+          .child(userId)
+          .set(false);
+        firebase
+          .database()
+          .ref(`/users/${userId}/teams/`)
+          .child(teamId)
+          .set(false);
+        Actions.Profile();
+      } else {
+        Alert.alert("Invalid TeamId");
+      }
+    });
   };
 };
 
@@ -194,11 +205,10 @@ export const fetchEvents = (teamId) => {
       .equalTo(teamId)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
-  });
+      });
+  };
+};
 
-}}
-
-    
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
     let teamMemberIds = [];
@@ -225,5 +235,37 @@ export const fetchTeamMembers = (teamId) => {
         });
     });
     dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+  };
+};
+
+export const acceptMember = (userId, teamId) => {
+  return (dispatch) => {
+    var updates = {};
+    updates[`/users/${userId}/teams/${teamId}`] = true;
+    updates[`/teams/${teamId}/members/${userId}`] = true;
+    firebase.database().ref().update(updates);
+    dispatch({ type: "ACCEPT_MEMBER" });
+  };
+};
+
+export const declineMember = (userId, teamId) => {
+  return (dispatch) => {
+    firebase.database().ref(`/users/${userId}/teams/${teamId}`).remove();
+    firebase.database().ref(`/teams/${teamId}/members/${userId}`).remove();
+    dispatch({ type: "DECLINE_MEMBER" });
+  };
+};
+
+// Här skapas en kommentar till en post
+export const createComment = (postId, commentText, firstname, lastname) => {
+  return (dispatch) => {
+    const commentRef = firebase
+      .database()
+      .ref(`/feed/${postId}/comments/`)
+      .push();
+    commentRef.set({
+      author: firstname + " " + lastname,
+      text: commentText,
+    });
   };
 };

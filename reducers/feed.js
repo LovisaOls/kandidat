@@ -1,10 +1,10 @@
 const initState = {};
 
 const feedReducer = (state = initState, action) => {
-     switch(action.type){
+    switch (action.type) {
         case 'FETCH_FEED':
-            return action.feedPosts;
-        default: 
+            return { ...state, feedPosts: action.feedPosts };
+        default:
             return state;
     }
 };
