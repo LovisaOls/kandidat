@@ -255,3 +255,17 @@ export const declineMember = (userId, teamId) => {
     dispatch({ type: "DECLINE_MEMBER" });
   };
 };
+
+// Här skapas en kommentar till en post
+export const createComment = (postId, commentText, firstname, lastname) => {
+  return (dispatch) => {
+    const commentRef = firebase
+      .database()
+      .ref(`/feed/${postId}/comments/`)
+      .push();
+    commentRef.set({
+      author: firstname + " " + lastname,
+      text: commentText,
+    });
+  };
+};
