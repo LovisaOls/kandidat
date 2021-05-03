@@ -267,5 +267,6 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       author: firstname + " " + lastname,
       text: commentText,
     });
+    dispatch({ type: "COMMENT_ADDED" });
   };
 };
