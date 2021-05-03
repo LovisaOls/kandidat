@@ -46,6 +46,7 @@ export default function CommentScreen(post) {
   const { feedPosts } = useSelector((state) => state.feedPosts);
 
   const onCancelPress = () => {
+    // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
     Actions.Profile();
   };
   return (
@@ -104,13 +105,7 @@ export default function CommentScreen(post) {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 30,
-    justifyContent: "center",
-    textAlign: "center",
-    fontWeight: "bold",
-    margin: 10,
-  },
+
   postBox: {
     width: "100%",
     borderRadius: 10,
@@ -129,7 +124,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   postText: {
-    fontSize: 15,
+    fontSize: 18,
     marginTop: 5,
     padding: 5,
   },
@@ -151,7 +146,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   createCommentButton: {
-    backgroundColor: "purple",
+    backgroundColor: "#A247D4",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,
@@ -162,7 +157,7 @@ const styles = StyleSheet.create({
   },
   cancel: {
     fontSize: 16,
-    color: "blue",
+    color: "#A247D4",
     margin: 10,
     alignContent: "center",
     justifyContent: "center",

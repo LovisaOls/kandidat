@@ -13,6 +13,7 @@ import {
 import TopMenu from "../Screens/TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../actions/index";
+import { nrOfLikes } from "../actions/index";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -22,6 +23,7 @@ require("firebase/auth");
 export default function Feed() {
   const [isLoading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
+  const currentUser = useSelector((state) => state.currentUser);
 
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
@@ -37,7 +39,42 @@ export default function Feed() {
   };
 
   const onCommentPressed = (post) => {
-    Actions.Comment(post)
+    Actions.Comment(post);
+  };
+
+  const onLikePressed = (post) => {
+    let alreadyLiked = false;
+    // Kontrollerar om usern redan har likeat inlägget, då ska den inte få likea igen.
+    if (post.likes != undefined) {
+      // Loopar likesen på posten
+      Object.keys(post.likes).every((i) => {
+        // Loopar vad usern har likeat
+        Object.keys(currentUser.likes).every((j) => {
+          if (j != i) {
+            return true;
+          } else {
+            alreadyLiked = true;
+          }
+        });
+        if (alreadyLiked) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      if ( alreadyLiked = false ) {
+        // Här ser jag att usern som vill likea inte har gjort det innan :)
+        console.log("nu har du likeat posten");
+        dispatch(nrOfLikes(post.postId, currentUser.id));
+      } 
+      // Här ser jag att usern redan har likeat och här kan man lägga in tex att liken försvinner om man klickat typ... utvecklingspotential här
+      else { console.log("ingen like för dig haha du har redan likeat ")}
+    } else {
+      dispatch(nrOfLikes(post.postId, currentUser.id));
+      console.log(
+        "usern får likea för den har inte gillat denna post förut"
+      );
+    }
   };
 
   return (
@@ -70,14 +107,25 @@ export default function Feed() {
 
             <View style={styles.likeCommentBox}>
               <TouchableOpacity style={styles.likeBox}>
-                <Text style={styles.likeCommentText}>Like</Text>
+                <Text
+                  style={styles.likeCommentText}
+                  onPress={() => onLikePressed(feedPosts[item])}
+                >
+                  Like{" "}
+                  {feedPosts[item].likes &&
+                    Object.keys(feedPosts[item].likes).length}{" "}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.commentBox}
                 title="Comment"
                 onPress={() => onCommentPressed(feedPosts[item])}
               >
-                <Text style={styles.likeCommentText}>Comment {feedPosts[item].comments && Object.keys(feedPosts[item].comments).length}</Text>
+                <Text style={styles.likeCommentText}>
+                  Comment{" "}
+                  {feedPosts[item].comments &&
+                    Object.keys(feedPosts[item].comments).length}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -117,7 +165,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   postText: {
-    fontSize: 12,
+    fontSize: 15,
     marginTop: 5,
   },
   postDate: {
@@ -140,7 +188,8 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   createFeedButton: {
-    backgroundColor: "green",
+    backgroundColor: "#A247D4",
+    color: "white",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,
