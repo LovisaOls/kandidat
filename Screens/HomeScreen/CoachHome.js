@@ -96,24 +96,29 @@ export default function CoachHome() {
           <Text style={styles.title}> Team members </Text>
           {teamMembers &&
             Object.keys(teamMembers).map((key, i) => {
-              return teamMembers[key].id == activeTeam.coach ? (
+              return (
                 <View key={i} style={styles.viewMembers}>
-                  <View>
-                    <Text>Coach!!!</Text>
-                    <Text>
-                      {teamMembers[key].firstName} {teamMembers[key].lastName}
-                    </Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {teamMembers[key].profilePicture ? (
+                      <Image
+                        source={{ uri: teamMembers[key].profilePicture }}
+                        style={{
+                          height: 40,
+                          width: 40,
+                          borderRadius: 20,
+                          margin: 5,
+                        }}
+                      />
+                    ) : (
+                      <Icon name="person-circle-outline" size={45}></Icon>
+                    )}
+                    <View>
+                      <Text>
+                        {teamMembers[key].firstName} {teamMembers[key].lastName}
+                      </Text>
+                      <Text>{teamMembers[key].email}</Text>
+                    </View>
                   </View>
-                  <Text>{teamMembers[key].email}</Text>
-                </View>
-              ) : (
-                <View key={i} style={styles.viewMembers}>
-                  <View>
-                    <Text>
-                      {teamMembers[key].firstName} {teamMembers[key].lastName}
-                    </Text>
-                  </View>
-                  <Text>{teamMembers[key].email}</Text>
                 </View>
               );
             })}
