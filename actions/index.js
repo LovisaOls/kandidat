@@ -8,10 +8,8 @@ import { Actions } from "react-native-router-flux";
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
+    firebase.auth().signInWithEmailAndPassword(email, password);
+    /* .then((response) => {
         // Signed in
         firebase
           .database()
@@ -19,14 +17,13 @@ export const signIn = (email, password) => {
           .on("value", (snapshot) => {
             dispatch({ type: "SET_CURRENT_USER", currentUser: snapshot.val() });
           });
-        Actions.Profile();
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(`error code: ${errorCode}`);
         //alert(`error message: ${errorMessage}`);
-      });
+      }); */
   };
 };
 
@@ -70,7 +67,7 @@ export const registerUser = (email, password, firstName, lastName, image) => {
                   currentUser: snapshot.val(),
                 });
               });
-            Actions.Profile();
+            //Actions.Profile();
           })
           .catch((error) => {
             alert(error);

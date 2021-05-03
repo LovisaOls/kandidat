@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { useDispatch, useSelector, connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn } from "../actions/index";
 import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -18,7 +18,6 @@ function WelcomeScreen() {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.currentUser);
 
   const loginButtonPressed = () => {
     dispatch(signIn(email, password));

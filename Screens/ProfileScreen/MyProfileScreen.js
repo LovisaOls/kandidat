@@ -52,7 +52,6 @@ function MyProfileScreen() {
       .then(() => {
         // Sign-out successful.
         console.log("Signed Out");
-        Actions.Welcome();
       })
       .catch((error) => {
         // An error happened.
