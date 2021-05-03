@@ -1,38 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  Alert,
-  Title,
   SafeAreaView,
   TextInput,
+  RefreshControl,
 } from "react-native";
 import TopMenu from "./TopMenu";
 import { Actions } from "react-native-router-flux";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createComment } from "../actions/index";
-
-import "firebase/database";
-require("firebase/auth");
-
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 export default function CommentScreen(post) {
   const [commentText, setCommentText] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
+
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   const onCreateComment = () => {
-    dispatch(
-      createComment(
-        post.postId,
-        commentText,
-        currentUser.firstName,
-        currentUser.lastName
-      )
-    );
+    if (commentText != "") {
+      dispatch(
+        createComment(
+          post.postId,
+          commentText,
+          currentUser.firstName,
+          currentUser.lastName
+        )
+      );
+      Actions.Comment();
+    }
   };
 
   const { feedPosts } = useSelector((state) => state.feedPosts);
@@ -58,6 +66,12 @@ export default function CommentScreen(post) {
       </View>
 
       <FlatList
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          ></RefreshControl>
+        }
         data={post.comments && Object.keys(post.comments)}
         renderItem={({ item }) => (
           <View style={styles.commentBorder}>
@@ -70,7 +84,7 @@ export default function CommentScreen(post) {
           </View>
         )}
       ></FlatList>
-      
+
       <TextInput
         placeholder={"Type your comment here"}
         numberOfLines={5}

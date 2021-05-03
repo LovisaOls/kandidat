@@ -27,10 +27,19 @@ export default function CreateFeed() {
   };
 
   const onPostInFeedPressed = () => {
-    console.log("Posted in feed");
+    if (textValue != "") {
+      const postRef = firebase.database().ref("/feed/").push();
+      const postKey = postRef.key;
 
-    const postRef = firebase.database().ref("/feed/").push();
-    const postKey = postRef.key;
+      postRef
+        .set({
+          author: currentUser.firstName + " " + currentUser.lastName,
+          teamId: activeTeam.teamId,
+          text: textValue,
+          createdOn: dateTime.getTime(),
+          postId: postKey,
+          comments: [],
+        })
 
     postRef
       .set({
@@ -48,10 +57,11 @@ export default function CreateFeed() {
                 name: "Namn",
                 text: textValue,
                 createdOn: dateTime.getTime()}}) */
-      .catch((error) => {
-        alert(error);
-      });
-    Actions.BottomMenu();
+        .catch((error) => {
+          alert(error);
+        });
+      Actions.BottomMenu();
+    }
   };
 
   return (

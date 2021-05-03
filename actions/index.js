@@ -8,10 +8,8 @@ import { Actions } from "react-native-router-flux";
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
+    firebase.auth().signInWithEmailAndPassword(email, password);
+    /* .then((response) => {
         // Signed in
         firebase
           .database()
@@ -19,14 +17,13 @@ export const signIn = (email, password) => {
           .on("value", (snapshot) => {
             dispatch({ type: "SET_CURRENT_USER", currentUser: snapshot.val() });
           });
-        Actions.Profile();
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(`error code: ${errorCode}`);
         //alert(`error message: ${errorMessage}`);
-      });
+      }); */
   };
 };
 
@@ -44,7 +41,7 @@ export const setCurrentUser = (userId) => {
 };
 
 //Lägg till ny användare i db
-export const registerUser = (email, password, firstName, lastName) => {
+export const registerUser = (email, password, firstName, lastName, image) => {
   return (dispatch) => {
     firebase
       .auth()
@@ -58,6 +55,7 @@ export const registerUser = (email, password, firstName, lastName) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
+            profilePicture: image,
           })
           .then(() => {
             firebase
@@ -69,7 +67,7 @@ export const registerUser = (email, password, firstName, lastName) => {
                   currentUser: snapshot.val(),
                 });
               });
-            Actions.Profile();
+            //Actions.Profile();
           })
           .catch((error) => {
             alert(error);
@@ -266,6 +264,7 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       author: firstname + " " + lastname,
       text: commentText,
     });
+    dispatch({ type: "COMMENT_ADDED" });
   };
 };
 
