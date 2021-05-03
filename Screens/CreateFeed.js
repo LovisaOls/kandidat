@@ -22,6 +22,7 @@ export default function CreateFeed() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const onCancelPostPressed = () => {
+   // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
     Actions.Feed();
   };
 
@@ -39,6 +40,7 @@ export default function CreateFeed() {
         createdOn: dateTime.getTime(),
         postId: postKey,
         comments: [],
+        likes: [],
       })
 
       // Skapa en reducer + action!! BOB
@@ -91,7 +93,7 @@ const styles = StyleSheet.create({
   },
   cancelPost: {
     fontSize: 15,
-    color: "blue",
+    color: "#A247D4",
     margin: 10,
     alignContent: "center",
     justifyContent: "center",

@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 
     cancelText: {
         fontSize: 16,
-        color: 'blue',
+        color: '#A247D4',
         margin: 10,
         alignContent:'center',
         justifyContent: 'center',

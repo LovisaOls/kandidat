@@ -218,7 +218,6 @@ export const fetchTeamMembers = (teamId) => {
       .on("value", (snapshot) => {
         teamMemberIds = Object.keys(snapshot.val());
       });
-    console.log("teamMemberIds:", teamMemberIds);
 
     let teamMembers = [];
     teamMemberIds.forEach((userId) => {
@@ -267,5 +266,28 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       author: firstname + " " + lastname,
       text: commentText,
     });
+  };
+};
+
+// Här skapas det likes på en post
+export const nrOfLikes = (postId, userId) => {
+  return (dispatch) => {
+    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).push();
+    const likeKey = likesRef.key;
+    likesRef
+      .set({
+        likes: userId,
+      })
+      .then(
+        firebase
+          .database()
+          .ref(`/users/${userId}/likes/`)
+          .child(likeKey)
+          .set({
+            post: postId,
+          })
+        // dispatch({ type: "ADD_TEAM" });
+        // Actions.Profile();
+      );
   };
 };
