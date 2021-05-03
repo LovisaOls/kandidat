@@ -17,6 +17,7 @@ require("firebase/auth");
 
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
