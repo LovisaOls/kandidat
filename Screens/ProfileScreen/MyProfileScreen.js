@@ -11,6 +11,8 @@ import {
 import TeamComponent from "./TeamComponent";
 import { fetchUserTeams } from "../../actions/index";
 import { Actions } from "react-native-router-flux";
+import Icon from "react-native-vector-icons/Ionicons";
+
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
@@ -21,7 +23,11 @@ function MyProfileScreen() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserTeams(currentUser.id));
+    (async () => {
+      console.log("innan");
+      await dispatch(fetchUserTeams(currentUser.id));
+      console.log("efter");
+    })();
   }, [dispatch]);
 
   const { userTeams } = useSelector((state) => state.currentTeams);
@@ -56,10 +62,14 @@ function MyProfileScreen() {
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <View style={styles.profileIcon}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/Profile.png")}
-        />
+        {currentUser.profilePicture ? (
+          <Image
+            source={{ uri: currentUser.profilePicture }}
+            style={styles.image}
+          />
+        ) : (
+          <Icon name="person-circle-outline" size={100}></Icon>
+        )}
         <Text style={styles.name}>
           {currentUser.firstName} {currentUser.lastName}
         </Text>

@@ -44,7 +44,7 @@ export const setCurrentUser = (userId) => {
 };
 
 //Lägg till ny användare i db
-export const registerUser = (email, password, firstName, lastName) => {
+export const registerUser = (email, password, firstName, lastName, image) => {
   return (dispatch) => {
     firebase
       .auth()
@@ -58,6 +58,7 @@ export const registerUser = (email, password, firstName, lastName) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
+            profilePicture: image,
           })
           .then(() => {
             firebase
