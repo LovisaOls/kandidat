@@ -1,11 +1,18 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import TopMenu from "../Screens/TopMenu";
+import React from 'react';
+import { View, StyleSheet, ImageBackground, Text, TouchableOpacity } from 'react-native';
 
-export default function TacticsCoach() {
+
+
+
+
+
+
+
+export default function CreateTactic() {
+
   return (
-    <View style={styles.container}>
-      <TopMenu />
+
+    <View style={styles.containers}>
 
       <View style={styles.Tactic}>
         <Text style={styles.TacticText}> My Tactics </Text>
@@ -14,25 +21,62 @@ export default function TacticsCoach() {
         </TouchableOpacity>
       </View>
 
-      <View style={styles.TacticBoarder}>
-        <TouchableOpacity>
-          <Image
-            style={styles.TacticImage}
-            source={require("../assets/TacticBoard.png")}
-          />
-        </TouchableOpacity>
+
+      <View style={styles.container}>
+        <ImageBackground source={require("../assets/footballfield.png")}
+          style={{
+            width: "100%",
+            height: "100%",
+            flex: 1,
+            marginTop: 40,
+            marginBottom: 40,
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+          }}>
+          <Text
+            style={[
+              styles.text,
+              {
+                marginLeft: 20,
+              },
+            ]}>
+            {"hejhej"}
+          </Text>
+        </View>
       </View>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
+  
+  containers: {
+    flex: 1,
+    marginTop: 40,
+    backgroundColor: "white"
+  },
+  
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    margin: 10,
+    marginTop: 40,
+    backgroundColor: "white"
   },
-  /* ------------------------------------------ */
+
+  text: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#fff',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+    fontSize: 15,
+  },
+
+
   Tactic: {
     flexDirection: "row",
     marginTop: 10,
@@ -50,16 +94,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "green",
     marginLeft: 40,
-  },
-
-  /* ------------------------------------------ */
-
-  TacticBoarder: {
-    marginTop: 20,
-  },
-
-  TacticImage: {
-    height: 440,
-    width: 350,
   },
 });

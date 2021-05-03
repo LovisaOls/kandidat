@@ -77,7 +77,7 @@ export default function Feed() {
                 title="Comment"
                 onPress={() => onCommentPressed(feedPosts[item])}
               >
-                <Text style={styles.likeCommentText}>Comment</Text>
+                <Text style={styles.likeCommentText}>Comment {feedPosts[item].comments && Object.keys(feedPosts[item].comments).length}</Text>
               </TouchableOpacity>
             </View>
           </View>
