@@ -30,6 +30,8 @@ export default function TestSchedule() {
         onPress={() => Alert.alert(item.description)}
       >
         <Text>{item.title}</Text>
+        <Text>{item.time}</Text>
+        <Text>{item.description}</Text>
       </TouchableOpacity>
     );
   }
