@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -13,7 +13,8 @@ import {
 import TopMenu from "../Screens/TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../actions/index";
-import { nrOfLikes } from "../actions/index";
+import { like } from "../actions/index";
+import { removeLike } from "../actions/index";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -42,38 +43,42 @@ export default function Feed() {
     Actions.Comment(post);
   };
 
+  // const modalRef = useRef(null);
+
+  // const openComments = () => {
+  //   const modal = modalRef.current;
+
+  //   if (modal) {
+  //     modal.open();
+  //   }
+  // };
+
   const onLikePressed = (post) => {
     let alreadyLiked = false;
+    console.log("postId", post.postId);
+
     // Kontrollerar om usern redan har likeat inlägget, då ska den inte få likea igen.
     if (post.likes != undefined) {
-      // Loopar likesen på posten
+      console.log(currentUser.id);
       Object.keys(post.likes).every((i) => {
-        // Loopar vad usern har likeat
-        Object.keys(currentUser.likes).every((j) => {
-          if (j != i) {
-            return true;
-          } else {
-            alreadyLiked = true;
-          }
-        });
-        if (alreadyLiked) {
-          return false;
+        console.log(i);
+        if (i == currentUser.id) {
+          alreadyLiked = true;
         } else {
           return true;
         }
       });
-      if ( alreadyLiked = false ) {
-        // Här ser jag att usern som vill likea inte har gjort det innan :)
-        console.log("nu har du likeat posten");
-        dispatch(nrOfLikes(post.postId, currentUser.id));
-      } 
-      // Här ser jag att usern redan har likeat och här kan man lägga in tex att liken försvinner om man klickat typ... utvecklingspotential här
-      else { console.log("ingen like för dig haha du har redan likeat ")}
+      console.log(alreadyLiked);
+      if (alreadyLiked) {
+        dispatch(removeLike(post.postId, currentUser.id));
+        console.log("usern har gillat förut");
+      } else {
+        dispatch(like(post.postId, currentUser.id));
+        console.log("usern har inte gillat förut");
+      }
     } else {
-      dispatch(nrOfLikes(post.postId, currentUser.id));
-      console.log(
-        "usern får likea för den har inte gillat denna post förut"
-      );
+      console.log("usern får gilla för ingen har gillat förut")
+      dispatch(like(post.postId, currentUser.id));
     }
   };
 
