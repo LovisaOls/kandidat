@@ -21,9 +21,9 @@ function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     dispatch(fetchUserTeams(currentUser.id));
-  }, [dispatch, userTeams]);
+  }, [dispatch]); */
 
   const { userTeams } = useSelector((state) => state.currentTeams);
   console.log("userTeams", userTeams);
