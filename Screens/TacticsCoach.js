@@ -1,98 +1,174 @@
-import React from 'react';
-import { View, StyleSheet, ImageBackground, Text, TouchableOpacity } from 'react-native';
+
+import React, { useState } from "react";
+import { useSelector } from 'react-redux';
+import { View, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity, Text, TextInput } from 'react-native';
+import Draggable from 'react-native-draggable'; // first, run "npm run source" to get Draggable.js
+
+
+import firebase from "firebase/app";
+import "firebase/database";
+require("firebase/auth");
+
+import { Actions } from 'react-native-router-flux';
 
 
 
+export default function TacticsCoach() {
 
 
-
-
-
-export default function CreateTactic() {
 
   return (
 
-    <View style={styles.containers}>
 
-      <View style={styles.Tactic}>
-        <Text style={styles.TacticText}> My Tactics </Text>
-        <TouchableOpacity style={styles.addTacticBtn}>
-          <Text style={styles.addTactic}>+</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.container}>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => Actions.CreateTactic()}>
+        <Text style={styles.buttonTitle}> Create LineUp </Text>
+      </TouchableOpacity>
+
+      <ImageBackground
+        source={require('../assets/footballfield.png')}
+        style={{
+          width: null,
+          height: null,
+          flex: 1,
+        }}>
+      </ImageBackground>
 
 
-      <View style={styles.container}>
-        <ImageBackground source={require("../assets/footballfield.png")}
-          style={{
-            width: "100%",
-            height: "100%",
-            flex: 1,
-            marginTop: 40,
-            marginBottom: 40,
-          }}
-        />
-        <View
-          style={{
-            flexDirection: 'row',
-          }}>
-          <Text
-            style={[
-              styles.text,
-              {
-                marginLeft: 20,
-              },
-            ]}>
-            {"hejhej"}
-          </Text>
+
+      <Draggable
+        x={195} y={150}
+        minX={0}
+        maxX={"100%"}
+        onDragRelease={(e) => setPosXPlayer1(e.nativeEvent.pageX,e.nativeEvent.pageY)}
+        value={posxplayer1}
+      
+
+      >
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer1(text)}
+            value={player1}
+          >
+          </TextInput>
         </View>
-      </View>
-    </View>
+      </Draggable>
+
+
+      <Draggable x={20} y={250}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer2(text)}
+            value={player2}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={195} y={250}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer3(text)}
+            value={player3}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={350} y={250}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer4(text)}
+            value={player4}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={110} y={400}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer5(text)}
+            value={player5}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={280} y={400}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer6(text)}
+            value={player6}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={10} y={480}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer7(text)}
+            value={player7}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={100} y={540}>
+        <View style={styles.players}>
+          <TextInput
+            placeholder={"...."}
+            onChangeText={(text) => setPlayer8(text)}
+            value={player8}
+          >
+          </TextInput>
+        </View>
+      </Draggable>
+
+      <Draggable x={290} y={540}>
+        <View style={styles.players}>
+
+        </View>
+      </Draggable>
+
+      <Draggable x={370} y={480}>
+        <View style={styles.players}>
+
+        </View>
+      </Draggable>
+
+      <Draggable x={195} y={630}>
+        <View style={styles.players}>
+
+        </View>
+      </Draggable>
+
+    </SafeAreaView>
   );
 }
 
-
 const styles = StyleSheet.create({
-  
-  containers: {
-    flex: 1,
-    marginTop: 40,
-    backgroundColor: "white"
-  },
-  
   container: {
     flex: 1,
-    marginTop: 40,
-    backgroundColor: "white"
-  },
-
-  text: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#fff',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 1,
-    fontSize: 15,
+    marginTop: 120,
   },
 
 
-  Tactic: {
-    flexDirection: "row",
-    marginTop: 10,
-  },
+  players: {
+    backgroundColor: 'red',
+    padding: 8,
+    borderRadius: 15,
 
-  TacticText: {
-    fontSize: 30,
   },
-
-  addTacticBtn: {
-    width: "15%",
-    borderRadius: 25,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "green",
-    marginLeft: 40,
-  },
-});
+})
