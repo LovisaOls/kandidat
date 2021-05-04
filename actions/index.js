@@ -119,18 +119,29 @@ export const registerTeam = (userId, teamName, city) => {
   };
 };
 
-//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuellt.
-//Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
   return (dispatch) => {
-    let teamIds = {};
+    let userTeams;
     firebase
       .database()
-      .ref(`/users/${userId}/teams`)
+      .ref("/teams/")
       .on("value", (snapshot) => {
-        teamIds = snapshot.val();
+        userTeams = [];
+        snapshot.forEach((team) => {
+          for (let id in team.val().members) {
+            if (userId === id) {
+              let tempObject = team.val();
+              tempObject.key = team.key;
+              userTeams.push(tempObject);
+            }
+          }
+        });
+        dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
       });
-    let userTeams = [];
+  };
+};
+
+/*
     if (teamIds) {
       Object.keys(teamIds).map((teamId) => {
         firebase
@@ -147,9 +158,8 @@ export const fetchUserTeams = (userId) => {
       });
     }
     console.log("lagen i action", userTeams);
-    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
-  };
-};
+    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams }); */
+//};
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
@@ -216,32 +226,25 @@ export const fetchEvents = (teamId) => {
 
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
-    let teamMemberIds = [];
+    let teamMembers;
     firebase
       .database()
-      .ref(`/teams/${teamId}/members`)
+      .ref("/users/")
       .on("value", (snapshot) => {
-        teamMemberIds = Object.keys(snapshot.val());
-      });
-
-    let teamMembers = [];
-    teamMemberIds.forEach((userId) => {
-      firebase
-        .database()
-        .ref(`/users/${userId}`)
-        .on("value", (snapshot) => {
-          if (snapshot.exists) {
-            const member = snapshot.val();
-            teamMembers.push(member);
-          } else {
-            console.log("No data available");
+        teamMembers = [];
+        snapshot.forEach((user) => {
+          for (let id in user.val().teams) {
+            if (teamId === id) {
+              let tempObject = user.val();
+              tempObject.key = user.key;
+              teamMembers.push(tempObject);
+            }
           }
         });
-    });
-    dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+        dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+      });
   };
 };
-
 export const acceptMember = (userId, teamId) => {
   return (dispatch) => {
     var updates = {};
@@ -285,13 +288,9 @@ export const nrOfLikes = (postId, userId) => {
         likes: userId,
       })
       .then(
-        firebase
-          .database()
-          .ref(`/users/${userId}/likes/`)
-          .child(likeKey)
-          .set({
-            post: postId,
-          })
+        firebase.database().ref(`/users/${userId}/likes/`).child(likeKey).set({
+          post: postId,
+        })
         // dispatch({ type: "ADD_TEAM" });
         // Actions.Profile();
       );

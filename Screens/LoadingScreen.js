@@ -6,7 +6,7 @@ import { Image, StyleSheet, View, Dimensions } from "react-native";
 import { useDispatch } from "react-redux";
 
 import { Actions } from "react-native-router-flux";
-import { setCurrentUser } from "../actions/index";
+import { setCurrentUser, fetchUserTeams } from "../actions/index";
 
 function LoadingScreen() {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ function LoadingScreen() {
       if (user) {
         // User is signed in.
         console.log("user is signed in");
+        dispatch(fetchUserTeams(user.uid));
         dispatch(setCurrentUser(user.uid));
       } else {
         // No user is signed in.
