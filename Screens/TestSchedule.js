@@ -61,7 +61,10 @@ export default function TestSchedule() {
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        <TouchableOpacity style={styles.smallBtn}>
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() => Actions.CreateEventSchedule()}
+        >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
