@@ -17,7 +17,6 @@ import CreateFeed from "./Screens/CreateFeed";
 import Feed from "./Screens/Feed";
 import CreateEventSchedule from "./Screens/CreateEventSchedule";
 import CreateTactic from "./Screens/CreateTactic";
-
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";

@@ -8,17 +8,17 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import { useDispatch, useSelector, connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signIn } from "../actions/index";
 import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function WelcomeScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.currentUser);
 
   const loginButtonPressed = () => {
     dispatch(signIn(email, password));
@@ -34,49 +34,57 @@ function WelcomeScreen() {
         style={{ flex: 1, width: "100%" }}
         keyboardShouldPersistTaps="always"
       >
-        <View style={styles.theLogo}>
-          <Image style={styles.image} source={require("../assets/Logga.png")} />
-        </View>
-
-        <View style={styles.inputView}>
-          <Icon name="mail-outline" color={"#aaaaaa"} size={18}></Icon>
-          <TextInput
-            style={styles.input}
-            placeholder="Email address"
-            placeholderTextColor="#aaaaaa"
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            autoCapitalize="none"
-          />
-        </View>
-
-        <View style={styles.inputView}>
-          <Icon name="key-outline" color={"#aaaaaa"} size={18}></Icon>
-          <TextInput
-            style={styles.input}
-            placeholderTextColor="#aaaaaa"
-            secureTextEntry
-            placeholder="Password"
-            onChangeText={(text) => setPassword(text)}
-            value={password}
-            autoCapitalize="none"
-          />
-        </View>
-        <TouchableOpacity
-          style={styles.loginBtn}
-          onPress={() => loginButtonPressed()}
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={false}
         >
-          <Text style={styles.loginText}>Sign In</Text>
-        </TouchableOpacity>
+          <View style={styles.theLogo}>
+            <Image
+              style={styles.image}
+              source={require("../assets/Logga.png")}
+            />
+          </View>
 
-        <TouchableOpacity>
-          <Text
-            style={styles.forgot_button}
-            onPress={() => onRegisterPressed()}
+          <View style={styles.inputView}>
+            <Icon name="mail-outline" color={"#aaaaaa"} size={18}></Icon>
+            <TextInput
+              style={styles.input}
+              placeholder="Email address"
+              placeholderTextColor="#aaaaaa"
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              autoCapitalize="none"
+            />
+          </View>
+
+          <View style={styles.inputView}>
+            <Icon name="key-outline" color={"#aaaaaa"} size={18}></Icon>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor="#aaaaaa"
+              secureTextEntry
+              placeholder="Password"
+              onChangeText={(text) => setPassword(text)}
+              value={password}
+              autoCapitalize="none"
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.loginBtn}
+            onPress={() => loginButtonPressed()}
           >
-            Register
-          </Text>
-        </TouchableOpacity>
+            <Text style={styles.loginText}>Sign In</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity>
+            <Text
+              style={styles.forgot_button}
+              onPress={() => onRegisterPressed()}
+            >
+              Register
+            </Text>
+          </TouchableOpacity>
+        </KeyboardAwareScrollView>
       </SafeAreaView>
     </View>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
 import {
   StyleSheet,
@@ -9,34 +9,29 @@ import {
   SafeAreaView,
 } from "react-native";
 import TeamComponent from "./TeamComponent";
-import { fetchUserTeams } from "../../actions/index";
+import { fetchUserTeams, registerTeam } from "../../actions/index";
 import { Actions } from "react-native-router-flux";
-import firebase from "firebase/app";
+import Icon from "react-native-vector-icons/Ionicons";
+
 import "firebase/database";
 require("firebase/auth");
+import * as firebase from "firebase";
 
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
-
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  /*   useEffect(() => {
     dispatch(fetchUserTeams(currentUser.id));
-  }, [dispatch]);
+  }, [dispatch]); */
 
   const { userTeams } = useSelector((state) => state.currentTeams);
-
+  console.log("userTeams", userTeams);
+  const store = useStore();
+  console.log("store", store.getState());
   //FUNKTIONER
   const onAddTeamPressed = () => {
     Actions.TeamRegistration();
-  };
-
-  const goBackButton = () => {
-    Actions.BottomMenu();
-  };
-
-  const goToFeedOSV = () => {
-    Actions.BottomMenu();
   };
 
   const onSignOut = () => {
@@ -46,7 +41,6 @@ function MyProfileScreen() {
       .then(() => {
         // Sign-out successful.
         console.log("Signed Out");
-        Actions.Welcome();
       })
       .catch((error) => {
         // An error happened.
@@ -56,10 +50,16 @@ function MyProfileScreen() {
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <View style={styles.profileIcon}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/Profile.png")}
-        />
+        {currentUser.profilePicture ? (
+          <Image
+            source={{
+              uri: currentUser.profilePicture,
+            }}
+            style={styles.image}
+          />
+        ) : (
+          <Icon name="person-circle-outline" size={100}></Icon>
+        )}
         <Text style={styles.name}>
           {currentUser.firstName} {currentUser.lastName}
         </Text>

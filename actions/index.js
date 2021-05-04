@@ -1,17 +1,15 @@
-import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 import { Alert } from "react-native";
+import * as firebase from "firebase";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((response) => {
+    firebase.auth().signInWithEmailAndPassword(email, password);
+    /* .then((response) => {
         // Signed in
         firebase
           .database()
@@ -19,14 +17,13 @@ export const signIn = (email, password) => {
           .on("value", (snapshot) => {
             dispatch({ type: "SET_CURRENT_USER", currentUser: snapshot.val() });
           });
-        Actions.Profile();
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
         alert(`error code: ${errorCode}`);
         //alert(`error message: ${errorMessage}`);
-      });
+      }); */
   };
 };
 
@@ -44,7 +41,13 @@ export const setCurrentUser = (userId) => {
 };
 
 //Lägg till ny användare i db
-export const registerUser = (email, password, firstName, lastName) => {
+export const registerUser = (
+  email,
+  password,
+  firstName,
+  lastName,
+  imageUrl
+) => {
   return (dispatch) => {
     firebase
       .auth()
@@ -58,6 +61,7 @@ export const registerUser = (email, password, firstName, lastName) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
+            profilePicture: imageUrl,
           })
           .then(() => {
             firebase
@@ -69,7 +73,7 @@ export const registerUser = (email, password, firstName, lastName) => {
                   currentUser: snapshot.val(),
                 });
               });
-            Actions.Profile();
+            //Actions.Profile();
           })
           .catch((error) => {
             alert(error);
@@ -115,18 +119,29 @@ export const registerTeam = (userId, teamName, city) => {
   };
 };
 
-//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuellt.
-//Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
   return (dispatch) => {
-    let teamIds = {};
+    let userTeams;
     firebase
       .database()
-      .ref(`/users/${userId}/teams`)
+      .ref("/teams/")
       .on("value", (snapshot) => {
-        teamIds = snapshot.val();
+        userTeams = [];
+        snapshot.forEach((team) => {
+          for (let id in team.val().members) {
+            if (userId === id) {
+              let tempObject = team.val();
+              tempObject.key = team.key;
+              userTeams.push(tempObject);
+            }
+          }
+        });
+        dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
       });
-    let userTeams = [];
+  };
+};
+
+/*
     if (teamIds) {
       Object.keys(teamIds).map((teamId) => {
         firebase
@@ -142,9 +157,9 @@ export const fetchUserTeams = (userId) => {
           });
       });
     }
-    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
-  };
-};
+    console.log("lagen i action", userTeams);
+    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams }); */
+//};
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
@@ -211,33 +226,25 @@ export const fetchEvents = (teamId) => {
 
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
-    let teamMemberIds = [];
+    let teamMembers;
     firebase
       .database()
-      .ref(`/teams/${teamId}/members`)
+      .ref("/users/")
       .on("value", (snapshot) => {
-        teamMemberIds = Object.keys(snapshot.val());
-      });
-    console.log("teamMemberIds:", teamMemberIds);
-
-    let teamMembers = [];
-    teamMemberIds.forEach((userId) => {
-      firebase
-        .database()
-        .ref(`/users/${userId}`)
-        .on("value", (snapshot) => {
-          if (snapshot.exists) {
-            const member = snapshot.val();
-            teamMembers.push(member);
-          } else {
-            console.log("No data available");
+        teamMembers = [];
+        snapshot.forEach((user) => {
+          for (let id in user.val().teams) {
+            if (teamId === id) {
+              let tempObject = user.val();
+              tempObject.key = user.key;
+              teamMembers.push(tempObject);
+            }
           }
         });
-    });
-    dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+        dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+      });
   };
 };
-
 export const acceptMember = (userId, teamId) => {
   return (dispatch) => {
     var updates = {};
@@ -268,5 +275,24 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       text: commentText,
     });
     dispatch({ type: "COMMENT_ADDED" });
+  };
+};
+
+// Här skapas det likes på en post
+export const nrOfLikes = (postId, userId) => {
+  return (dispatch) => {
+    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).push();
+    const likeKey = likesRef.key;
+    likesRef
+      .set({
+        likes: userId,
+      })
+      .then(
+        firebase.database().ref(`/users/${userId}/likes/`).child(likeKey).set({
+          post: postId,
+        })
+        // dispatch({ type: "ADD_TEAM" });
+        // Actions.Profile();
+      );
   };
 };
