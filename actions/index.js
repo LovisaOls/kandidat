@@ -1,7 +1,7 @@
-import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 import { Alert } from "react-native";
+import * as firebase from "firebase";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
@@ -41,7 +41,13 @@ export const setCurrentUser = (userId) => {
 };
 
 //Lägg till ny användare i db
-export const registerUser = (email, password, firstName, lastName, image) => {
+export const registerUser = (
+  email,
+  password,
+  firstName,
+  lastName,
+  imageUrl
+) => {
   return (dispatch) => {
     firebase
       .auth()
@@ -55,7 +61,7 @@ export const registerUser = (email, password, firstName, lastName, image) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            profilePicture: image,
+            profilePicture: imageUrl,
           })
           .then(() => {
             firebase
@@ -140,6 +146,7 @@ export const fetchUserTeams = (userId) => {
           });
       });
     }
+    console.log("lagen i action", userTeams);
     dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
   };
 };
