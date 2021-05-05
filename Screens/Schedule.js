@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  Title,
 } from "react-native";
 import { Agenda } from "react-native-calendars";
 import TopMenu from "./TopMenu";
@@ -14,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../actions/index";
 
-export default function TestSchedule() {
+export default function Schedule() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -30,6 +29,8 @@ export default function TestSchedule() {
         onPress={() => Alert.alert(item.description)}
       >
         <Text>{item.title}</Text>
+        <Text>{item.time}</Text>
+        <Text>{item.description}</Text>
       </TouchableOpacity>
     );
   }
@@ -59,7 +60,10 @@ export default function TestSchedule() {
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        <TouchableOpacity style={styles.smallBtn}>
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() => Actions.CreateEventSchedule()}
+        >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>

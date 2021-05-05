@@ -47,7 +47,7 @@ export default function CreateEventSchedule() {
           })
       )
       .then(() => {
-        Actions.TestSchedule();
+        Actions.pop();
       })
       .catch((error) => {
         alert(error);
@@ -112,7 +112,7 @@ export default function CreateEventSchedule() {
           <Text style={styles.buttonTitle}> Create </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Actions.TestSchedule()}>
+        <TouchableOpacity onPress={() => Actions.pop()}>
           <Text style={styles.cancelText}> Cancel </Text>
         </TouchableOpacity>
       </SafeAreaView>
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: "bold",
     fontSize: 24,
+    textAlign: "center",
   },
   input: {
     fontSize: 16,

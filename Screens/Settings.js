@@ -17,7 +17,6 @@ import TopMenu from "../Screens/TopMenu";
 
 export default function Settings() {
   const changePasswordButton = () => {
-
     Alert.alert(
       "New Password",
       "A link to reset your password has been sent to your email",
@@ -30,13 +29,17 @@ export default function Settings() {
   };
 
   const signOutButton = () => {
-    firebase.auth().signOut().then(() => {
-      // Sign-out successful.
-      console.log('Signed Out')
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        // Sign-out successful.
+        console.log("Signed Out");
         Actions.Welcome();
-      }).catch((error) => {
-      // An error happened.
-  });
+      })
+      .catch((error) => {
+        // An error happened.
+      });
   };
 
   const goBackButton = () => {
@@ -51,21 +54,20 @@ export default function Settings() {
         style={styles.changePasswordButton}
         onPress={() => changePasswordButton()}
       >
-        <Text>Change Password</Text>
+        <Text style={styles.buttonText}>Change Password</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.signOutButton}
         onPress={() => signOutButton()}
       >
-        <Text>Sign Out</Text>
+        <Text style={styles.buttonText}>Sign Out</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.goBackButton}
         onPress={() => goBackButton()}
       >
-        <Text>Go Back</Text>
-
+        <Text style={styles.buttonText}>Go Back</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -112,5 +114,10 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
   },
 });

@@ -8,22 +8,14 @@ import { Actions } from "react-native-router-flux";
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
-    firebase.auth().signInWithEmailAndPassword(email, password);
-    /* .then((response) => {
-        // Signed in
-        firebase
-          .database()
-          .ref(`/users/${response.user.uid}`)
-          .on("value", (snapshot) => {
-            dispatch({ type: "SET_CURRENT_USER", currentUser: snapshot.val() });
-          });
-      })
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(`error code: ${errorCode}`);
-        //alert(`error message: ${errorMessage}`);
-      }); */
+        alert(`Error: ${errorCode}`, errorMessage);
+      });
   };
 };
 
@@ -141,33 +133,11 @@ export const fetchUserTeams = (userId) => {
   };
 };
 
-/*
-    if (teamIds) {
-      Object.keys(teamIds).map((teamId) => {
-        firebase
-          .database()
-          .ref(`/teams/${teamId}`)
-          .on("value", (snapshot) => {
-            if (snapshot.exists) {
-              const team = snapshot.val();
-              userTeams.push(team);
-            } else {
-              console.log("No data available");
-            }
-          });
-      });
-    }
-    console.log("lagen i action", userTeams);
-    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams }); */
-//};
-
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
     var ref = firebase.database().ref(`/teams/${teamId}`);
     ref.once("value").then(function (snapshot) {
-      console.log("halloj snapshot", snapshot.val());
       if (snapshot.val() !== null) {
-        console.log("hejsan hoppsan lillebror");
         firebase
           .database()
           .ref(`/teams/${teamId}/members/`)
@@ -220,6 +190,19 @@ export const fetchEvents = (teamId) => {
       .equalTo(teamId)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
+      });
+  };
+};
+
+export const fetchTactics = (teamId) => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref("/tactics/")
+      .orderByChild("teamId")
+      .equalTo(teamId)
+      .on("value", (snapshot) => {
+        dispatch({ type: "FETCH_TACTICS", lineUpTactics: snapshot.val() });
       });
   };
 };
@@ -278,21 +261,17 @@ export const createComment = (postId, commentText, firstname, lastname) => {
   };
 };
 
-// Här skapas det likes på en post
-export const nrOfLikes = (postId, userId) => {
+// User likes a post
+export const like = (postId, userId) => {
   return (dispatch) => {
-    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).push();
-    const likeKey = likesRef.key;
-    likesRef
-      .set({
-        likes: userId,
-      })
-      .then(
-        firebase.database().ref(`/users/${userId}/likes/`).child(likeKey).set({
-          post: postId,
-        })
-        // dispatch({ type: "ADD_TEAM" });
-        // Actions.Profile();
-      );
+    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).child(userId).set(true);
+  };
+};
+
+// Remove like from post
+export const removeLike = (postId, userId) => {
+  return (dispatch) => {
+    firebase.database().ref(`/feed/${postId}/likes/${userId}`).remove();
+    // dispatch({ type: "DECLINE_MEMBER" });
   };
 };

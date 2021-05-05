@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -22,7 +23,7 @@ export default function CreateFeed() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const onCancelPostPressed = () => {
-   // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
+    // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
     Actions.Feed();
   };
 
@@ -30,6 +31,15 @@ export default function CreateFeed() {
     if (textValue != "") {
       const postRef = firebase.database().ref("/feed/").push();
       const postKey = postRef.key;
+
+      postRef.set({
+        author: currentUser.firstName + " " + currentUser.lastName,
+        teamId: activeTeam.teamId,
+        text: textValue,
+        createdOn: dateTime.getTime(),
+        postId: postKey,
+        comments: [],
+      });
 
       postRef
         .set({
@@ -39,54 +49,45 @@ export default function CreateFeed() {
           createdOn: dateTime.getTime(),
           postId: postKey,
           comments: [],
+          likes: [],
         })
 
-    postRef
-      .set({
-        author: currentUser.firstName + " " + currentUser.lastName,
-        teamId: activeTeam.teamId,
-        text: textValue,
-        createdOn: dateTime.getTime(),
-        postId: postKey,
-        comments: [],
-        likes: [],
-      })
-
-      // Skapa en reducer + action!! BOB
-      /* navigation.navigate("Feed", {post: {
+        // Skapa en reducer + action!! BOB
+        /* navigation.navigate("Feed", {post: {
                 name: "Namn",
                 text: textValue,
                 createdOn: dateTime.getTime()}}) */
         .catch((error) => {
           alert(error);
         });
-      Actions.BottomMenu();
     }
+    setValue("");
   };
 
   return (
     <SafeAreaView>
       <Text style={styles.title}>Create a Post</Text>
-
       <TextInput
         placeholder={"Add text to your post"}
-        numberOfLines={5}
+        numberOfLines={20}
         value={textValue}
         onChangeText={(res) => {
           setValue(res);
         }}
+        multiline
+        style={styles.input}
       ></TextInput>
 
       <TouchableOpacity
         style={styles.addPostButton}
         onPress={() => onPostInFeedPressed()}
       >
-        <Text style={styles.postText}>Post in feed</Text>
+        <Text style={styles.buttonText}>Post in feed</Text>
       </TouchableOpacity>
 
       <TouchableOpacity>
         <Text style={styles.cancelPost} onPress={() => onCancelPostPressed()}>
-          Go back to feed
+          Cancel
         </Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -109,15 +110,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
-  postText: {
-    color: "white",
-    margin: 15,
-    textAlign: "center",
-    margin: 10,
-    borderRadius: 10,
-  },
   addPostButton: {
-    top: 100,
     backgroundColor: "green",
     marginTop: 20,
     marginLeft: 50,
@@ -126,5 +119,18 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  input: {
+    margin: 10,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 10,
+    height: "50%",
+    fontSize: 16,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
   },
 });

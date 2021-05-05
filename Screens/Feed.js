@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -9,11 +9,15 @@ import {
   Alert,
   Title,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { Modalize } from "react-native-modalize";
 import TopMenu from "../Screens/TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../actions/index";
-import { nrOfLikes } from "../actions/index";
+import { like } from "../actions/index";
+import { removeLike } from "../actions/index";
 
 import firebase from "firebase/app";
 import "firebase/database";
@@ -21,6 +25,7 @@ import { Actions } from "react-native-router-flux";
 require("firebase/auth");
 
 export default function Feed() {
+  const screenHeight = Dimensions.get("window").height;
   const [isLoading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const currentUser = useSelector((state) => state.currentUser);
@@ -42,54 +47,58 @@ export default function Feed() {
     Actions.Comment(post);
   };
 
+  const modalRef = useRef(null);
+
+  const onOpen = () => {
+    const modal = modalRef.current;
+
+    if (modal) {
+      modal.open();
+    }
+  };
+
   const onLikePressed = (post) => {
     let alreadyLiked = false;
+
     // Kontrollerar om usern redan har likeat inlägget, då ska den inte få likea igen.
     if (post.likes != undefined) {
-      // Loopar likesen på posten
+      console.log(currentUser.id);
+      //Loopar igenom likesen på posten
       Object.keys(post.likes).every((i) => {
-        // Loopar vad usern har likeat
-        Object.keys(currentUser.likes).every((j) => {
-          if (j != i) {
-            return true;
-          } else {
-            alreadyLiked = true;
-          }
-        });
-        if (alreadyLiked) {
-          return false;
+        console.log(i);
+        if (i == currentUser.id) {
+          alreadyLiked = true;
         } else {
           return true;
         }
       });
-      if ( alreadyLiked = false ) {
-        // Här ser jag att usern som vill likea inte har gjort det innan :)
-        console.log("nu har du likeat posten");
-        dispatch(nrOfLikes(post.postId, currentUser.id));
-      } 
-      // Här ser jag att usern redan har likeat och här kan man lägga in tex att liken försvinner om man klickat typ... utvecklingspotential här
-      else { console.log("ingen like för dig haha du har redan likeat ")}
+      console.log(alreadyLiked);
+      if (alreadyLiked) {
+        dispatch(removeLike(post.postId, currentUser.id));
+        console.log("usern har gillat förut");
+      } else {
+        dispatch(like(post.postId, currentUser.id));
+        console.log("usern har inte gillat förut");
+      }
     } else {
-      dispatch(nrOfLikes(post.postId, currentUser.id));
-      console.log(
-        "usern får likea för den har inte gillat denna post förut"
-      );
+      console.log("usern får gilla för ingen har gillat förut");
+      dispatch(like(post.postId, currentUser.id));
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <TopMenu />
+      <View style={styles.header}>
+        <Text style={styles.title}>Feed</Text>
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() => onCreateFeedPressed()}
+        >
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={async () => {
-              setLoading(true);
-              await dispatch(fetchFeed(activeTeam.teamId));
-              setLoading(false);
-            }}
-          ></RefreshControl>
-        }
         data={feedPosts && Object.keys(feedPosts).reverse()}
         renderItem={({ item }) => (
           <View style={styles.postBorder}>
@@ -106,21 +115,50 @@ export default function Feed() {
             <Text style={styles.postText}>{feedPosts[item].text}</Text>
 
             <View style={styles.likeCommentBox}>
-              <TouchableOpacity style={styles.likeBox}>
-                <Text
-                  style={styles.likeCommentText}
-                  onPress={() => onLikePressed(feedPosts[item])}
-                >
-                  Like{" "}
-                  {feedPosts[item].likes &&
-                    Object.keys(feedPosts[item].likes).length}{" "}
-                </Text>
-              </TouchableOpacity>
+              <View>
+                {feedPosts[item].likes &&
+                feedPosts[item].likes[currentUser.id] ? (
+                  <View>
+                    <TouchableOpacity style={styles.likeBox}>
+                      <Icon
+                        name="heart-dislike"
+                        size={23}
+                        color="tomato"
+                      ></Icon>
+                      <Text
+                        style={styles.likeCommentText}
+                        onPress={() => onLikePressed(feedPosts[item])}
+                      >
+                        Unlike{" "}
+                        {feedPosts[item].likes &&
+                          Object.keys(feedPosts[item].likes).length}{" "}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View>
+                    <TouchableOpacity style={styles.likeBox}>
+                      <Icon name="heart" size={23} color="tomato"></Icon>
+
+                      <Text
+                        style={styles.likeCommentText}
+                        onPress={() => onLikePressed(feedPosts[item])}
+                      >
+                        Like{" "}
+                        {feedPosts[item].likes &&
+                          Object.keys(feedPosts[item].likes).length}{" "}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+
               <TouchableOpacity
                 style={styles.commentBox}
                 title="Comment"
                 onPress={() => onCommentPressed(feedPosts[item])}
               >
+                <Icon name="chatbubbles" size={23} color="#A247D4"></Icon>
                 <Text style={styles.likeCommentText}>
                   Comment{" "}
                   {feedPosts[item].comments &&
@@ -133,12 +171,15 @@ export default function Feed() {
       >
         keyExtractor={(item) => item.createdOn + ""}
       </FlatList>
-      <TouchableOpacity
-        style={styles.createFeedButton}
-        onPress={() => onCreateFeedPressed()}
+      {/* <Modalize
+        ref={modalRef}
+        snapPoint={400}
+        modalHeight={screenHeight * 0.85}
       >
-        <Text>Create post</Text>
-      </TouchableOpacity>
+        <View style={styles.modal}>
+          <Text style={styles.title}> Comments </Text>
+        </View>
+      </Modalize> */}
     </SafeAreaView>
   );
 }
@@ -147,19 +188,23 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
-    margin: 10,
   },
   commentBox: {
     flex: 1,
     margin: 10,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   likeBox: {
     flex: 1,
     margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   likeCommentText: {
     textAlign: "center",
     fontWeight: "bold",
+    margin: 5,
   },
   postName: {
     fontSize: 20,
@@ -174,6 +219,7 @@ const styles = StyleSheet.create({
   },
   likeCommentBox: {
     flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   postBorder: {
     margin: 10,
@@ -188,7 +234,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   createFeedButton: {
-    backgroundColor: "#A247D4",
+    backgroundColor: "green",
     color: "white",
     marginTop: 20,
     marginLeft: 50,
@@ -197,5 +243,32 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
+  },
+  smallBtn: {
+    width: "15%",
+    borderRadius: 20,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    marginLeft: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
+  },
+  modal: {
+    padding: 20,
   },
 });
