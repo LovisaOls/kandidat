@@ -26,9 +26,7 @@ function MyProfileScreen() {
   }, [dispatch]); */
 
   const { userTeams } = useSelector((state) => state.currentTeams);
-  console.log("userTeams", userTeams);
   const store = useStore();
-  console.log("store", store.getState());
   //FUNKTIONER
   const onAddTeamPressed = () => {
     Actions.TeamRegistration();
