@@ -9,7 +9,10 @@ import {
   Alert,
   Title,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { Modalize } from "react-native-modalize";
 import TopMenu from "../Screens/TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../actions/index";
@@ -22,6 +25,7 @@ import { Actions } from "react-native-router-flux";
 require("firebase/auth");
 
 export default function Feed() {
+  const screenHeight = Dimensions.get("window").height;
   const [isLoading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const currentUser = useSelector((state) => state.currentUser);
@@ -43,23 +47,23 @@ export default function Feed() {
     Actions.Comment(post);
   };
 
-  // const modalRef = useRef(null);
+  const modalRef = useRef(null);
 
-  // const openComments = () => {
-  //   const modal = modalRef.current;
+  const onOpen = () => {
+    const modal = modalRef.current;
 
-  //   if (modal) {
-  //     modal.open();
-  //   }
-  // };
+    if (modal) {
+      modal.open();
+    }
+  };
 
   const onLikePressed = (post) => {
     let alreadyLiked = false;
-    console.log("postId", post.postId);
 
     // Kontrollerar om usern redan har likeat inlägget, då ska den inte få likea igen.
     if (post.likes != undefined) {
       console.log(currentUser.id);
+      //Loopar igenom likesen på posten
       Object.keys(post.likes).every((i) => {
         console.log(i);
         if (i == currentUser.id) {
@@ -121,21 +125,50 @@ export default function Feed() {
             <Text style={styles.postText}>{feedPosts[item].text}</Text>
 
             <View style={styles.likeCommentBox}>
-              <TouchableOpacity style={styles.likeBox}>
-                <Text
-                  style={styles.likeCommentText}
-                  onPress={() => onLikePressed(feedPosts[item])}
-                >
-                  Like{" "}
-                  {feedPosts[item].likes &&
-                    Object.keys(feedPosts[item].likes).length}{" "}
-                </Text>
-              </TouchableOpacity>
+              <View>
+                {feedPosts[item].likes &&
+                feedPosts[item].likes[currentUser.id] ? (
+                  <View>
+                    <TouchableOpacity style={styles.likeBox}>
+                      <Icon
+                        name="heart-dislike"
+                        size={23}
+                        color="tomato"
+                      ></Icon>
+                      <Text
+                        style={styles.likeCommentText}
+                        onPress={() => onLikePressed(feedPosts[item])}
+                      >
+                        Unlike{" "}
+                        {feedPosts[item].likes &&
+                          Object.keys(feedPosts[item].likes).length}{" "}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View>
+                    <TouchableOpacity style={styles.likeBox}>
+                      <Icon name="heart" size={23} color="tomato"></Icon>
+
+                      <Text
+                        style={styles.likeCommentText}
+                        onPress={() => onLikePressed(feedPosts[item])}
+                      >
+                        Like{" "}
+                        {feedPosts[item].likes &&
+                          Object.keys(feedPosts[item].likes).length}{" "}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+
               <TouchableOpacity
                 style={styles.commentBox}
                 title="Comment"
                 onPress={() => onCommentPressed(feedPosts[item])}
               >
+                <Icon name="chatbubbles" size={23} color="#A247D4"></Icon>
                 <Text style={styles.likeCommentText}>
                   Comment{" "}
                   {feedPosts[item].comments &&
@@ -148,6 +181,15 @@ export default function Feed() {
       >
         keyExtractor={(item) => item.createdOn + ""}
       </FlatList>
+      {/* <Modalize
+        ref={modalRef}
+        snapPoint={400}
+        modalHeight={screenHeight * 0.85}
+      >
+        <View style={styles.modal}>
+          <Text style={styles.title}> Comments </Text>
+        </View>
+      </Modalize> */}
     </SafeAreaView>
   );
 }
@@ -161,14 +203,19 @@ const styles = StyleSheet.create({
   commentBox: {
     flex: 1,
     margin: 10,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   likeBox: {
     flex: 1,
     margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
   likeCommentText: {
     textAlign: "center",
     fontWeight: "bold",
+    margin: 5,
   },
   postName: {
     fontSize: 20,
@@ -183,6 +230,7 @@ const styles = StyleSheet.create({
   },
   likeCommentBox: {
     flexDirection: "row",
+    justifyContent: "space-evenly",
   },
   postBorder: {
     margin: 10,
@@ -230,5 +278,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     margin: 10,
+  },
+  modal: {
+    padding: 20,
   },
 });
