@@ -142,7 +142,7 @@ export default function Feed() {
                         style={styles.likeCommentText}
                         onPress={() => onLikePressed(feedPosts[item])}
                       >
-                        Unlike{" "}
+                        Dislike{" "}
                         {feedPosts[item].likes &&
                           Object.keys(feedPosts[item].likes).length}{" "}
                       </Text>
