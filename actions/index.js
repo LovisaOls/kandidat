@@ -1,7 +1,7 @@
-import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 import { Alert } from "react-native";
+import * as firebase from "firebase";
 
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
@@ -41,7 +41,13 @@ export const setCurrentUser = (userId) => {
 };
 
 //Lägg till ny användare i db
-export const registerUser = (email, password, firstName, lastName, image) => {
+export const registerUser = (
+  email,
+  password,
+  firstName,
+  lastName,
+  imageUrl
+) => {
   return (dispatch) => {
     firebase
       .auth()
@@ -55,7 +61,7 @@ export const registerUser = (email, password, firstName, lastName, image) => {
             email: email,
             firstName: firstName,
             lastName: lastName,
-            profilePicture: image,
+            profilePicture: imageUrl,
           })
           .then(() => {
             firebase
@@ -113,18 +119,29 @@ export const registerTeam = (userId, teamName, city) => {
   };
 };
 
-//Denna funktion är problematisk för den lyssnar inte på en plats i databasen, utan hämtar in manuellt.
-//Hade varit trevligt om man kunde designa databasen sådan att man hade möjlighet att göra en query. Men vet ej hur.
 export const fetchUserTeams = (userId) => {
   return (dispatch) => {
-    let teamIds = {};
+    let userTeams;
     firebase
       .database()
-      .ref(`/users/${userId}/teams`)
+      .ref("/teams/")
       .on("value", (snapshot) => {
-        teamIds = snapshot.val();
+        userTeams = [];
+        snapshot.forEach((team) => {
+          for (let id in team.val().members) {
+            if (userId === id) {
+              let tempObject = team.val();
+              tempObject.key = team.key;
+              userTeams.push(tempObject);
+            }
+          }
+        });
+        dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
       });
-    let userTeams = [];
+  };
+};
+
+/*
     if (teamIds) {
       Object.keys(teamIds).map((teamId) => {
         firebase
@@ -140,17 +157,15 @@ export const fetchUserTeams = (userId) => {
           });
       });
     }
-    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams });
-  };
-};
+    console.log("lagen i action", userTeams);
+    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams }); */
+//};
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {
     var ref = firebase.database().ref(`/teams/${teamId}`);
     ref.once("value").then(function (snapshot) {
-      console.log("halloj snapshot", snapshot.val());
       if (snapshot.val() !== null) {
-        console.log("hejsan hoppsan lillebror");
         firebase
           .database()
           .ref(`/teams/${teamId}/members/`)
@@ -222,33 +237,25 @@ export const fetchTactics = (teamId) => {
 
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
-    let teamMemberIds = [];
+    let teamMembers;
     firebase
       .database()
-      .ref(`/teams/${teamId}/members`)
+      .ref("/users/")
       .on("value", (snapshot) => {
-        teamMemberIds = Object.keys(snapshot.val());
-      });
-    console.log("teamMemberIds:", teamMemberIds);
-
-    let teamMembers = [];
-    teamMemberIds.forEach((userId) => {
-      firebase
-        .database()
-        .ref(`/users/${userId}`)
-        .on("value", (snapshot) => {
-          if (snapshot.exists) {
-            const member = snapshot.val();
-            teamMembers.push(member);
-          } else {
-            console.log("No data available");
+        teamMembers = [];
+        snapshot.forEach((user) => {
+          for (let id in user.val().teams) {
+            if (teamId === id) {
+              let tempObject = user.val();
+              tempObject.key = user.key;
+              teamMembers.push(tempObject);
+            }
           }
         });
-    });
-    dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+        dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
+      });
   };
 };
-
 export const acceptMember = (userId, teamId) => {
   return (dispatch) => {
     var updates = {};
@@ -279,5 +286,20 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       text: commentText,
     });
     dispatch({ type: "COMMENT_ADDED" });
+  };
+};
+
+// User likes a post
+export const like = (postId, userId) => {
+  return (dispatch) => {
+    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).child(userId).set(true);
+  };
+};
+
+// Remove like from post
+export const removeLike = (postId, userId) => {
+  return (dispatch) => {
+    firebase.database().ref(`/feed/${postId}/likes/${userId}`).remove();
+    // dispatch({ type: "DECLINE_MEMBER" });
   };
 };
