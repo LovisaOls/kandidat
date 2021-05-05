@@ -61,6 +61,7 @@ export default function CreateFeed() {
           alert(error);
         });
     }
+    setValue("");
   };
 
   return (

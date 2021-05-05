@@ -71,7 +71,7 @@ function MyProfileScreen() {
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
-      <View>
+      <View style={styles.teamsBox}>
         {userTeams &&
           Object.keys(userTeams).map((key) => {
             return <TeamComponent key={key} team={userTeams[key]} />;
@@ -92,7 +92,7 @@ function MyProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
@@ -119,10 +119,15 @@ const styles = StyleSheet.create({
   myTeamsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    margin: 10,
   },
   teamsText: {
     fontSize: 30,
   },
+  teamsBox: {
+    margin: 10,
+  },
+
   addTeamBtn: {
     width: "15%",
     borderRadius: 20,
