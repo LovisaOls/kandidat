@@ -77,13 +77,23 @@ export default function Feed() {
         console.log("usern har inte gillat förut");
       }
     } else {
-      console.log("usern får gilla för ingen har gillat förut")
+      console.log("usern får gilla för ingen har gillat förut");
       dispatch(like(post.postId, currentUser.id));
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <TopMenu />
+      <View style={styles.header}>
+        <Text style={styles.title}>Feed</Text>
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() => onCreateFeedPressed()}
+        >
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         refreshControl={
           <RefreshControl
@@ -138,12 +148,6 @@ export default function Feed() {
       >
         keyExtractor={(item) => item.createdOn + ""}
       </FlatList>
-      <TouchableOpacity
-        style={styles.createFeedButton}
-        onPress={() => onCreateFeedPressed()}
-      >
-        <Text>Create post</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -193,7 +197,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   createFeedButton: {
-    backgroundColor: "#A247D4",
+    backgroundColor: "green",
     color: "white",
     marginTop: 20,
     marginLeft: 50,
@@ -202,5 +206,29 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
+  },
+  smallBtn: {
+    width: "15%",
+    borderRadius: 20,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    marginLeft: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
   },
 });

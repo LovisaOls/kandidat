@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  Title,
 } from "react-native";
 import { Agenda } from "react-native-calendars";
 import TopMenu from "./TopMenu";
@@ -14,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../actions/index";
 
-export default function TestSchedule() {
+export default function Schedule() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
   useEffect(() => {

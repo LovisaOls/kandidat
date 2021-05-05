@@ -77,7 +77,7 @@ export default function RegistrationScreen() {
       return;
     }
     uploadImage();
-    dispatch(registerUser(email, password, firstName, lastName, imageUrl));
+    dispatch(registerUser(email, password, firstName, lastName, image));
   };
   const onCancelPress = () => {
     Actions.Welcome();
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-    cancelText: {
-        fontSize: 16,
-        color: '#A247D4',
-        margin: 10,
-        alignContent:'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-})
+  cancelText: {
+    fontSize: 16,
+    color: "#A247D4",
+    margin: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+});

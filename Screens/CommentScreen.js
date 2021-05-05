@@ -87,15 +87,12 @@ export default function CommentScreen(post) {
 
       <TextInput
         placeholder={"Type your comment here"}
-        numberOfLines={5}
         onChangeText={(text) => setCommentText(text)}
         value={commentText}
+        style={styles.input}
       ></TextInput>
-      <TouchableOpacity
-        style={styles.createCommentButton}
-        onPress={() => onCreateComment()}
-      >
-        <Text>Create comment</Text>
+      <TouchableOpacity style={styles.button} onPress={() => onCreateComment()}>
+        <Text style={styles.buttonText}>Create comment</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => onCancelPress()}>
         <Text style={styles.cancel}> Cancel </Text>
@@ -105,14 +102,11 @@ export default function CommentScreen(post) {
 }
 
 const styles = StyleSheet.create({
-
   postBox: {
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#D3D3D3",
     margin: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
   container: {
     backgroundColor: "white",
@@ -145,8 +139,8 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
   },
-  createCommentButton: {
-    backgroundColor: "#A247D4",
+  button: {
+    backgroundColor: "green",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,
@@ -162,5 +156,18 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     textAlign: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+  input: {
+    margin: 10,
+    borderWidth: 0.5,
+    borderRadius: 10,
+    padding: 10,
+    height: "10%",
+    fontSize: 16,
   },
 });

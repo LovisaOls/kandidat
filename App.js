@@ -2,12 +2,12 @@ import firebase from "firebase/app";
 import * as React from "react";
 import {} from "react-native";
 import config from "./Firebase/config";
-import CoachHome from "./Screens/HomeScreen/CoachHome";
+import Home from "./Screens/HomeScreen/Home";
 import MyProfileScreen from "./Screens/ProfileScreen/MyProfileScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import TacticsCoach from "./Screens/TacticsCoach";
 import WelcomeScreen from "./Screens/WelcomeScreen";
-import TestSchedule from "./Screens/TestSchedule";
+import Schedule from "./Screens/Schedule";
 import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
@@ -52,8 +52,8 @@ export default function App() {
               hideNavBar={true}
             >
               <Scene
-                key="coachHome"
-                component={CoachHome}
+                key="Home"
+                component={Home}
                 hideNavBar={true}
                 title=" Home"
                 icon={iconHome}
@@ -66,10 +66,10 @@ export default function App() {
                 icon={iconFeed}
               />
               <Scene
-                key="settings"
+                key="Schedule"
                 hideNavBar={true}
                 title="Schedule"
-                component={TestSchedule}
+                component={Schedule}
                 icon={iconCalendar}
               />
               <Scene
@@ -80,9 +80,7 @@ export default function App() {
                 icon={iconTactic}
               />
             </Scene>
-
-            {/* loading måste ligga överst */}
-            <Scene key="TestSchedule" component={TestSchedule} />
+            <Scene key="Schedule" component={Schedule} />
             <Scene key="Welcome" component={WelcomeScreen} title="Welcome" />
             <Scene
               key="Registration"
@@ -95,7 +93,7 @@ export default function App() {
               component={TeamRegistration}
               title="Team Registration"
             />
-            <Scene key="CoachHome" component={CoachHome} />
+            <Scene key="Home" component={Home} />
             <Scene key="Settings" component={Settings} />
             <Scene key="CreateFeed" component={CreateFeed} />
             <Scene key="Feed" component={Feed} />

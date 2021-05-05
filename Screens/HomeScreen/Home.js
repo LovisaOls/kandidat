@@ -17,10 +17,11 @@ import MembershipRequests from "./MembershipRequests";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers, setCurrentUser } from "../../actions/index";
 
-export default function CoachHome() {
+export default function Home() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const currentUser = useSelector((state) => state.currentUser);
+  const [copied, setCopied] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,36 +40,40 @@ export default function CoachHome() {
     }
   };
 
-  const copyId = () => Clipboard.setString(activeTeam.teamId);
+  const copyId = () => {
+    Clipboard.setString(activeTeam.teamId);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
 
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <TopMenu />
       <View style={styles.TeamInfoHeader}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/TestTeamLogga.png")}
-        />
+        <Icon name="image-outline" size={100}></Icon>
 
-        <View style={styles.TeamInfo}>
-          <View style={styles.teamIdHeader}>
-            <Text style={styles.name}> Team Id</Text>
-            <TouchableOpacity onPress={copyId}>
-              <Icon name="copy-outline" size={16} color="purple"></Icon>
-            </TouchableOpacity>
-          </View>
-          <Text>{activeTeam.teamId}</Text>
-
-          <View style={styles.memberBox}>
-            <Text style={styles.name}>
-              Team members: {Object.keys(teamMembers).length}
+        <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
+          <View style={styles.teamMembersNrBox}>
+            <Text style={styles.teamMembersNr}>
+              {Object.keys(teamMembers).length}
             </Text>
-            <TouchableOpacity style={styles.viewButton} onPress={onOpen}>
-              <Text style={styles.viewButtonText}> View </Text>
-            </TouchableOpacity>
-            <Text style={styles.name}> Coaches: </Text>
           </View>
-        </View>
+          <Text style={styles.teamMembers}>Team members</Text>
+        </TouchableOpacity>
+
+        {!copied ? (
+          <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+            <Icon name="copy-outline" size={37} color="#A247D4"></Icon>
+            <Text style={styles.teamIdTitle}> Copy TeamId</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+            <Icon name="checkmark-outline" size={37} color="#A247D4"></Icon>
+            <Text style={styles.teamIdTitle}> Copied!</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       {activeTeam.coach == currentUser.id ? (
@@ -77,16 +82,11 @@ export default function CoachHome() {
         </View>
       ) : (
         <View>
-          <Text>You are not coach :PPP</Text>
+          <Text style={styles.title}>Participation Requests</Text>
+          <Text> You don't have any requests right now! </Text>
         </View>
       )}
 
-      <View style={styles.GameStats}>
-        <Text style={styles.title}>Game Statistics</Text>
-        <TouchableOpacity style={styles.smallBtn}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      </View>
       <Modalize
         ref={modalRef}
         snapPoint={500}
@@ -137,14 +137,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     justifyContent: "center",
-    textAlign: "center",
     fontWeight: "bold",
     margin: 10,
   },
   TeamInfoHeader: {
-    marginTop: 10,
-    flexDirection: "row",
     margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   TeamInfo: {
@@ -161,24 +161,35 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
   },
+  teamMembers: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  teamMembersNr: {
+    fontSize: 20,
+    color: "white",
+    fontWeight: "bold",
+  },
+  teamMembersNrBox: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "green",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  teamIdTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 
   teamIdHeader: {
-    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   /* _____________________________________________ */
   memberBox: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  viewButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  viewButtonText: {
-    color: "purple",
-    fontSize: 18,
   },
   viewMembers: {
     width: "100%",
