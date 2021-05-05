@@ -207,6 +207,19 @@ export const fetchEvents = (teamId) => {
   };
 };
 
+export const fetchTactics = (teamId) => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref("/tactics/")
+      .orderByChild("teamId")
+      .equalTo(teamId)
+      .on("value", (snapshot) => {
+        dispatch({ type: "FETCH_TACTICS", lineUpTactics: snapshot.val() });
+      });
+  };
+};
+
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
     let teamMemberIds = [];
