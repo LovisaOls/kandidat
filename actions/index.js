@@ -8,22 +8,14 @@ import { Actions } from "react-native-router-flux";
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
-    firebase.auth().signInWithEmailAndPassword(email, password);
-    /* .then((response) => {
-        // Signed in
-        firebase
-          .database()
-          .ref(`/users/${response.user.uid}`)
-          .on("value", (snapshot) => {
-            dispatch({ type: "SET_CURRENT_USER", currentUser: snapshot.val() });
-          });
-      })
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(`error code: ${errorCode}`);
-        //alert(`error message: ${errorMessage}`);
-      }); */
+        alert(`Error: ${errorCode}`, errorMessage);
+      });
   };
 };
 
@@ -140,26 +132,6 @@ export const fetchUserTeams = (userId) => {
       });
   };
 };
-
-/*
-    if (teamIds) {
-      Object.keys(teamIds).map((teamId) => {
-        firebase
-          .database()
-          .ref(`/teams/${teamId}`)
-          .on("value", (snapshot) => {
-            if (snapshot.exists) {
-              const team = snapshot.val();
-              userTeams.push(team);
-            } else {
-              console.log("No data available");
-            }
-          });
-      });
-    }
-    console.log("lagen i action", userTeams);
-    dispatch({ type: "FETCH_TEAMS", userTeams: userTeams }); */
-//};
 
 export const joinTeam = (userId, teamId) => {
   return (dispatch) => {

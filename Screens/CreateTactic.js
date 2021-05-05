@@ -1,22 +1,25 @@
-
 import React, { useState } from "react";
-import { useSelector } from 'react-redux';
-import { View, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity, Text, TextInput } from 'react-native';
-import Draggable from 'react-native-draggable'; // first, run "npm run source" to get Draggable.js
-
+import { useSelector } from "react-redux";
+import {
+  View,
+  ImageBackground,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  Text,
+  TextInput,
+} from "react-native";
+import Draggable from "react-native-draggable"; // first, run "npm run source" to get Draggable.js
 
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 
-import { Actions } from 'react-native-router-flux';
-
-
+import { Actions } from "react-native-router-flux";
 
 export default function CreateTactic() {
-  const { activeTeam } = useSelector(state => state.currentTeams);
-  
-  
+  const { activeTeam } = useSelector((state) => state.currentTeams);
+
   const [player1, setPlayer1] = useState("");
   const [positionX1, setPositionX1] = useState("");
   const [positionY1, setPositionY1] = useState("");
@@ -35,31 +38,25 @@ export default function CreateTactic() {
   const [player10, setPlayer10] = useState("");
   const [player11, setPlayer11] = useState("");
 
-
-  const setPositions1 = (xPos, yPos) =>{
-    setPositionX1(xPos)
-    setPositionY1(yPos)
-  }
-  const setPositions2 = (xPos, yPos) =>{
-    setPositionX2(xPos)
-    setPositionY2(yPos)
-  }
-
-
+  const setPositions1 = (xPos, yPos) => {
+    setPositionX1(xPos);
+    setPositionY1(yPos);
+  };
+  const setPositions2 = (xPos, yPos) => {
+    setPositionX2(xPos);
+    setPositionY2(yPos);
+  };
 
   const onCreatePres = () => {
-
-
-    firebase.database().ref('/tactics/').push()
+    firebase
+      .database()
+      .ref("/tactics/")
+      .push()
       .set({
         teamId: activeTeam.teamId,
-        player1: {initial:player1,
-        positionX1,
-        positionY1},
-        
-        player2: {initial:player2,
-          positionX2,
-          positionY2},
+        player1: { initial: player1, positionX1, positionY1 },
+
+        player2: { initial: player2, positionX2, positionY2 },
 
         player3: player3,
         player4: player4,
@@ -73,75 +70,66 @@ export default function CreateTactic() {
 
         /* posX: posX,
         posY: posY, */
-
       })
       .then(() => {
-        Actions.CoachHome()
+        Actions.Home();
       })
       .catch((error) => {
-        alert(error)
+        alert(error);
       });
-
-
-  }
-
+  };
 
   /* const saveCords = () => {
     console.log("x");
    
   }; */
 
-
   return (
-
-
     <SafeAreaView style={styles.container}>
-
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => onCreatePres()}>
+      <TouchableOpacity style={styles.button} onPress={() => onCreatePres()}>
         <Text style={styles.buttonTitle}> Save Team </Text>
       </TouchableOpacity>
 
       <ImageBackground
-        source={require('../assets/footballfield.png')}
+        source={require("../assets/footballfield.png")}
         style={{
           width: null,
           height: null,
           flex: 1,
-        }}>
-      </ImageBackground>
-
-
+        }}
+      ></ImageBackground>
 
       <Draggable
-        x={195} y={150}
+        x={195}
+        y={150}
         minX={0}
         maxX={"100%"}
-        onDragRelease={(e) => setPositions1(e.nativeEvent.pageX, e.nativeEvent.pageY)}
+        onDragRelease={(e) =>
+          setPositions1(e.nativeEvent.pageX, e.nativeEvent.pageY)
+        }
       >
         <View style={styles.players}>
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer1(text)}
             value={player1}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
-
-      <Draggable 
-      x={20} y={250}
-      onDragRelease={(e) => setPositions2(e.nativeEvent.pageX, e.nativeEvent.pageY)}
+      <Draggable
+        x={20}
+        y={250}
+        onDragRelease={(e) =>
+          setPositions2(e.nativeEvent.pageX, e.nativeEvent.pageY)
+        }
       >
         <View style={styles.players}>
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer2(text)}
             value={player2}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -151,8 +139,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer3(text)}
             value={player3}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -162,8 +149,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer4(text)}
             value={player4}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -173,8 +159,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer5(text)}
             value={player5}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -184,8 +169,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer6(text)}
             value={player6}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -195,8 +179,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer7(text)}
             value={player7}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -206,8 +189,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer8(text)}
             value={player8}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -217,8 +199,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer9(text)}
             value={player9}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -228,8 +209,7 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer10(text)}
             value={player10}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
 
@@ -239,11 +219,9 @@ export default function CreateTactic() {
             placeholder={"...."}
             onChangeText={(text) => setPlayer11(text)}
             value={player11}
-          >
-          </TextInput>
+          ></TextInput>
         </View>
       </Draggable>
-
     </SafeAreaView>
   );
 }
@@ -254,11 +232,9 @@ const styles = StyleSheet.create({
     marginTop: 120,
   },
 
-
   players: {
-    backgroundColor: 'red',
+    backgroundColor: "red",
     padding: 8,
     borderRadius: 15,
-
   },
-})
+});

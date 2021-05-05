@@ -62,23 +62,33 @@ export default function Feed() {
           return true;
         }
       });
-      if ( alreadyLiked = false ) {
+      if ((alreadyLiked = false)) {
         // Här ser jag att usern som vill likea inte har gjort det innan :)
         console.log("nu har du likeat posten");
         dispatch(nrOfLikes(post.postId, currentUser.id));
-      } 
+      }
       // Här ser jag att usern redan har likeat och här kan man lägga in tex att liken försvinner om man klickat typ... utvecklingspotential här
-      else { console.log("ingen like för dig haha du har redan likeat ")}
+      else {
+        console.log("ingen like för dig haha du har redan likeat ");
+      }
     } else {
       dispatch(nrOfLikes(post.postId, currentUser.id));
-      console.log(
-        "usern får likea för den har inte gillat denna post förut"
-      );
+      console.log("usern får likea för den har inte gillat denna post förut");
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <TopMenu />
+      <View style={styles.header}>
+        <Text style={styles.title}>Feed</Text>
+        <TouchableOpacity
+          style={styles.smallBtn}
+          onPress={() => onCreateFeedPressed()}
+        >
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         refreshControl={
           <RefreshControl
@@ -133,12 +143,6 @@ export default function Feed() {
       >
         keyExtractor={(item) => item.createdOn + ""}
       </FlatList>
-      <TouchableOpacity
-        style={styles.createFeedButton}
-        onPress={() => onCreateFeedPressed()}
-      >
-        <Text>Create post</Text>
-      </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   createFeedButton: {
-    backgroundColor: "#A247D4",
+    backgroundColor: "green",
     color: "white",
     marginTop: 20,
     marginLeft: 50,
@@ -197,5 +201,29 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
+  },
+  smallBtn: {
+    width: "15%",
+    borderRadius: 20,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "green",
+    marginLeft: 40,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
   },
 });
