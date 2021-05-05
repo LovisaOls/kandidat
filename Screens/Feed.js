@@ -99,16 +99,6 @@ export default function Feed() {
         </TouchableOpacity>
       </View>
       <FlatList
-        refreshControl={
-          <RefreshControl
-            refreshing={isLoading}
-            onRefresh={async () => {
-              setLoading(true);
-              await dispatch(fetchFeed(activeTeam.teamId));
-              setLoading(false);
-            }}
-          ></RefreshControl>
-        }
         data={feedPosts && Object.keys(feedPosts).reverse()}
         renderItem={({ item }) => (
           <View style={styles.postBorder}>
@@ -198,7 +188,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     flex: 1,
-    margin: 10,
   },
   commentBox: {
     flex: 1,

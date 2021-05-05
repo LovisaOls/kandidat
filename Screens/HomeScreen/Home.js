@@ -131,6 +131,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   /* ____________________________________________ */
 
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   viewMembers: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#DDDDDD",
     margin: 1,
     padding: 15,
   },
