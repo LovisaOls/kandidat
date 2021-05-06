@@ -98,6 +98,9 @@ export default function Feed() {
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
+
+      <View>
+      {feedPosts != undefined  ? (
       <FlatList
         data={feedPosts && Object.keys(feedPosts).reverse()}
         renderItem={({ item }) => (
@@ -129,7 +132,7 @@ export default function Feed() {
                         style={styles.likeCommentText}
                         onPress={() => onLikePressed(feedPosts[item])}
                       >
-                        Unlike{" "}
+                        Dislike{" "}
                         {feedPosts[item].likes &&
                           Object.keys(feedPosts[item].likes).length}{" "}
                       </Text>
@@ -171,15 +174,14 @@ export default function Feed() {
       >
         keyExtractor={(item) => item.createdOn + ""}
       </FlatList>
-      {/* <Modalize
-        ref={modalRef}
-        snapPoint={400}
-        modalHeight={screenHeight * 0.85}
-      >
-        <View style={styles.modal}>
-          <Text style={styles.title}> Comments </Text>
+      ) : (
+        <View>
+          <Text style={styles.noPostsText}> 
+            There are no posts yet :( Click on the plus to create the first one and start chatting with your team!
+          </Text>
         </View>
-      </Modalize> */}
+      )}
+      </View>
     </SafeAreaView>
   );
 }
@@ -271,4 +273,8 @@ const styles = StyleSheet.create({
   modal: {
     padding: 20,
   },
+  noPostsText: {
+    fontSize: 20,
+    padding: 20,
+  }
 });
