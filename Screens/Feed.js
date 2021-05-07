@@ -5,9 +5,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
-  RefreshControl,
-  Alert,
-  Title,
   SafeAreaView,
   Dimensions,
 } from "react-native";
@@ -100,87 +97,91 @@ export default function Feed() {
       </View>
 
       <View>
-      {feedPosts != undefined  ? (
-      <FlatList
-        data={feedPosts && Object.keys(feedPosts).reverse()}
-        renderItem={({ item }) => (
-          <View style={styles.postBorder}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <View>
-                <Text style={styles.postName}>{feedPosts[item].author}</Text>
-                <Text style={styles.postDate}>
-                  {new Date(feedPosts[item].createdOn)
-                    .toString()
-                    .substring(0, 16)}
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.postText}>{feedPosts[item].text}</Text>
-
-            <View style={styles.likeCommentBox}>
-              <View>
-                {feedPosts[item].likes &&
-                feedPosts[item].likes[currentUser.id] ? (
+        {feedPosts != undefined ? (
+          <FlatList
+            data={feedPosts && Object.keys(feedPosts).reverse()}
+            renderItem={({ item }) => (
+              <View style={styles.postBorder}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <View>
-                    <TouchableOpacity style={styles.likeBox}>
-                      <Icon
-                        name="heart-dislike"
-                        size={23}
-                        color="tomato"
-                      ></Icon>
-                      <Text
-                        style={styles.likeCommentText}
-                        onPress={() => onLikePressed(feedPosts[item])}
-                      >
-                        Dislike{" "}
-                        {feedPosts[item].likes &&
-                          Object.keys(feedPosts[item].likes).length}{" "}
+                    <Text style={styles.postName}>
+                      {feedPosts[item].author}
+                    </Text>
+                    <Text style={styles.postDate}>
+                      {new Date(feedPosts[item].createdOn)
+                        .toString()
+                        .substring(0, 16)}
+                    </Text>
+                  </View>
+                </View>
+                <Text style={styles.postText}>{feedPosts[item].text}</Text>
+
+                <View style={styles.likeCommentBox}>
+                  <View>
+                    {feedPosts[item].likes &&
+                    feedPosts[item].likes[currentUser.id] ? (
+                      <View>
+                        <TouchableOpacity
+                          onPress={() => onLikePressed(feedPosts[item])}
+                          style={styles.likeBox}
+                        >
+                          <Icon
+                            name="heart-dislike"
+                            size={23}
+                            color="tomato"
+                          ></Icon>
+                          <Text style={styles.likeCommentText}>
+                            Dislike{" "}
+                            {feedPosts[item].likes &&
+                              Object.keys(feedPosts[item].likes).length}{" "}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    ) : (
+                      <View>
+                        <TouchableOpacity
+                          style={styles.likeBox}
+                          onPress={() => onLikePressed(feedPosts[item])}
+                        >
+                          <Icon name="heart" size={23} color="tomato"></Icon>
+
+                          <Text style={styles.likeCommentText}>
+                            Like{" "}
+                            {feedPosts[item].likes &&
+                              Object.keys(feedPosts[item].likes).length}{" "}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </View>
+                  <View>
+                    <TouchableOpacity
+                      style={styles.commentBox}
+                      title="Comment"
+                      onPress={() => onCommentPressed(feedPosts[item])}
+                    >
+                      <Icon name="chatbubbles" size={23} color="#A247D4"></Icon>
+                      <Text style={styles.likeCommentText}>
+                        Comment{" "}
+                        {feedPosts[item].comments &&
+                          Object.keys(feedPosts[item].comments).length}
                       </Text>
                     </TouchableOpacity>
                   </View>
-                ) : (
-                  <View>
-                    <TouchableOpacity style={styles.likeBox}>
-                      <Icon name="heart" size={23} color="tomato"></Icon>
-
-                      <Text
-                        style={styles.likeCommentText}
-                        onPress={() => onLikePressed(feedPosts[item])}
-                      >
-                        Like{" "}
-                        {feedPosts[item].likes &&
-                          Object.keys(feedPosts[item].likes).length}{" "}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
+                </View>
               </View>
-
-              <TouchableOpacity
-                style={styles.commentBox}
-                title="Comment"
-                onPress={() => onCommentPressed(feedPosts[item])}
-              >
-                <Icon name="chatbubbles" size={23} color="#A247D4"></Icon>
-                <Text style={styles.likeCommentText}>
-                  Comment{" "}
-                  {feedPosts[item].comments &&
-                    Object.keys(feedPosts[item].comments).length}
-                </Text>
-              </TouchableOpacity>
-            </View>
+            )}
+          >
+            keyExtractor={(item) => item.createdOn + ""}
+          </FlatList>
+        ) : (
+          <View>
+            <Text style={styles.noPostsText}>
+              There are no posts yet :( Click on the plus to create the first
+              one and start chatting with your team!
+            </Text>
           </View>
         )}
-      >
-        keyExtractor={(item) => item.createdOn + ""}
-      </FlatList>
-      ) : (
-        <View>
-          <Text style={styles.noPostsText}> 
-            There are no posts yet :( Click on the plus to create the first one and start chatting with your team!
-          </Text>
-        </View>
-      )}
       </View>
     </SafeAreaView>
   );
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
   },
   likeCommentBox: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
   },
   postBorder: {
     margin: 10,
@@ -276,5 +277,5 @@ const styles = StyleSheet.create({
   noPostsText: {
     fontSize: 20,
     padding: 20,
-  }
+  },
 });

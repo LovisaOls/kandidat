@@ -24,7 +24,7 @@ export default function CreateFeed() {
 
   const onCancelPostPressed = () => {
     // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
-    Actions.Feed();
+    Actions.pop();
   };
 
   const onPostInFeedPressed = () => {
