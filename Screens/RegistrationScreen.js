@@ -24,7 +24,6 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -44,11 +43,8 @@ export default function RegistrationScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.image,
       allowsEditing: true,
       aspect: [4, 4],
-      quality: 1,
+      quality: 0.5,
     });
-
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
@@ -65,19 +61,16 @@ export default function RegistrationScreen() {
     const snapshot = await ref.put(blob);
     blob.close();
     snapshot.ref.getDownloadURL().then((url) => {
-      setImageUrl(url);
-      console.log("url", imageUrl);
-      return url;
+      dispatch(registerUser(email, password, firstName, lastName, url));
     });
   };
 
-  const onRegisterPress = () => {
+  const onRegisterPress = async () => {
     if (password !== confirmPassword) {
       alert("Passwords are not the same");
       return;
     }
-    uploadImage();
-    dispatch(registerUser(email, password, firstName, lastName, image));
+    await uploadImage();
   };
   const onCancelPress = () => {
     Actions.Welcome();

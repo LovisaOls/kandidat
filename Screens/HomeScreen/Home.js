@@ -103,17 +103,17 @@ export default function Home() {
                       <Image
                         source={{ uri: teamMembers[key].profilePicture }}
                         style={{
-                          height: 40,
-                          width: 40,
-                          borderRadius: 20,
-                          margin: 5,
+                          height: 50,
+                          width: 50,
+                          borderRadius: 25,
+                          marginRight: 10,
                         }}
                       />
                     ) : (
                       <Icon name="person-circle-outline" size={45}></Icon>
                     )}
                     <View>
-                      <Text>
+                      <Text style={styles.nameTeamMember}>
                         {teamMembers[key].firstName} {teamMembers[key].lastName}
                       </Text>
                       <Text>{teamMembers[key].email}</Text>
@@ -215,6 +215,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "green",
     marginLeft: 40,
+  },
+  nameTeamMember: {
+    fontWeight: "bold",
+    fontSize: 14,
   },
 
   /* _____________________________________________ */

@@ -7,6 +7,7 @@ import {
   FlatList,
   SafeAreaView,
   Dimensions,
+  Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Modalize } from "react-native-modalize";
@@ -96,13 +97,26 @@ export default function Feed() {
         </TouchableOpacity>
       </View>
 
-      <View>
+      <View style={styles.postsContainer}>
         {feedPosts != undefined ? (
           <FlatList
             data={feedPosts && Object.keys(feedPosts).reverse()}
             renderItem={({ item }) => (
               <View style={styles.postBorder}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {currentUser.profilePicture ? (
+                    <Image
+                      source={{ uri: currentUser.profilePicture }}
+                      style={{
+                        height: 50,
+                        width: 50,
+                        borderRadius: 25,
+                        marginRight: 10,
+                      }}
+                    />
+                  ) : (
+                    <Icon name="person-circle-outline" size={45}></Icon>
+                  )}
                   <View>
                     <Text style={styles.postName}>
                       {feedPosts[item].author}
@@ -213,8 +227,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   postText: {
-    fontSize: 15,
-    marginTop: 5,
+    fontSize: 16,
+    margin: 10,
   },
   postDate: {
     fontSize: 12,
@@ -235,6 +249,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 2,
+  },
+  postsContainer: {
+    height: "80%",
   },
   createFeedButton: {
     backgroundColor: "green",

@@ -9,6 +9,8 @@ import {
   SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ScrollView } from "react-native-gesture-handler";
 
 import { useSelector } from "react-redux";
 import firebase from "firebase/app";
@@ -70,85 +72,95 @@ export default function CreateEventSchedule() {
         style={{ flex: 1, width: "100%" }}
         keyboardShouldPersistTaps="always"
       >
-        <Text style={styles.title}>Create Event</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setTitle(text)}
-          value={title}
-        />
-        <View style={styles.typeContainer}>
-          <Text style={styles.typeText}>Event Type</Text>
-          <TouchableOpacity
-            style={type == "game" ? styles.typeChosen : styles.type}
-            onPress={() => setType("game")}
+        <ScrollView>
+          <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={false}
           >
-            <Text style={styles.buttonText}>Game</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={type == "practice" ? styles.typeChosen : styles.type}
-            onPress={() => setType("practice")}
-          >
-            <Text style={styles.buttonText}>Practice</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={type == "other" ? styles.typeChosen : styles.type}
-            onPress={() => setType("other")}
-          >
-            <Text style={styles.buttonText}>Other</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.dateTimeContainer}>
-          <View style={styles.dateTime}>
-            <Icon name="calendar-outline" size={25} color="#DDDDDD"></Icon>
-            <DateTimePicker
-              style={styles.dateTimePicker}
-              testID="dateTimePicker"
-              value={date}
-              mode="date"
-              display="default"
-              onChange={onDateChange}
-              minimumDate={new Date()}
+            <Text style={styles.title}>Create Event</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              placeholderTextColor="#aaaaaa"
+              onChangeText={(text) => setTitle(text)}
+              value={title}
             />
-          </View>
-          <View style={styles.dateTime}>
-            <Icon name="time-outline" size={25} color="#DDDDDD"></Icon>
-            <DateTimePicker
-              style={styles.dateTimePicker}
-              testID="dateTimePicker"
-              value={date}
-              mode="time"
-              display="default"
-              onChange={onDateChange}
+            <View style={styles.typeContainer}>
+              <Text style={styles.typeText}>Event Type</Text>
+              <TouchableOpacity
+                style={type == "game" ? styles.typeChosen : styles.type}
+                onPress={() => setType("game")}
+              >
+                <Text style={styles.buttonText}>Game</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={type == "practice" ? styles.typeChosen : styles.type}
+                onPress={() => setType("practice")}
+              >
+                <Text style={styles.buttonText}>Practice</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={type == "other" ? styles.typeChosen : styles.type}
+                onPress={() => setType("other")}
+              >
+                <Text style={styles.buttonText}>Other</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.dateTimeContainer}>
+              <View style={styles.dateTime}>
+                <Icon name="calendar-outline" size={25} color="#DDDDDD"></Icon>
+                <DateTimePicker
+                  style={styles.dateTimePicker}
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={onDateChange}
+                  minimumDate={new Date()}
+                />
+              </View>
+              <View style={styles.dateTime}>
+                <Icon name="time-outline" size={25} color="#DDDDDD"></Icon>
+                <DateTimePicker
+                  style={styles.dateTimePicker}
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="time"
+                  display="default"
+                  onChange={onDateChange}
+                />
+              </View>
+            </View>
+
+            <TextInput
+              style={styles.input}
+              placeholderTextColor="#aaaaaa"
+              placeholder="Place"
+              onChangeText={(text) => setPlace(text)}
+              value={place}
+              autoCapitalize="none"
             />
-          </View>
-        </View>
+            <TextInput
+              style={styles.inputDescription}
+              placeholderTextColor="#aaaaaa"
+              placeholder="Description"
+              onChangeText={(text) => setDescription(text)}
+              value={description}
+              autoCapitalize="none"
+              multiline
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => onCreatePress()}
+            >
+              <Text style={styles.buttonTitle}> Create </Text>
+            </TouchableOpacity>
 
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          placeholder="Place"
-          onChangeText={(text) => setPlace(text)}
-          value={place}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.inputDescription}
-          placeholderTextColor="#aaaaaa"
-          placeholder="Description"
-          onChangeText={(text) => setDescription(text)}
-          value={description}
-          autoCapitalize="none"
-          multiline
-        />
-        <TouchableOpacity style={styles.button} onPress={() => onCreatePress()}>
-          <Text style={styles.buttonTitle}> Create </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => Actions.pop()}>
-          <Text style={styles.cancelText}> Cancel </Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => Actions.pop()}>
+              <Text style={styles.cancelText}> Cancel </Text>
+            </TouchableOpacity>
+          </KeyboardAwareScrollView>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
