@@ -76,7 +76,7 @@ export default function App() {
                 key="TacticsCoach"
                 hideNavBar={true}
                 title=" Tactics"
-                component={TacticsCoach}
+                component={CreateTactic}
                 icon={iconTactic}
               />
             </Scene>
@@ -101,7 +101,6 @@ export default function App() {
             <Scene key="CreateEventSchedule" component={CreateEventSchedule} />
             <Scene key="Comment" component={CommentScreen} />
             <Scene key="CreateTactic" component={CreateTactic} />
-
           </Scene>
         </Stack>
       </Router>
