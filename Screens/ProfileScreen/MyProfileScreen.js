@@ -106,15 +106,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    marginBottom: 50,
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    height: 120,
+    width: 120,
+    borderRadius: 60,
+    margin: 10,
   },
   name: {
-    fontSize: 20,
+    fontSize: 24,
     textAlign: "center",
     margin: 10,
+    fontWeight: "bold",
   },
   myTeamsHeader: {
     flexDirection: "row",

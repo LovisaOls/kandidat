@@ -24,7 +24,7 @@ export default function CreateFeed() {
 
   const onCancelPostPressed = () => {
     // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
-    Actions.Feed();
+    Actions.pop();
   };
 
   const onPostInFeedPressed = () => {
@@ -44,6 +44,7 @@ export default function CreateFeed() {
       postRef
         .set({
           author: currentUser.firstName + " " + currentUser.lastName,
+          authorPicture: currentUser.profilePicture,
           teamId: activeTeam.teamId,
           text: textValue,
           createdOn: dateTime.getTime(),
@@ -65,7 +66,7 @@ export default function CreateFeed() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Create a Post</Text>
       <TextInput
         placeholder={"Add text to your post"}
@@ -122,15 +123,19 @@ const styles = StyleSheet.create({
   },
   input: {
     margin: 10,
-    borderWidth: 0.5,
     borderRadius: 10,
-    padding: 10,
-    height: "50%",
+    padding: 15,
+    height: "30%",
     fontSize: 16,
+    backgroundColor: "#DDDDDD",
   },
   buttonText: {
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "white",
   },
 });

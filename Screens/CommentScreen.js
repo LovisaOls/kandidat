@@ -46,7 +46,7 @@ export default function CommentScreen(post) {
 
   const onCancelPress = () => {
     // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
-    Actions.Profile();
+    Actions.pop();
   };
   return (
     <SafeAreaView style={styles.container}>
