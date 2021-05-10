@@ -6,16 +6,17 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  Dimensions,
   Clipboard,
+  Dimensions,
 } from "react-native";
+
 //import Clipboard from "@react-native-clipboard/clipboard";
 import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
 import MembershipRequests from "./MembershipRequests";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchTeamMembers, setCurrentUser } from "../../actions/index";
+import { useSelector, useDispatch, useStore } from "react-redux";
+import { fetchTeamMembers } from "../../actions/index";
 
 export default function Home() {
   const screenHeight = Dimensions.get("window").height;
@@ -27,7 +28,6 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchTeamMembers(activeTeam.teamId));
   }, [dispatch]);
-
   const { teamMembers } = useSelector((state) => state.currentTeams);
 
   const modalRef = useRef(null);
@@ -52,28 +52,47 @@ export default function Home() {
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <TopMenu />
       <View style={styles.TeamInfoHeader}>
-        <Icon name="image-outline" size={100}></Icon>
-
-        <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
-          <View style={styles.teamMembersNrBox}>
-            <Text style={styles.teamMembersNr}>
-              {Object.keys(teamMembers).length}
-            </Text>
-          </View>
-          <Text style={styles.teamMembers}>Team members</Text>
-        </TouchableOpacity>
-
-        {!copied ? (
-          <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
-            <Icon name="copy-outline" size={37} color="#A247D4"></Icon>
-            <Text style={styles.teamIdTitle}> Copy TeamId</Text>
-          </TouchableOpacity>
+        {activeTeam.teamPicture ? (
+          <Image
+            source={{ uri: activeTeam.teamPicture }}
+            style={styles.image}
+          ></Image>
         ) : (
-          <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
-            <Icon name="checkmark-outline" size={37} color="#A247D4"></Icon>
-            <Text style={styles.teamIdTitle}> Copied!</Text>
-          </TouchableOpacity>
+          <Icon name="image-outline" size={100}></Icon>
         )}
+
+        <View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.teamIdTitle}>Team: </Text>
+            <Text>{activeTeam.teamName}</Text>
+          </View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.teamIdTitle}>City: </Text>
+            <Text>{activeTeam.city}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
+              <View style={styles.teamMembersNrBox}>
+                <Text style={styles.teamMembersNr}>
+                  {Object.keys(teamMembers).length}
+                </Text>
+              </View>
+              <Text style={styles.teamMembers}>Team members</Text>
+            </TouchableOpacity>
+
+            {!copied ? (
+              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+                <Icon name="copy-outline" size={28} color="#A247D4"></Icon>
+                <Text style={styles.teamIdTitle}> Copy TeamId</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+                <Icon name="checkmark-outline" size={28} color="#A247D4"></Icon>
+                <Text style={styles.teamIdTitle}> Copied!</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
       </View>
 
       {activeTeam.coach == currentUser.id ? (
@@ -96,7 +115,7 @@ export default function Home() {
           <Text style={styles.title}> Team members </Text>
           {teamMembers &&
             Object.keys(teamMembers).map((key, i) => {
-              return (
+              return teamMembers[key].teams[activeTeam.teamId] == true ? (
                 <View key={i} style={styles.viewMembers}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     {teamMembers[key].profilePicture ? (
@@ -120,13 +139,14 @@ export default function Home() {
                     </View>
                   </View>
                 </View>
-              );
+              ) : null;
             })}
         </View>
       </Modalize>
     </SafeAreaView>
   );
 }
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
@@ -167,14 +187,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   teamMembersNr: {
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
     fontWeight: "bold",
   },
   teamMembersNrBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: "green",
     alignItems: "center",
     justifyContent: "center",
@@ -262,6 +282,16 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     marginLeft: 10,
     marginTop: 10,
+  },
+  image: {
+    width: screenWidth * 0.35,
+    height: screenWidth * 0.35,
+    borderRadius: 10,
+    margin: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
 
   /* --------------------------------------------- */
