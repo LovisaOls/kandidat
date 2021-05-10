@@ -17,7 +17,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
-import { requestCameraPermissionsAsync } from "expo-image-picker";
 
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);

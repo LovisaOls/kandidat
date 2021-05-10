@@ -44,7 +44,7 @@ const MembershipRequests = () => {
       {teamMembers &&
         Object.keys(teamMembers).map((key, i) => {
           return teamMembers[key].teams[activeTeam.teamId] == false ? (
-            <View style={styles.requestBox}>
+            <View key={i} style={styles.requestBox}>
               <Text style={styles.name}>
                 {teamMembers[key].firstName} {teamMembers[key].lastName}
               </Text>
