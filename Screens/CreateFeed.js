@@ -32,19 +32,12 @@ export default function CreateFeed() {
       const postRef = firebase.database().ref("/feed/").push();
       const postKey = postRef.key;
 
-      postRef.set({
-        author: currentUser.firstName + " " + currentUser.lastName,
-        teamId: activeTeam.teamId,
-        text: textValue,
-        createdOn: dateTime.getTime(),
-        postId: postKey,
-        comments: [],
-      });
-
       postRef
         .set({
           author: currentUser.firstName + " " + currentUser.lastName,
-          authorPicture: currentUser.profilePicture,
+          authorPicture: currentUser.profilePicture
+            ? currentUser.profilePicture
+            : null,
           teamId: activeTeam.teamId,
           text: textValue,
           createdOn: dateTime.getTime(),

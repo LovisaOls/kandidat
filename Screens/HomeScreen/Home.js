@@ -15,7 +15,7 @@ import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
 import MembershipRequests from "./MembershipRequests";
-import { useSelector, useDispatch, useStore } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers } from "../../actions/index";
 
 export default function Home() {
@@ -74,7 +74,11 @@ export default function Home() {
             <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
               <View style={styles.teamMembersNrBox}>
                 <Text style={styles.teamMembersNr}>
-                  {Object.keys(teamMembers).length}
+                  {
+                    teamMembers.filter(
+                      (obj) => obj.teams[activeTeam.teamId] === true
+                    ).length
+                  }
                 </Text>
               </View>
               <Text style={styles.teamMembers}>Team members</Text>

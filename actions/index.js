@@ -176,6 +176,7 @@ export const fetchFeed = (teamId) => {
       .ref("/feed/")
       .orderByChild("teamId")
       .equalTo(teamId)
+      .limitToLast(25)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_FEED", feedPosts: snapshot.val() });
       });
@@ -227,19 +228,6 @@ export const fetchTeamMembers = (teamId) => {
         });
         dispatch({ type: "FETCH_TEAMMEMBERS", teamMembers: teamMembers });
       });
-  };
-};
-export const acceptMember = (userId, teamId) => {
-  return (dispatch) => {
-    firebase.database().ref(`/users/${userId}/teams/${teamId}`).set(true);
-    firebase.database().ref(`/teams/${teamId}/members/${userId}`).set(true);
-  };
-};
-
-export const declineMember = (userId, teamId) => {
-  return (dispatch) => {
-    firebase.database().ref(`/users/${userId}/teams/${teamId}`).remove();
-    firebase.database().ref(`/teams/${teamId}/members/${userId}`).remove();
   };
 };
 
