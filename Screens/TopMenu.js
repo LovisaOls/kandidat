@@ -19,11 +19,11 @@ export default function TopMenu() {
     <View style={styles.container}>
       <View style={styles.top}>
         <TouchableOpacity onPress={() => onProfilePressed()}>
-          <Icon name="person-outline" size={34}></Icon>
+          <Icon name="person-outline" size={30}></Icon>
         </TouchableOpacity>
         <Text style={styles.teamName}>{activeTeam.teamName}</Text>
         <TouchableOpacity onPress={() => onSettingsPressed()}>
-          <Icon name="settings-outline" size={34}></Icon>
+          <Icon name="settings-outline" size={30}></Icon>
         </TouchableOpacity>
       </View>
     </View>
