@@ -42,7 +42,7 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Stack>
-          <Scene key="root" hideNavBar={true}>
+          <Scene key="root" hideNavBar={true} gesturesEnabled={false}>
             <Scene key="Loading" component={LoadingScreen} />
             <Scene
               key="BottomMenu"
@@ -54,14 +54,14 @@ export default function App() {
                 key="Home"
                 component={Home}
                 hideNavBar={true}
-                title=" Home"
+                title="Home"
                 icon={iconHome}
               />
               <Scene
                 key="feed"
                 component={Feed}
                 hideNavBar={true}
-                title=" Feed"
+                title="Feed"
                 icon={iconFeed}
               />
               <Scene
@@ -74,7 +74,7 @@ export default function App() {
               <Scene
                 key="TacticsCoach"
                 hideNavBar={true}
-                title=" Tactics"
+                title="Tactics"
                 component={CreateTactic}
                 icon={iconTactic}
               />
