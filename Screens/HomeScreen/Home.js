@@ -113,7 +113,7 @@ export default function Home() {
       <Modalize
         ref={modalRef}
         snapPoint={500}
-        modalHeight={screenHeight * 0.85}
+        modalHeight={screenHeight * 0.80}
       >
         <View style={styles.modal}>
           <Text style={styles.title}> Team members </Text>
