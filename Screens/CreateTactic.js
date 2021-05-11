@@ -14,7 +14,7 @@ import { Actions } from 'react-native-router-flux';
 
 export default function CreateTactic() {
   const { activeTeam } = useSelector(state => state.currentTeams);
-
+  const [title, setTitle] = useState("");
 
 
   const [player1, setPlayer1] = useState("");
@@ -117,6 +117,7 @@ export default function CreateTactic() {
       .set({
         teamId: activeTeam.teamId,
         tacticId: tacticKey,
+        title: title,
         player1: {
           initial: player1,
           positionX1,
@@ -211,6 +212,8 @@ export default function CreateTactic() {
         style={styles.input}
         placeholder='Title'
         placeholderTextColor="#aaaaaa"
+        onChangeText={(text) => setTitle(text)}
+        value={title}
       />
 
       <ImageBackground
@@ -388,6 +391,7 @@ export default function CreateTactic() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 80,
   },
 
   players: {
