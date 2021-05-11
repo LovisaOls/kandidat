@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Image,
   Platform,
+  Dimensions,
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { registerUser } from "../actions";
@@ -24,7 +25,6 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -44,51 +44,45 @@ export default function RegistrationScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.image,
       allowsEditing: true,
       aspect: [4, 4],
-      quality: 1,
+      quality: 0.5,
     });
-
-    console.log(result);
-
     if (!result.cancelled) {
       setImage(result.uri);
     }
   };
 
   const uploadImage = async () => {
-    let filename = image.split("/").pop();
-    const response = await fetch(image);
-    const blob = await response.blob();
-    const ref = firebase
-      .storage()
-      .ref()
-      .child("images/" + filename);
-    const snapshot = await ref.put(blob);
-    blob.close();
-    snapshot.ref.getDownloadURL().then((url) => {
-      setImageUrl(url);
-      console.log("url", imageUrl);
-      return url;
-    });
+    if (image != null) {
+      let filename = image.split("/").pop();
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const ref = firebase
+        .storage()
+        .ref()
+        .child("images/" + filename);
+      const snapshot = await ref.put(blob);
+      blob.close();
+      snapshot.ref.getDownloadURL().then((url) => {
+        dispatch(registerUser(email, password, firstName, lastName, url));
+      });
+    } else {
+      dispatch(registerUser(email, password, firstName, lastName, image));
+    }
   };
 
-  const onRegisterPress = () => {
+  const onRegisterPress = async () => {
     if (password !== confirmPassword) {
       alert("Passwords are not the same");
       return;
     }
-    uploadImage();
-    dispatch(registerUser(email, password, firstName, lastName, imageUrl));
+    await uploadImage();
   };
   const onCancelPress = () => {
     Actions.Welcome();
   };
 
   return (
-    <SafeAreaView
-      style={styles.container}
-      style={{ flex: 1, width: "100%" }}
-      keyboardShouldPersistTaps="always"
-    >
+    <SafeAreaView style={styles.container} keyboardShouldPersistTaps="always">
       <ScrollView>
         <KeyboardAwareScrollView
           resetScrollToCoords={{ x: 0, y: 0 }}
@@ -101,7 +95,7 @@ export default function RegistrationScreen() {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.image} onPress={pickImage}>
-              <Text>Add Profile Picture</Text>
+              <Text style={styles.imageText}>Add Profile Picture</Text>
             </TouchableOpacity>
           )}
           <TextInput
@@ -159,14 +153,13 @@ export default function RegistrationScreen() {
     </SafeAreaView>
   );
 }
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    textAlign: "center",
+    backgroundColor: "white",
+    width: "100%",
   },
 
   title: {
@@ -175,26 +168,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: screenWidth * 0.4,
+    height: screenWidth * 0.4,
     borderRadius: 75,
     margin: 20,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#DDDDDD",
     justifyContent: "center",
     alignItems: "center",
   },
   input: {
     fontSize: 16,
     height: 48,
-    borderRadius: 24,
-    overflow: "hidden",
-    backgroundColor: "white",
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
     paddingLeft: 16,
-    borderWidth: 0.25,
+    marginHorizontal: 15,
+    marginVertical: 5,
   },
   button: {
     backgroundColor: "green",
@@ -213,12 +202,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-    cancelText: {
-        fontSize: 16,
-        color: '#A247D4',
-        margin: 10,
-        alignContent:'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-    }
-})
+  cancelText: {
+    fontSize: 16,
+    color: "#A247D4",
+    margin: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  imageText: {
+    color: "#aaaaaa",
+    fontSize: 16,
+    textAlign: "center",
+    padding: 10,
+  },
+});

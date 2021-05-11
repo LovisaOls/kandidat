@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   teamBox: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#DDDDDD",
     margin: 1,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   teamBoxPending: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#DDDDDD",
     margin: 1,
     flexDirection: "row",
     justifyContent: "space-between",

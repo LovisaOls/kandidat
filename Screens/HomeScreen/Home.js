@@ -6,27 +6,28 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
-  Dimensions,
   Clipboard,
+  Dimensions,
 } from "react-native";
+
 //import Clipboard from "@react-native-clipboard/clipboard";
 import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
 import MembershipRequests from "./MembershipRequests";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTeamMembers, setCurrentUser } from "../../actions/index";
+import { fetchTeamMembers } from "../../actions/index";
 
-export default function CoachHome() {
+export default function Home() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const currentUser = useSelector((state) => state.currentUser);
+  const [copied, setCopied] = useState(false);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchTeamMembers(activeTeam.teamId));
   }, [dispatch]);
-
   const { teamMembers } = useSelector((state) => state.currentTeams);
 
   const modalRef = useRef(null);
@@ -39,34 +40,61 @@ export default function CoachHome() {
     }
   };
 
-  const copyId = () => Clipboard.setString(activeTeam.teamId);
+  const copyId = () => {
+    Clipboard.setString(activeTeam.teamId);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
 
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <TopMenu />
       <View style={styles.TeamInfoHeader}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/TestTeamLogga.png")}
-        />
+        {activeTeam.teamPicture ? (
+          <Image
+            source={{ uri: activeTeam.teamPicture }}
+            style={styles.image}
+          ></Image>
+        ) : (
+          <Icon name="image-outline" size={100}></Icon>
+        )}
 
-        <View style={styles.TeamInfo}>
-          <View style={styles.teamIdHeader}>
-            <Text style={styles.name}> Team Id</Text>
-            <TouchableOpacity onPress={copyId}>
-              <Icon name="copy-outline" size={16} color="purple"></Icon>
-            </TouchableOpacity>
+        <View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.teamIdTitle}>Team: </Text>
+            <Text>{activeTeam.teamName}</Text>
           </View>
-          <Text>{activeTeam.teamId}</Text>
-
-          <View style={styles.memberBox}>
-            <Text style={styles.name}>
-              Team members: {Object.keys(teamMembers).length}
-            </Text>
-            <TouchableOpacity style={styles.viewButton} onPress={onOpen}>
-              <Text style={styles.viewButtonText}> View </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={styles.teamIdTitle}>City: </Text>
+            <Text>{activeTeam.city}</Text>
+          </View>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
+              <View style={styles.teamMembersNrBox}>
+                <Text style={styles.teamMembersNr}>
+                  {
+                    teamMembers.filter(
+                      (obj) => obj.teams[activeTeam.teamId] === true
+                    ).length
+                  }
+                </Text>
+              </View>
+              <Text style={styles.teamMembers}>Team members</Text>
             </TouchableOpacity>
-            <Text style={styles.name}> Coaches: </Text>
+
+            {!copied ? (
+              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+                <Icon name="copy-outline" size={28} color="#A247D4"></Icon>
+                <Text style={styles.teamIdTitle}> Copy TeamId</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
+                <Icon name="checkmark-outline" size={28} color="#A247D4"></Icon>
+                <Text style={styles.teamIdTitle}> Copied!</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>
@@ -77,16 +105,11 @@ export default function CoachHome() {
         </View>
       ) : (
         <View>
-          <Text>You are not coach :PPP</Text>
+          <Text style={styles.title}>Participation Requests</Text>
+          <Text> You don't have any requests right now! </Text>
         </View>
       )}
 
-      <View style={styles.GameStats}>
-        <Text style={styles.title}>Game Statistics</Text>
-        <TouchableOpacity style={styles.smallBtn}>
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      </View>
       <Modalize
         ref={modalRef}
         snapPoint={500}
@@ -96,55 +119,57 @@ export default function CoachHome() {
           <Text style={styles.title}> Team members </Text>
           {teamMembers &&
             Object.keys(teamMembers).map((key, i) => {
-              return (
+              return teamMembers[key].teams[activeTeam.teamId] == true ? (
                 <View key={i} style={styles.viewMembers}>
                   <View style={{ flexDirection: "row", alignItems: "center" }}>
                     {teamMembers[key].profilePicture ? (
                       <Image
                         source={{ uri: teamMembers[key].profilePicture }}
                         style={{
-                          height: 40,
-                          width: 40,
-                          borderRadius: 20,
-                          margin: 5,
+                          height: 50,
+                          width: 50,
+                          borderRadius: 25,
+                          marginRight: 10,
                         }}
                       />
                     ) : (
                       <Icon name="person-circle-outline" size={45}></Icon>
                     )}
                     <View>
-                      <Text>
+                      <Text style={styles.nameTeamMember}>
                         {teamMembers[key].firstName} {teamMembers[key].lastName}
                       </Text>
                       <Text>{teamMembers[key].email}</Text>
                     </View>
                   </View>
                 </View>
-              );
+              ) : null;
             })}
         </View>
       </Modalize>
     </SafeAreaView>
   );
 }
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "white",
   },
   /* ____________________________________________ */
 
   title: {
     fontSize: 24,
     justifyContent: "center",
-    textAlign: "center",
     fontWeight: "bold",
     margin: 10,
   },
   TeamInfoHeader: {
-    marginTop: 10,
-    flexDirection: "row",
     margin: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
 
   TeamInfo: {
@@ -161,29 +186,40 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 18,
   },
+  teamMembers: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  teamMembersNr: {
+    fontSize: 18,
+    color: "white",
+    fontWeight: "bold",
+  },
+  teamMembersNrBox: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "green",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  teamIdTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
 
   teamIdHeader: {
-    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center",
   },
   /* _____________________________________________ */
   memberBox: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  viewButton: {
-    flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-  },
-  viewButtonText: {
-    color: "purple",
-    fontSize: 18,
   },
   viewMembers: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#D3D3D3",
+    backgroundColor: "#DDDDDD",
     margin: 1,
     padding: 15,
   },
@@ -203,6 +239,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "green",
     marginLeft: 40,
+  },
+  nameTeamMember: {
+    fontWeight: "bold",
+    fontSize: 14,
   },
 
   /* _____________________________________________ */
@@ -246,6 +286,16 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     marginLeft: 10,
     marginTop: 10,
+  },
+  image: {
+    width: screenWidth * 0.35,
+    height: screenWidth * 0.35,
+    borderRadius: 10,
+    margin: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
 
   /* --------------------------------------------- */

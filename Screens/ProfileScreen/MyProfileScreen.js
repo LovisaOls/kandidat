@@ -7,11 +7,12 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import TeamComponent from "./TeamComponent";
-import { fetchUserTeams, registerTeam } from "../../actions/index";
 import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
+import { ScrollView } from "react-native-gesture-handler";
 
 import "firebase/database";
 require("firebase/auth");
@@ -19,14 +20,8 @@ import * as firebase from "firebase";
 
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
-  const dispatch = useDispatch();
-
-  /*   useEffect(() => {
-    dispatch(fetchUserTeams(currentUser.id));
-  }, [dispatch]); */
 
   const { userTeams } = useSelector((state) => state.currentTeams);
-  const store = useStore();
   //FUNKTIONER
   const onAddTeamPressed = () => {
     Actions.TeamRegistration();
@@ -47,52 +42,54 @@ function MyProfileScreen() {
 
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
-      <View style={styles.profileIcon}>
-        {currentUser.profilePicture ? (
-          <Image
-            source={{
-              uri: currentUser.profilePicture,
-            }}
-            style={styles.image}
-          />
-        ) : (
-          <Icon name="person-circle-outline" size={100}></Icon>
-        )}
-        <Text style={styles.name}>
-          {currentUser.firstName} {currentUser.lastName}
-        </Text>
-      </View>
-      <View style={styles.myTeamsHeader}>
-        <Text style={styles.title}> My Teams </Text>
-        <TouchableOpacity
-          style={styles.addTeamBtn}
-          onPress={() => onAddTeamPressed()}
-        >
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        {userTeams &&
-          Object.keys(userTeams).map((key) => {
-            return <TeamComponent key={key} team={userTeams[key]} />;
-          })}
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.signOutButton}
-          onPress={() => onSignOut()}
-        >
-          <Text style={styles.buttonText}> Sign Out</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        <View style={styles.profileIcon}>
+          {currentUser.profilePicture ? (
+            <Image
+              source={{
+                uri: currentUser.profilePicture,
+              }}
+              style={styles.image}
+            />
+          ) : (
+            <Icon name="person-circle-outline" size={100}></Icon>
+          )}
+          <Text style={styles.name}>
+            {currentUser.firstName} {currentUser.lastName}
+          </Text>
+        </View>
+        <View style={styles.myTeamsHeader}>
+          <Text style={styles.title}> My Teams </Text>
+          <TouchableOpacity
+            style={styles.addTeamBtn}
+            onPress={() => onAddTeamPressed()}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.teamsBox}>
+          {userTeams &&
+            Object.keys(userTeams).map((key) => {
+              return <TeamComponent key={key} team={userTeams[key]} />;
+            })}
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.signOutButton}
+            onPress={() => onSignOut()}
+          >
+            <Text style={styles.buttonText}> Sign Out</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
-
+const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
+    backgroundColor: "white",
   },
   title: {
     fontSize: 24,
@@ -106,23 +103,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    marginBottom: 50,
-    height: 100,
-    width: 100,
-    borderRadius: 50,
+    height: screenWidth * 0.35,
+    width: screenWidth * 0.35,
+    borderRadius: (screenWidth * 0.35) / 2,
+    margin: 10,
   },
   name: {
-    fontSize: 20,
+    fontSize: 24,
     textAlign: "center",
     margin: 10,
+    fontWeight: "bold",
   },
   myTeamsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+    margin: 10,
   },
   teamsText: {
     fontSize: 30,
   },
+  teamsBox: {
+    margin: 10,
+  },
+
   addTeamBtn: {
     width: "15%",
     borderRadius: 20,
@@ -137,29 +140,11 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
   },
-  goBackButton: {
-    width: "50%",
-    borderRadius: 25,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "pink",
-    margin: 10,
-  },
-  goForwardButton: {
-    width: "50%",
-    borderRadius: 25,
-    height: 40,
-    margin: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "tomato",
-  },
+
   signOutButton: {
     backgroundColor: "green",
-    marginTop: 20,
-    marginLeft: 50,
-    marginRight: 50,
+    marginVertical: 20,
+    marginHorizontal: 50,
     height: 48,
     borderRadius: 24,
     alignItems: "center",

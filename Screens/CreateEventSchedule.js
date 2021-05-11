@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import React, { useState } from "react";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   Text,
   TextInput,
@@ -7,8 +8,11 @@ import {
   View,
   SafeAreaView,
 } from "react-native";
-import { useSelector } from "react-redux";
+import Icon from "react-native-vector-icons/Ionicons";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { ScrollView } from "react-native-gesture-handler";
 
+import { useSelector } from "react-redux";
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
@@ -18,16 +22,24 @@ import { Actions } from "react-native-router-flux";
 export default function CreateEventSchedule() {
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
+  const [date, setDate] = useState(new Date());
   const [place, setPlace] = useState("");
   const [description, setDescription] = useState("");
 
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+  };
+
   const onCreatePress = () => {
     const eventRef = firebase.database().ref("/events/").push();
     const eventKey = eventRef.key;
+    const monthFormatted = ("0" + (date.getMonth() + 1)).slice(-2);
+    const dateFormatted = ("0" + date.getDate()).slice(-2);
+    const hoursFormatted = ("0" + date.getHours()).slice(-2);
+    const minutesFormatted = ("0" + date.getMinutes()).slice(-2);
     eventRef
       .set({
         teamId: activeTeam.teamId,
@@ -37,17 +49,17 @@ export default function CreateEventSchedule() {
         firebase
           .database()
           .ref(`/events/${eventKey}/eventDetails/`)
-          .child(date)
+          .child(`${date.getFullYear()}-${monthFormatted}-${dateFormatted}`)
           .set({
             title: title,
             type: type,
-            time: time,
+            time: `${hoursFormatted}:${minutesFormatted}`,
             place: place,
             description: description,
           })
       )
       .then(() => {
-        Actions.TestSchedule();
+        Actions.pop();
       })
       .catch((error) => {
         alert(error);
@@ -60,61 +72,95 @@ export default function CreateEventSchedule() {
         style={{ flex: 1, width: "100%" }}
         keyboardShouldPersistTaps="always"
       >
-        <Text style={styles.title}>Create Event</Text>
+        <ScrollView>
+          <KeyboardAwareScrollView
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={false}
+          >
+            <Text style={styles.title}>Create Event</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              placeholderTextColor="#aaaaaa"
+              onChangeText={(text) => setTitle(text)}
+              value={title}
+            />
+            <View style={styles.typeContainer}>
+              <Text style={styles.typeText}>Event Type</Text>
+              <TouchableOpacity
+                style={type == "game" ? styles.typeChosen : styles.type}
+                onPress={() => setType("game")}
+              >
+                <Text style={styles.buttonText}>Game</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={type == "practice" ? styles.typeChosen : styles.type}
+                onPress={() => setType("practice")}
+              >
+                <Text style={styles.buttonText}>Practice</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={type == "other" ? styles.typeChosen : styles.type}
+                onPress={() => setType("other")}
+              >
+                <Text style={styles.buttonText}>Other</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.dateTimeContainer}>
+              <View style={styles.dateTime}>
+                <Icon name="calendar-outline" size={25} color="#DDDDDD"></Icon>
+                <DateTimePicker
+                  style={styles.dateTimePicker}
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  display="default"
+                  onChange={onDateChange}
+                  minimumDate={new Date()}
+                />
+              </View>
+              <View style={styles.dateTime}>
+                <Icon name="time-outline" size={25} color="#DDDDDD"></Icon>
+                <DateTimePicker
+                  style={styles.dateTimePicker}
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="time"
+                  display="default"
+                  onChange={onDateChange}
+                />
+              </View>
+            </View>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setTitle(text)}
-          value={title}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Type"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setType(text)}
-          value={type}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Date"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setDate(text)}
-          value={date}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          placeholder="Time"
-          onChangeText={(text) => setTime(text)}
-          value={time}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          placeholder="Place"
-          onChangeText={(text) => setPlace(text)}
-          value={place}
-          autoCapitalize="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholderTextColor="#aaaaaa"
-          placeholder="Description"
-          onChangeText={(text) => setDescription(text)}
-          value={description}
-          autoCapitalize="none"
-        />
-        <TouchableOpacity style={styles.button} onPress={() => onCreatePress()}>
-          <Text style={styles.buttonTitle}> Create </Text>
-        </TouchableOpacity>
+            <TextInput
+              style={styles.input}
+              placeholderTextColor="#aaaaaa"
+              placeholder="Place"
+              onChangeText={(text) => setPlace(text)}
+              value={place}
+              autoCapitalize="none"
+            />
+            <TextInput
+              style={styles.inputDescription}
+              placeholderTextColor="#aaaaaa"
+              placeholder="Description"
+              onChangeText={(text) => setDescription(text)}
+              value={description}
+              autoCapitalize="none"
+              multiline
+            />
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => onCreatePress()}
+            >
+              <Text style={styles.buttonTitle}> Create </Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => Actions.TestSchedule()}>
-          <Text style={styles.cancelText}> Cancel </Text>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => Actions.pop()}>
+              <Text style={styles.cancelText}> Cancel </Text>
+            </TouchableOpacity>
+          </KeyboardAwareScrollView>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
@@ -133,20 +179,27 @@ const styles = StyleSheet.create({
     margin: 10,
     fontWeight: "bold",
     fontSize: 24,
+    textAlign: "center",
   },
   input: {
     fontSize: 16,
     height: 48,
-    borderRadius: 24,
-    overflow: "hidden",
-    backgroundColor: "white",
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
     paddingLeft: 16,
-    borderWidth: 0.25,
+    marginHorizontal: 20,
   },
+  inputDescription: {
+    fontSize: 16,
+    minHeight: 60,
+    borderRadius: 10,
+    marginHorizontal: 20,
+    paddingLeft: 10,
+    backgroundColor: "#DDDDDD",
+  },
+
   button: {
     backgroundColor: "green",
     marginTop: 20,
@@ -171,5 +224,49 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     textAlign: "center",
+  },
+  dateTimePicker: {
+    margin: 5,
+    width: "50%",
+  },
+  dateTime: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 20,
+  },
+  typeContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginHorizontal: 20,
+    marginBottom: 10,
+  },
+  type: {
+    backgroundColor: "#D3D3D3",
+    padding: 8,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  typeChosen: {
+    backgroundColor: "green",
+    padding: 12,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: "white",
+    fontWeight: "bold",
+  },
+  typeText: {
+    fontSize: 16,
+    color: "black",
+    fontWeight: "bold",
+    margin: 5,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 20,
   },
 });
