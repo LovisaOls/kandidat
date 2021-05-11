@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Alert,
   StyleSheet,
@@ -6,15 +6,21 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions
 } from "react-native";
 import { Agenda } from "react-native-calendars";
+import { Modalize } from "react-native-modalize";
+
 import TopMenu from "./TopMenu";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector, setState } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../actions/index";
+import { FlatList } from "react-native-gesture-handler";
 
 export default function Schedule() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const [activeEvent, setActiveEvent] = useState("");
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchEvents(activeTeam.teamId));
@@ -22,22 +28,18 @@ export default function Schedule() {
 
   const events = useSelector((state) => state.scheduleEvents);
 
-  function renderItems(item) {
-    return (
-      <TouchableOpacity
-        style={styles.hej}
-        onPress={() => Alert.alert(item.description)}
-      >
-        <Text>{item.title}</Text>
-        <Text>{item.time}</Text>
-        <Text>{item.description}</Text>
-      </TouchableOpacity>
-    );
-  }
+  const modalRef = useRef(null);
+  const screenHeight = Dimensions.get("window").height;
 
-  function rowHasChanged(r1, r2) {
-    return r1.name !== r2.name;
-  }
+  const onOpen = (item) => {
+    console.log("pop up meny", item)
+    const modal = modalRef.current;
+    setActiveEvent(item)
+
+    if (modal) {
+      modal.open();
+    }
+  };
 
   let structuredEvents = {};
 
@@ -51,6 +53,24 @@ export default function Schedule() {
         });
       }
     }
+  }
+
+  function renderItems(item) {
+    return (
+      <View>
+        <TouchableOpacity
+          style={styles.eventList}
+          onPress={() => onOpen(item)}
+        >
+          <View style={styles.eventHeader}>
+            <Text style={styles.eventTitle}>{item.title}</Text>
+            <Text style={styles.eventTime}>{item.time}</Text>
+          </View>
+          <Text style={styles.eventDescription}>{item.description}</Text>
+        </TouchableOpacity>
+
+      </View>
+    );
   }
 
   structureEvents();
@@ -84,33 +104,72 @@ export default function Schedule() {
               paddingBottom: 7,
               backgroundColor: "green",
             },
-            /* dotColor: "purple",
-          selectedDotColor: "purple", */
           },
         }}
-        // Max amount of months allowed to scroll to the past. Default = 50
         pastScrollRange={12}
-        // Max amount of months allowed to scroll to the future. Default = 50
         futureScrollRange={12}
         items={structuredEvents}
         renderItem={renderItems}
         selected={Date()}
         firstDay={1}
-        //rowHasChanged={rowHasChanged()}
       />
+      <Modalize
+        ref={modalRef}
+        snapPoint={500}
+        modalHeight={screenHeight * 0.80}
+      >
+        <View style={styles.modal}>
+          <Text style={styles.title}>Event Information</Text>
+          {activeEvent != null ? (
+            <View style={styles.modalEvents}>
+              <Text style={styles.eventTitle}>{activeEvent.title}</Text>
+              <Text style={styles.time}>{activeEvent.time}</Text>
+              <Text style={styles.type}>{activeEvent.type}</Text>
+              <Text style={styles.place}>{activeEvent.place}</Text>
+              <Text style={styles.description}>{activeEvent.description}</Text>
+            </View>)
+            : (null)}
+        </View>
+      </Modalize>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  hej: {
+  eventList: {
     backgroundColor: "white",
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17,
+    marginTop: 30,
+    borderLeftWidth: 2,
+    borderLeftColor: "green",
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
   },
-
+  eventHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  modalEvents : {
+    padding: 20,
+    width: "100%",
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    margin: 1,
+    padding: 15,
+    paddingLeft: 10,
+  },
+  time: {
+    fontSize: 12,
+    color: "#333",
+  },
+  modal: {
+    justifyContent: "center"
+  },
+  eventTitle: {
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "white",
