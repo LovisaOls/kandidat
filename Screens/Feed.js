@@ -42,6 +42,7 @@ export default function Feed() {
   };
 
   const onCommentPressed = (post) => {
+    console.log("hejhej", post)
     Actions.Comment(post);
   };
 
