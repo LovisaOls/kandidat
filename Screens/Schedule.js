@@ -32,7 +32,6 @@ export default function Schedule() {
   const screenHeight = Dimensions.get("window").height;
 
   const onOpen = (item) => {
-    console.log("pop up meny", item)
     const modal = modalRef.current;
     setActiveEvent(item)
 
@@ -66,7 +65,7 @@ export default function Schedule() {
             <Text style={styles.eventTitle}>{item.title}</Text>
             <Text style={styles.eventTime}>{item.time}</Text>
           </View>
-          <Text style={styles.eventDescription}>{item.description}</Text>
+          <Text style={styles.eventDescription}>{item.type}</Text>
         </TouchableOpacity>
 
       </View>
@@ -119,14 +118,19 @@ export default function Schedule() {
         modalHeight={screenHeight * 0.80}
       >
         <View style={styles.modal}>
-          <Text style={styles.title}>Event Information</Text>
           {activeEvent != null ? (
             <View style={styles.modalEvents}>
-              <Text style={styles.eventTitle}>{activeEvent.title}</Text>
-              <Text style={styles.time}>{activeEvent.time}</Text>
-              <Text style={styles.type}>{activeEvent.type}</Text>
-              <Text style={styles.place}>{activeEvent.place}</Text>
-              <Text style={styles.description}>{activeEvent.description}</Text>
+              <Text style={styles.title}>{activeEvent.title}</Text>
+              <View style={styles.dateTimeBox}>
+                <Text style={styles.time}>{activeEvent.time}</Text>
+                <Text style={styles.date}>{activeEvent.date}</Text>
+              </View>
+              <View style={styles.infoBox}>
+                <Text style={styles.type}>{activeEvent.type}</Text>
+                <Text style={styles.place}>{activeEvent.place}</Text>
+                <Text style={styles.description}>{activeEvent.description}</Text>
+              </View>
+
             </View>)
             : (null)}
         </View>
@@ -151,14 +155,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  modalEvents : {
+  modalEvents: {
     padding: 20,
-    width: "100%",
-    borderRadius: 10,
-    backgroundColor: "#DDDDDD",
     margin: 1,
     padding: 15,
     paddingLeft: 10,
+  },
+  infoBox: {
+    width: "97%",
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    alignItems: "flex-start",
+    padding: 5,
+    marginLeft: 9,
+
+  },
+  dateTimeBox: {
+    marginLeft: 9,
+    borderRadius: 10,
+    alignItems: "flex-start",
+    padding: 5,
+  },
+  date: {
+    fontSize: 12,
+    color: "#333",
   },
   time: {
     fontSize: 12,

@@ -56,6 +56,7 @@ export default function CreateEventSchedule() {
             time: `${hoursFormatted}:${minutesFormatted}`,
             place: place,
             description: description,
+            date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
           })
       )
       .then(() => {
