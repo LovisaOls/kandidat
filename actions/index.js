@@ -78,7 +78,7 @@ export const registerUser = (
 };
 
 //Lägg till nytt lag i db
-export const registerTeam = (userId, teamName, city) => {
+export const registerTeam = (userId, teamName, city, url) => {
   return (dispatch) => {
     const teamRef = firebase.database().ref("/teams/").push();
     const teamKey = teamRef.key;
@@ -89,6 +89,7 @@ export const registerTeam = (userId, teamName, city) => {
         city: city,
         coach: userId,
         members: {},
+        teamPicture: url,
       })
       .then(
         //lägger in userId som member i laget
@@ -175,6 +176,7 @@ export const fetchFeed = (teamId) => {
       .ref("/feed/")
       .orderByChild("teamId")
       .equalTo(teamId)
+      .limitToLast(25)
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_FEED", feedPosts: snapshot.val() });
       });
@@ -228,23 +230,6 @@ export const fetchTeamMembers = (teamId) => {
       });
   };
 };
-export const acceptMember = (userId, teamId) => {
-  return (dispatch) => {
-    var updates = {};
-    updates[`/users/${userId}/teams/${teamId}`] = true;
-    updates[`/teams/${teamId}/members/${userId}`] = true;
-    firebase.database().ref().update(updates);
-    dispatch({ type: "ACCEPT_MEMBER" });
-  };
-};
-
-export const declineMember = (userId, teamId) => {
-  return (dispatch) => {
-    firebase.database().ref(`/users/${userId}/teams/${teamId}`).remove();
-    firebase.database().ref(`/teams/${teamId}/members/${userId}`).remove();
-    dispatch({ type: "DECLINE_MEMBER" });
-  };
-};
 
 // Här skapas en kommentar till en post
 export const createComment = (postId, commentText, firstname, lastname) => {
@@ -264,7 +249,11 @@ export const createComment = (postId, commentText, firstname, lastname) => {
 // User likes a post
 export const like = (postId, userId) => {
   return (dispatch) => {
-    const likesRef = firebase.database().ref(`/feed/${postId}/likes/`).child(userId).set(true);
+    const likesRef = firebase
+      .database()
+      .ref(`/feed/${postId}/likes/`)
+      .child(userId)
+      .set(true);
   };
 };
 
@@ -275,3 +264,6 @@ export const removeLike = (postId, userId) => {
     // dispatch({ type: "DECLINE_MEMBER" });
   };
 };
+
+
+

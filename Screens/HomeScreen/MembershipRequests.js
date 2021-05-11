@@ -2,20 +2,39 @@ import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { acceptMember, declineMember } from "../../actions/index";
+import "firebase/database";
+require("firebase/auth");
+import * as firebase from "firebase";
 
 const MembershipRequests = () => {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const { teamMembers } = useSelector((state) => state.currentTeams);
 
-  const dispatch = useDispatch();
   const onAcceptPressed = (userId) => {
     console.log("accepted", userId);
-    dispatch(acceptMember(userId, activeTeam.teamId));
+    firebase
+      .database()
+      .ref(`/users/${userId}/teams/${activeTeam.teamId}`)
+      .set(true)
+      .then(
+        firebase
+          .database()
+          .ref(`/teams/${activeTeam.teamId}/members/${userId}`)
+          .set(true)
+      );
   };
   const onDeclinePressed = (userId) => {
     console.log("declined", userId);
-    dispatch(declineMember(userId, activeTeam.teamId));
+    firebase
+      .database()
+      .ref(`/users/${userId}/teams/${activeTeam.teamId}`)
+      .remove()
+      .then(
+        firebase
+          .database()
+          .ref(`/teams/${activeTeam.teamId}/members/${userId}`)
+          .remove()
+      );
   };
 
   return (
@@ -25,7 +44,7 @@ const MembershipRequests = () => {
       {teamMembers &&
         Object.keys(teamMembers).map((key, i) => {
           return teamMembers[key].teams[activeTeam.teamId] == false ? (
-            <View style={styles.requestBox}>
+            <View key={i} style={styles.requestBox}>
               <Text style={styles.name}>
                 {teamMembers[key].firstName} {teamMembers[key].lastName}
               </Text>
