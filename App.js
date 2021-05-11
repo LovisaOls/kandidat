@@ -25,15 +25,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-const iconHome = () => <Icon name="ios-home" size={34}></Icon>;
+const iconHome = () => <Icon name="ios-home-outline" size={30}></Icon>;
 
 const iconFeed = () => (
-  <Icon name="ios-chatbox-ellipses-outline" size={34}></Icon>
+  <Icon name="ios-chatbox-ellipses-outline" size={30}></Icon>
 );
 
-const iconCalendar = () => <Icon name="ios-calendar-outline" size={34}></Icon>;
+const iconCalendar = () => <Icon name="ios-calendar-outline" size={30}></Icon>;
 
-const iconTactic = () => <Icon name="ios-football" size={34}></Icon>;
+const iconTactic = () => <Icon name="ios-football" size={30}></Icon>;
 
 export default function App() {
   if (!firebase.apps.length) {

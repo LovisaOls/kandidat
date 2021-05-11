@@ -4,7 +4,6 @@ require("firebase/auth");
 
 import React from "react";
 import {
-  View,
   Text,
   StyleSheet,
   SafeAreaView,

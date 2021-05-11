@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
+  Dimensions,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { signIn } from "../actions/index";
@@ -89,6 +90,7 @@ function WelcomeScreen() {
     </View>
   );
 }
+const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
   container: {
@@ -112,14 +114,13 @@ const styles = StyleSheet.create({
   },
 
   inputView: {
+    fontSize: 16,
     height: 48,
-    borderRadius: 24,
-    marginTop: 10,
-    marginBottom: 10,
-    marginLeft: 30,
-    marginRight: 30,
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
     paddingLeft: 16,
-    borderWidth: 0.25,
+    marginHorizontal: 15,
+    marginVertical: 5,
     flexDirection: "row",
     alignItems: "center",
   },
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 30,
     paddingLeft: 16,
+    width: screenWidth * 0.8,
   },
 
   forgot_button: {
