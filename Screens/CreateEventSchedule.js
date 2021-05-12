@@ -56,6 +56,7 @@ export default function CreateEventSchedule() {
             place: place,
             description: description,
             id: eventKey,
+            date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
           })
       )
       .then(() => {

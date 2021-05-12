@@ -29,7 +29,6 @@ export default function Schedule() {
   const screenHeight = Dimensions.get("window").height;
 
   const onOpen = (item) => {
-    console.log("pop up meny", item);
     const modal = modalRef.current;
     setActiveEvent(item);
     console.log("activeeee", activeEvent);
@@ -60,7 +59,7 @@ export default function Schedule() {
             <Text style={styles.eventTitle}>{item.title}</Text>
             <Text style={styles.eventTime}>{item.time}</Text>
           </View>
-          <Text style={styles.eventDescription}>{item.description}</Text>
+          <Text style={styles.eventDescription}>{item.type}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -108,7 +107,6 @@ export default function Schedule() {
       />
       <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
-          <Text style={styles.title}>Event Information</Text>
           {activeEvent != null ? (
             <View>
               <View style={styles.modalEvents}>
@@ -185,12 +183,27 @@ const styles = StyleSheet.create({
   },
   modalEvents: {
     padding: 20,
-    width: "100%",
-    borderRadius: 10,
-    backgroundColor: "#DDDDDD",
     margin: 1,
     padding: 15,
     paddingLeft: 10,
+  },
+  infoBox: {
+    width: "97%",
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    alignItems: "flex-start",
+    padding: 5,
+    marginLeft: 9,
+  },
+  dateTimeBox: {
+    marginLeft: 9,
+    borderRadius: 10,
+    alignItems: "flex-start",
+    padding: 5,
+  },
+  date: {
+    fontSize: 12,
+    color: "#333",
   },
   time: {
     fontSize: 12,
