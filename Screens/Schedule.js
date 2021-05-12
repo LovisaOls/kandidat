@@ -53,6 +53,7 @@ export default function Schedule() {
   }
 
   function renderItems(item) {
+    // Funkar inte att ha loopen här för att se om eventsen är unika, den skriver över eventen redan innan
     return (
       <View>
         <TouchableOpacity style={styles.eventList} onPress={() => onOpen(item)}>
@@ -107,6 +108,7 @@ export default function Schedule() {
         renderItem={renderItems}
         selected={Date()}
         firstDay={1}
+        renderEmptyData={() => null}
       />
       <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
