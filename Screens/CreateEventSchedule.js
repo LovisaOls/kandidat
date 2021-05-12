@@ -63,7 +63,10 @@ export default function CreateEventSchedule() {
       .then(() => {
         //Invite teammembers
         Object.keys(activeTeam.members).map((userId) => {
-          if (activeTeam.members[userId] == true) {
+          if (
+            activeTeam.members[userId] == true &&
+            userId != activeTeam.coach
+          ) {
             firebase
               .database()
               .ref(`/events/${eventKey}/participants/`)
