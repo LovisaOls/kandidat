@@ -45,10 +45,9 @@ const ParticipationRequests = () => {
             return events[eventId].participants != undefined &&
               events[eventId].participants[currentUser.id] == "pending"
               ? Object.keys(events[eventId].eventDetails).map((date) => {
-                  console.log(date, today.substring(0, 10));
                   return date >= today ? (
                     <View key={key} style={styles.requestBox}>
-                      <View>
+                      <View style={{ width: "75%" }}>
                         <Text style={styles.eventTitle}>
                           {events[eventId].eventDetails[date].title}
                         </Text>

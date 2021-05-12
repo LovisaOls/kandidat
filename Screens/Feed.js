@@ -81,17 +81,14 @@ export default function Feed() {
 
     // Kontrollerar om usern redan har likeat inlägget, då ska den inte få likea igen.
     if (post.likes != undefined) {
-      console.log(currentUser.id);
       //Loopar igenom likesen på posten
       Object.keys(post.likes).every((i) => {
-        console.log(i);
         if (i == currentUser.id) {
           alreadyLiked = true;
         } else {
           return true;
         }
       });
-      console.log(alreadyLiked);
       if (alreadyLiked) {
         dispatch(removeLike(post.postId, currentUser.id));
       } else {
