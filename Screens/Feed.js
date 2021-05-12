@@ -119,9 +119,9 @@ export default function Feed() {
             renderItem={({ item }) => (
               <View style={styles.postBorder}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {currentUser.profilePicture ? (
+                  {feedPosts[item].authorPicture ? (
                     <Image
-                      source={{ uri: currentUser.profilePicture }}
+                      source={{ uri: feedPosts[item].authorPicture }}
                       style={{
                         height: 50,
                         width: 50,
@@ -205,9 +205,7 @@ export default function Feed() {
           </FlatList>
         ) : (
           <View>
-            <Text style={styles.noPostsText}>
-              Your team has no posts yet.
-            </Text>
+            <Text style={styles.noPostsText}>Your team has no posts yet.</Text>
           </View>
         )}
       </View>
