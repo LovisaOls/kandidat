@@ -29,7 +29,6 @@ const iconHome = () => <Icon name="ios-home-outline" size={30}></Icon>;
 const iconFeed = () => (
   <Icon name="ios-chatbox-ellipses-outline" size={30}></Icon>
 );
-
 const iconCalendar = () => <Icon name="ios-calendar-outline" size={30}></Icon>;
 
 const iconTactic = () => <Icon name="ios-football" size={30}></Icon>;

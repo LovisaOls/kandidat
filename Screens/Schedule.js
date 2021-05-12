@@ -1,41 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Alert,
+  Dimensions,
+  SafeAreaView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  SafeAreaView,
-  Dimensions
+  View,
 } from "react-native";
 import { Agenda } from "react-native-calendars";
 import { Modalize } from "react-native-modalize";
-
-import TopMenu from "./TopMenu";
-import { useDispatch, useSelector, setState } from "react-redux";
 import { Actions } from "react-native-router-flux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchEvents } from "../actions/index";
-import { FlatList } from "react-native-gesture-handler";
+import TopMenu from "./TopMenu";
 
 export default function Schedule() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
-  const [activeEvent, setActiveEvent] = useState("");
+  const [activeEvent, setActiveEvent] = useState(null);
+  const events = useSelector((state) => state.scheduleEvents);
+  const { teamMembers } = useSelector((state) => state.currentTeams);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchEvents(activeTeam.teamId));
   }, [dispatch]);
 
-  const events = useSelector((state) => state.scheduleEvents);
-
   const modalRef = useRef(null);
   const screenHeight = Dimensions.get("window").height;
 
   const onOpen = (item) => {
-    console.log("pop up meny", item)
+    console.log("pop up meny", item);
     const modal = modalRef.current;
-    setActiveEvent(item)
-
+    setActiveEvent(item);
+    console.log("activeeee", activeEvent);
+    console.log(teamMembers);
     if (modal) {
       modal.open();
     }
@@ -47,9 +45,8 @@ export default function Schedule() {
     if (events != undefined) {
       {
         Object.keys(events).forEach((eventId) => {
-          structuredEvents[
-            Object.keys(events[eventId].eventDetails)
-          ] = Object.values(events[eventId].eventDetails);
+          structuredEvents[Object.keys(events[eventId].eventDetails)] =
+            Object.values(events[eventId].eventDetails);
         });
       }
     }
@@ -58,17 +55,13 @@ export default function Schedule() {
   function renderItems(item) {
     return (
       <View>
-        <TouchableOpacity
-          style={styles.eventList}
-          onPress={() => onOpen(item)}
-        >
+        <TouchableOpacity style={styles.eventList} onPress={() => onOpen(item)}>
           <View style={styles.eventHeader}>
             <Text style={styles.eventTitle}>{item.title}</Text>
             <Text style={styles.eventTime}>{item.time}</Text>
           </View>
           <Text style={styles.eventDescription}>{item.description}</Text>
         </TouchableOpacity>
-
       </View>
     );
   }
@@ -113,22 +106,61 @@ export default function Schedule() {
         selected={Date()}
         firstDay={1}
       />
-      <Modalize
-        ref={modalRef}
-        snapPoint={500}
-        modalHeight={screenHeight * 0.80}
-      >
+      <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
           <Text style={styles.title}>Event Information</Text>
           {activeEvent != null ? (
-            <View style={styles.modalEvents}>
-              <Text style={styles.eventTitle}>{activeEvent.title}</Text>
-              <Text style={styles.time}>{activeEvent.time}</Text>
-              <Text style={styles.type}>{activeEvent.type}</Text>
-              <Text style={styles.place}>{activeEvent.place}</Text>
-              <Text style={styles.description}>{activeEvent.description}</Text>
-            </View>)
-            : (null)}
+            <View>
+              <View style={styles.modalEvents}>
+                <Text style={styles.eventTitle}>{activeEvent.title}</Text>
+                <Text style={styles.time}>{activeEvent.time}</Text>
+                <Text style={styles.type}>{activeEvent.type}</Text>
+                <Text style={styles.place}>{activeEvent.place}</Text>
+                <Text style={styles.description}>
+                  {activeEvent.description}
+                </Text>
+              </View>
+              <Text style={styles.title}>Pending</Text>
+              {Object.keys(teamMembers).map((userId) => {
+                return events[activeEvent.id].participants[
+                  teamMembers[userId].id
+                ] == "pending" ? (
+                  <View>
+                    <Text>
+                      {teamMembers[userId].firstName}{" "}
+                      {teamMembers[userId].lastName}
+                    </Text>
+                  </View>
+                ) : null;
+              })}
+              <Text style={styles.title}>Coming</Text>
+              {Object.keys(teamMembers).map((userId) => {
+                return events[activeEvent.id].participants[
+                  teamMembers[userId].id
+                ] == true ? (
+                  <View>
+                    <Text>
+                      {teamMembers[userId].firstName}{" "}
+                      {teamMembers[userId].lastName}
+                    </Text>
+                  </View>
+                ) : null;
+              })}
+              <Text style={styles.title}>Not Coming</Text>
+              {Object.keys(teamMembers).map((userId) => {
+                return events[activeEvent.id].participants[
+                  teamMembers[userId].id
+                ] == false ? (
+                  <View>
+                    <Text>
+                      {teamMembers[userId].firstName}{" "}
+                      {teamMembers[userId].lastName}
+                    </Text>
+                  </View>
+                ) : null;
+              })}
+            </View>
+          ) : null}
         </View>
       </Modalize>
     </SafeAreaView>
@@ -151,7 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  modalEvents : {
+  modalEvents: {
     padding: 20,
     width: "100%",
     borderRadius: 10,
@@ -165,7 +197,7 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   modal: {
-    justifyContent: "center"
+    justifyContent: "center",
   },
   eventTitle: {
     fontWeight: "bold",

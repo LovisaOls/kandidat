@@ -50,7 +50,6 @@ const MembershipRequests = () => {
               </Text>
               <View style={styles.buttons}>
                 <TouchableOpacity
-                  style={styles.acceptButton}
                   onPress={() => onAcceptPressed(teamMembers[key].id)}
                 >
                   <Icon
@@ -60,10 +59,13 @@ const MembershipRequests = () => {
                   ></Icon>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.declineButton}
                   onPress={() => onDeclinePressed(teamMembers[key].id)}
                 >
-                  <Icon name="close-circle-sharp" size={30} color="red"></Icon>
+                  <Icon
+                    name="close-circle-sharp"
+                    size={30}
+                    color="tomato"
+                  ></Icon>
                 </TouchableOpacity>
               </View>
             </View>
