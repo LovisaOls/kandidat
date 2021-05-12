@@ -23,7 +23,6 @@ export default function CreateFeed() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const onCancelPostPressed = () => {
-    // Här vill vi ändra så man kmr tillbaka till feedet, men vet inte hur utan att tappa bottommenu
     Actions.pop();
   };
 
@@ -45,16 +44,11 @@ export default function CreateFeed() {
           comments: [],
           likes: [],
         })
-
-        // Skapa en reducer + action!! BOB
-        /* navigation.navigate("Feed", {post: {
-                name: "Namn",
-                text: textValue,
-                createdOn: dateTime.getTime()}}) */
         .catch((error) => {
           alert(error);
         });
     }
+    Actions.pop();
     setValue("");
   };
 

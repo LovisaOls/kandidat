@@ -15,6 +15,7 @@ import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
 import MembershipRequests from "./MembershipRequests";
+import ParticipationRequests from "./ParticipationRequests";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers } from "../../actions/index";
 
@@ -105,16 +106,11 @@ export default function Home() {
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>Participation Requests</Text>
-          <Text> You don't have any requests right now! </Text>
+          <ParticipationRequests />
         </View>
       )}
 
-      <Modalize
-        ref={modalRef}
-        snapPoint={500}
-        modalHeight={screenHeight * 0.80}
-      >
+      <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
           <Text style={styles.title}> Team members </Text>
           {teamMembers &&
