@@ -15,7 +15,6 @@ import TopMenu from "./TopMenu";
 import { useDispatch, useSelector, setState } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { fetchEvents } from "../actions/index";
-import { FlatList } from "react-native-gesture-handler";
 
 export default function Schedule() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
@@ -55,6 +54,7 @@ export default function Schedule() {
   }
 
   function renderItems(item) {
+    // Funkar inte att ha loopen här för att se om eventsen är unika, den skriver över eventen redan innan
     return (
       <View>
         <TouchableOpacity
@@ -111,6 +111,7 @@ export default function Schedule() {
         renderItem={renderItems}
         selected={Date()}
         firstDay={1}
+        renderEmptyData={() => null}
       />
       <Modalize
         ref={modalRef}

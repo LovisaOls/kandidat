@@ -212,8 +212,7 @@ export default function Feed() {
         ) : (
           <View>
             <Text style={styles.noPostsText}>
-              There are no posts yet :( Click on the plus to create the first
-              one and start chatting with your team!
+              Your team has no posts yet.
             </Text>
           </View>
         )}
