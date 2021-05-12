@@ -43,7 +43,6 @@ export default function CreateEventSchedule() {
     eventRef
       .set({
         teamId: activeTeam.teamId,
-        eventId: eventKey,
       })
       .then(
         firebase
@@ -56,10 +55,23 @@ export default function CreateEventSchedule() {
             time: `${hoursFormatted}:${minutesFormatted}`,
             place: place,
             description: description,
+            id: eventKey,
             date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
             eventId: eventKey,
           })
       )
+      .then(() => {
+        //Invite teammembers
+        Object.keys(activeTeam.members).map((userId) => {
+          if (activeTeam.members[userId] == true) {
+            firebase
+              .database()
+              .ref(`/events/${eventKey}/participants/`)
+              .child(userId)
+              .set("pending");
+          }
+        });
+      })
       .then(() => {
         Actions.pop();
       })
