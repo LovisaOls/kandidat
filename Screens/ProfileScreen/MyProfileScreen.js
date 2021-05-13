@@ -53,10 +53,10 @@ function MyProfileScreen() {
             />
           ) : (
             <View style={styles.initialCircle}>
-              <Text style={styles.initialText}>
+              {/*  <Text style={styles.initialText}>
                 {currentUser && currentUser.firstName[0]}
                 {currentUser && currentUser.lastName[0]}
-              </Text>
+              </Text> */}
             </View>
           )}
           <Text style={styles.name}>
