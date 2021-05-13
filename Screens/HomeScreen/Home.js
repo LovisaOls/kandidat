@@ -117,26 +117,50 @@ export default function Home() {
             Object.keys(teamMembers).map((key, i) => {
               return teamMembers[key].teams[activeTeam.teamId] == true ? (
                 <View key={i} style={styles.viewMembers}>
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    {teamMembers[key].profilePicture ? (
-                      <Image
-                        source={{ uri: teamMembers[key].profilePicture }}
-                        style={{
-                          height: 50,
-                          width: 50,
-                          borderRadius: 25,
-                          marginRight: 10,
-                        }}
-                      />
-                    ) : (
-                      <Icon name="person-circle-outline" size={45}></Icon>
-                    )}
-                    <View>
-                      <Text style={styles.nameTeamMember}>
-                        {teamMembers[key].firstName} {teamMembers[key].lastName}
-                      </Text>
-                      <Text>{teamMembers[key].email}</Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      {teamMembers[key].profilePicture ? (
+                        <Image
+                          source={{ uri: teamMembers[key].profilePicture }}
+                          style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            marginRight: 10,
+                          }}
+                        />
+                      ) : (
+                        <View style={styles.initialCircle}>
+                          <Text style={styles.initialText}>
+                            {teamMembers[key].firstName[0]}
+                            {teamMembers[key].lastName[0]}
+                          </Text>
+                        </View>
+                      )}
+
+                      <View>
+                        <Text style={styles.nameTeamMember}>
+                          {teamMembers[key].firstName}{" "}
+                          {teamMembers[key].lastName}
+                        </Text>
+                        <Text>{teamMembers[key].email}</Text>
+                      </View>
                     </View>
+
+                    {teamMembers[key].id == activeTeam.coach ? (
+                      <View style={{ alignItems: "center" }}>
+                        <Icon name="shield" color="purple" size={20}></Icon>
+                        <Text style={{ fontSize: 12 }}>Coach</Text>
+                      </View>
+                    ) : null}
                   </View>
                 </View>
               ) : null;
@@ -215,9 +239,8 @@ const styles = StyleSheet.create({
   viewMembers: {
     width: "100%",
     borderRadius: 10,
-    backgroundColor: "#DDDDDD",
     margin: 1,
-    padding: 15,
+    padding: 5,
   },
   modal: {
     padding: 20,
@@ -292,6 +315,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
+  },
+  initialCircle: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initialText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 
   /* --------------------------------------------- */

@@ -48,9 +48,18 @@ const ParticipationRequests = () => {
                   return date >= today ? (
                     <View key={key} style={styles.requestBox}>
                       <View style={{ width: "75%" }}>
-                        <Text style={styles.eventTitle}>
-                          {events[eventId].eventDetails[date].title}
-                        </Text>
+                        <View
+                          style={{ flexDirection: "row", alignItems: "center" }}
+                        >
+                          <View style={styles.eventType}>
+                            <Text style={styles.eventTypeText}>
+                              {events[eventId].eventDetails[date].type}
+                            </Text>
+                          </View>
+                          <Text style={styles.eventTitle}>
+                            {events[eventId].eventDetails[date].title}
+                          </Text>
+                        </View>
                         <Text style={styles.eventDate}>{date}</Text>
                       </View>
                       <View
@@ -114,10 +123,21 @@ const styles = StyleSheet.create({
   eventTitle: {
     fontWeight: "bold",
     fontSize: 16,
+    margin: 5,
   },
   eventDate: {
     fontSize: 14,
     marginVertical: 5,
+  },
+  eventType: {
+    backgroundColor: "green",
+    borderRadius: 5,
+    padding: 5,
+  },
+  eventTypeText: {
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 12,
   },
 });
 

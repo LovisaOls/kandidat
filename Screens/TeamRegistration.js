@@ -30,9 +30,8 @@ function TeamRegistration() {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("You have not allowed premission to your cameraroll");
         }
@@ -75,7 +74,10 @@ function TeamRegistration() {
     if (teamName != "" && city != "") {
       await uploadImage();
     } else {
-      Alert.alert("Please fill in both city and name for your team");
+      Alert.alert(
+        "Empty fields...",
+        "Please make sure you have filled in both a city and a name for your team"
+      );
       return;
     }
   };
