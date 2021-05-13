@@ -130,7 +130,11 @@ export default function Feed() {
                       }}
                     />
                   ) : (
-                    <Icon name="person-circle-outline" size={45}></Icon>
+                    <View style={styles.initialCircle}>
+                      <Text style={styles.initialText}>
+                        {feedPosts[item].author.split(" ")[0][0]}
+                      </Text>
+                    </View>
                   )}
                   <View>
                     <Text style={styles.postName}>
@@ -415,5 +419,20 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     marginBottom: 5,
     paddingBottom: 5,
+  },
+  initialCircle: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    margin: 5,
+    marginRight: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initialText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

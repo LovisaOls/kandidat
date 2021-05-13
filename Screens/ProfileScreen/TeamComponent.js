@@ -14,13 +14,21 @@ const TeamComponent = ({ team }) => {
   };
 
   const onPendingPressed = () => {
-    Alert.alert("Waiting for the coach to accept your membership :) ");
+    Alert.alert(
+      "Pending Membership Request",
+      "Waiting for the coach to accept your membership request "
+    );
   };
 
   return team.members[currentUser.id] == true ? (
     <View style={styles.teamBox}>
       <TouchableOpacity style={styles.teamBox} onPress={() => onTeamPressed()}>
-        <Text style={styles.teamsText}>{team.teamName}</Text>
+        <View style={{ alignItems: "center", flexDirection: "row", margin: 1 }}>
+          {currentUser.id == team.coach ? (
+            <Icon name="shield-outline" size={20} color="black"></Icon>
+          ) : null}
+          <Text style={styles.teamsText}>{team.teamName}</Text>
+        </View>
         <Icon style={styles.teamsText} name="chevron-forward-outline"></Icon>
       </TouchableOpacity>
     </View>
@@ -38,7 +46,8 @@ const TeamComponent = ({ team }) => {
 const styles = StyleSheet.create({
   teamsText: {
     fontSize: 20,
-    padding: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 5,
   },
 
   teamBox: {
@@ -48,6 +57,7 @@ const styles = StyleSheet.create({
     margin: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   teamBoxPending: {
     width: "100%",
