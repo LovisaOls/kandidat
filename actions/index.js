@@ -151,7 +151,10 @@ export const joinTeam = (userId, teamId) => {
           .set(false);
         Actions.Profile();
       } else {
-        Alert.alert("Invalid TeamId");
+        Alert.alert(
+          "Invalid TeamId",
+          "Make sure you have entered a valid teamId"
+        );
       }
     });
   };
@@ -231,7 +234,6 @@ export const fetchTeamMembers = (teamId) => {
   };
 };
 
-// Här skapas en kommentar till en post
 export const createComment = (postId, commentText, firstname, lastname) => {
   return (dispatch) => {
     const commentRef = firebase
@@ -246,7 +248,6 @@ export const createComment = (postId, commentText, firstname, lastname) => {
   };
 };
 
-// User likes a post
 export const like = (postId, userId) => {
   return (dispatch) => {
     const likesRef = firebase
@@ -257,7 +258,6 @@ export const like = (postId, userId) => {
   };
 };
 
-// Remove like from post
 export const removeLike = (postId, userId) => {
   return (dispatch) => {
     firebase.database().ref(`/feed/${postId}/likes/${userId}`).remove();
@@ -270,5 +270,8 @@ export const removePost = (postId) => {
   };
 }
 
-
-
+export const removeTactic = (tacticId) => {
+  return () => {
+    firebase.database().ref(`/tactics/${tacticId}`).remove();
+  };
+};

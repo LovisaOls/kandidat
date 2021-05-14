@@ -7,7 +7,7 @@ import MyProfileScreen from "./Screens/ProfileScreen/MyProfileScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import TacticsCoach from "./Screens/TacticsCoach";
 import WelcomeScreen from "./Screens/WelcomeScreen";
-import Schedule from "./Screens/Schedule";
+import Schedule from "./Screens/Schedule/Schedule";
 import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
@@ -29,7 +29,6 @@ const iconHome = () => <Icon name="ios-home-outline" size={30}></Icon>;
 const iconFeed = () => (
   <Icon name="ios-chatbox-ellipses-outline" size={30}></Icon>
 );
-
 const iconCalendar = () => <Icon name="ios-calendar-outline" size={30}></Icon>;
 
 const iconTactic = () => <Icon name="ios-football" size={30}></Icon>;
@@ -74,8 +73,8 @@ export default function App() {
               <Scene
                 key="TacticsCoach"
                 hideNavBar={true}
-                title="Tactics"
-                component={CreateTactic}
+                title=" Tactics"
+                component={TacticsCoach}
                 icon={iconTactic}
               />
             </Scene>

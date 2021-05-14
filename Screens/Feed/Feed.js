@@ -24,6 +24,7 @@ import Posts from "./Posts";
 
 export default function Feed() {
   const screenHeight = Dimensions.get("window").height;
+  const screenWidth = Dimensions.get("window").width;
   const currentUser = useSelector((state) => state.currentUser);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -109,7 +110,7 @@ export default function Feed() {
           <Text style={styles.title}> Comments </Text>
           {activePost != null ? (
             <View>
-              <View>
+              <View style={styles.modalPost}>
                 <Text style={styles.postName}>
                   {feedPosts[activePost].author}
                 </Text>
@@ -123,12 +124,6 @@ export default function Feed() {
                 </Text>
               </View>
               <FlatList
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  ></RefreshControl>
-                }
                 data={
                   feedPosts[activePost].comments &&
                   Object.keys(feedPosts[activePost].comments)
@@ -139,7 +134,7 @@ export default function Feed() {
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
                       <View>
-                        <Text>
+                        <Text style={{ fontWeight: "bold" }}>
                           {feedPosts[activePost].comments[item].author}
                         </Text>
                       </View>
@@ -151,27 +146,31 @@ export default function Feed() {
             </View>
           ) : null}
           <View style={styles.inputBox}>
-            <TextInput
-              placeholder={"Type your comment here"}
-              onChangeText={(text) => setCommentText(text)}
-              value={commentText}
-              multiline
-              style={styles.input}
-            ></TextInput>
-            <TouchableOpacity
-              style={styles.commentButton}
-              onPress={() => onCreateComment()}
-            >
-              {commentText == "" ? (
-                <Icon
-                  name="chatbubble-ellipses-outline"
-                  size={25}
-                  color="white"
-                ></Icon>
-              ) : (
-                <Icon name="arrow-up-outline" size={25} color="white"></Icon>
-              )}
-            </TouchableOpacity>
+            <View>
+              <TextInput
+                placeholder={"Type your comment here"}
+                onChangeText={(text) => setCommentText(text)}
+                value={commentText}
+                multiline
+                style={styles.input}
+              ></TextInput>
+            </View>
+            <View>
+              <TouchableOpacity
+                style={styles.commentButton}
+                onPress={() => onCreateComment()}
+              >
+                {commentText == "" ? (
+                  <Icon
+                    name="chatbubble-ellipses-outline"
+                    size={25}
+                    color="white"
+                  ></Icon>
+                ) : (
+                  <Icon name="arrow-up-outline" size={25} color="white"></Icon>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modalize>
@@ -230,13 +229,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    borderWidth: 0.25,
-    borderRadius: 10,
-    padding: 10,
     fontSize: 16,
-    width: "80%",
-    position: "absolute",
-    bottom: 0,
+    height: 48,
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    paddingLeft: 16,
+    marginHorizontal: 15,
+    width: screenWidth * 0.65,
   },
   commentBorder: {
     margin: 10,
@@ -252,15 +251,37 @@ const styles = StyleSheet.create({
   },
   commentButton: {
     backgroundColor: "green",
-    height: 60,
-    width: 60,
-    borderRadius: 30,
+    height: screenWidth * 0.15,
+    width: screenWidth * 0.15,
+    borderRadius: (screenWidth * 0.15) / 2,
     alignItems: "center",
     justifyContent: "center",
   },
   inputBox: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  modalPost: {
+    borderBottomWidth: 1,
+    borderStyle: "solid",
+    borderColor: "#DDDDDD",
+    marginBottom: 5,
+    paddingBottom: 5,
+  },
+  initialCircle: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
     margin: 5,
+    marginRight: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initialText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

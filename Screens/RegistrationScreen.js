@@ -29,9 +29,8 @@ export default function RegistrationScreen() {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
           alert("You have not allowed premission to your cameraroll");
         }
@@ -72,7 +71,7 @@ export default function RegistrationScreen() {
 
   const onRegisterPress = async () => {
     if (password !== confirmPassword) {
-      alert("Passwords are not the same");
+      alert("Passwords are not matching");
       return;
     }
     await uploadImage();
