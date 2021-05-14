@@ -177,7 +177,8 @@ export default function Feed() {
     </SafeAreaView>
   );
 }
-
+const screenHeight = Dimensions.get("window").height;
+const screenWidth = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",

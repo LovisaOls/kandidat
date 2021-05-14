@@ -1,27 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../../actions/index";
 import { like } from "../../actions/index";
-import { createComment } from "../../actions/index";
 
 import { removeLike } from "../../actions/index";
 import { removePost } from "../../actions/index";
 import firebase from "firebase/app";
 import "firebase/database";
-import { Actions } from "react-native-router-flux";
 require("firebase/auth");
 
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 const Posts = ({ item, onOpenComments }) => {
   const currentUser = useSelector((state) => state.currentUser);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
 
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
@@ -30,9 +23,6 @@ const Posts = ({ item, onOpenComments }) => {
   }, [dispatch]);
 
   const { feedPosts } = useSelector((state) => state.feedPosts);
-
-  const [activePost, setActivePost] = useState(null);
-  const [commentText, setCommentText] = useState("");
 
   const onLikePressed = (post) => {
     let alreadyLiked = false;
