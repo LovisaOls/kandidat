@@ -267,3 +267,9 @@ export const removeLike = (postId, userId) => {
     // dispatch({ type: "DECLINE_MEMBER" });
   };
 };
+
+export const removeTactic = (tacticId) => {
+  return () => {
+    firebase.database().ref(`/tactics/${tacticId}`).remove();
+  };
+};

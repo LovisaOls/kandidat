@@ -73,8 +73,8 @@ export default function App() {
               <Scene
                 key="TacticsCoach"
                 hideNavBar={true}
-                title="Tactics"
-                component={CreateTactic}
+                title=" Tactics"
+                component={TacticsCoach}
                 icon={iconTactic}
               />
             </Scene>
