@@ -90,11 +90,14 @@ export default function Feed() {
           <FlatList
             data={feedPosts && Object.keys(feedPosts).reverse()}
             renderItem={({ item, index }) => (
-              <Posts item={item} onOpenComments={onOpenComments} />
+              <Posts
+                item={item}
+                onOpenComments={onOpenComments}
+                setActivePost={setActivePost}
+                key={index}
+              />
             )}
-          >
-            keyExtractor={(item) => item.createdOn + ""}
-          </FlatList>
+          ></FlatList>
         ) : (
           <View>
             <Text style={styles.noPostsText}>
