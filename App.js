@@ -7,11 +7,10 @@ import MyProfileScreen from "./Screens/ProfileScreen/MyProfileScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import TacticsCoach from "./Screens/TacticsCoach";
 import WelcomeScreen from "./Screens/WelcomeScreen";
-import Schedule from "./Screens/Schedule";
+import Schedule from "./Screens/Schedule/Schedule";
 import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
-import CommentScreen from "./Screens/CommentScreen";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
 import CreateFeed from "./Screens/CreateFeed";
 import Feed from "./Screens/Feed";
@@ -30,7 +29,6 @@ const iconHome = () => <Icon name="ios-home-outline" size={30}></Icon>;
 const iconFeed = () => (
   <Icon name="ios-chatbox-ellipses-outline" size={30}></Icon>
 );
-
 const iconCalendar = () => <Icon name="ios-calendar-outline" size={30}></Icon>;
 
 const iconTactic = () => <Icon name="ios-football" size={30}></Icon>;
@@ -43,7 +41,7 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Stack>
-          <Scene key="root" hideNavBar={true}>
+          <Scene key="root" hideNavBar={true} gesturesEnabled={false}>
             <Scene key="Loading" component={LoadingScreen} />
             <Scene
               key="BottomMenu"
@@ -55,14 +53,14 @@ export default function App() {
                 key="Home"
                 component={Home}
                 hideNavBar={true}
-                title=" Home"
+                title="Home"
                 icon={iconHome}
               />
               <Scene
                 key="feed"
                 component={Feed}
                 hideNavBar={true}
-                title=" Feed"
+                title="Feed"
                 icon={iconFeed}
               />
               <Scene
@@ -99,7 +97,6 @@ export default function App() {
             <Scene key="Feed" component={Feed} />
             <Scene key="TacticsCoach" component={TacticsCoach} />
             <Scene key="CreateEventSchedule" component={CreateEventSchedule} />
-            <Scene key="Comment" component={CommentScreen} />
             <Scene key="CreateTactic" component={CreateTactic} />
           </Scene>
         </Stack>

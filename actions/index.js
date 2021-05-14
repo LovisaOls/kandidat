@@ -151,7 +151,10 @@ export const joinTeam = (userId, teamId) => {
           .set(false);
         Actions.Profile();
       } else {
-        Alert.alert("Invalid TeamId");
+        Alert.alert(
+          "Invalid TeamId",
+          "Make sure you have entered a valid teamId"
+        );
       }
     });
   };

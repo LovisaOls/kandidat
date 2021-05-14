@@ -6,10 +6,11 @@ import { useSelector } from "react-redux";
 
 export default function TopMenu() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const currentUser = useSelector((state) => state.currentUser);
 
-  const onSettingsPressed = () => {
+  /*   const onSettingsPressed = () => {
     Actions.Settings();
-  };
+  }; */
 
   const onProfilePressed = () => {
     Actions.Profile();
@@ -18,13 +19,19 @@ export default function TopMenu() {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <Text style={styles.teamName}>{activeTeam.teamName} </Text>
+          {activeTeam.coach == currentUser.id ? (
+            <Icon name="shield-outline" size={20} color="purple"></Icon>
+          ) : null}
+        </View>
         <TouchableOpacity onPress={() => onProfilePressed()}>
           <Icon name="person-outline" size={30}></Icon>
         </TouchableOpacity>
-        <Text style={styles.teamName}>{activeTeam.teamName}</Text>
-        <TouchableOpacity onPress={() => onSettingsPressed()}>
+
+        {/*         <TouchableOpacity onPress={() => onSettingsPressed()}>
           <Icon name="settings-outline" size={30}></Icon>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );
@@ -38,7 +45,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   teamName: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
   },
 });

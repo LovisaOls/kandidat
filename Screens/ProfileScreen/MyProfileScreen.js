@@ -52,7 +52,12 @@ function MyProfileScreen() {
               style={styles.image}
             />
           ) : (
-            <Icon name="person-circle-outline" size={100}></Icon>
+            <View style={styles.initialCircle}>
+              {/*  <Text style={styles.initialText}>
+                {currentUser && currentUser.firstName[0]}
+                {currentUser && currentUser.lastName[0]}
+              </Text> */}
+            </View>
           )}
           <Text style={styles.name}>
             {currentUser.firstName} {currentUser.lastName}
@@ -112,15 +117,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     textAlign: "center",
     margin: 10,
+    marginTop: 20,
     fontWeight: "bold",
   },
   myTeamsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10,
-  },
-  teamsText: {
-    fontSize: 30,
   },
   teamsBox: {
     margin: 10,
@@ -149,6 +152,20 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
+  },
+  initialCircle: {
+    height: screenWidth * 0.35,
+    width: screenWidth * 0.35,
+    borderRadius: (screenWidth * 0.35) / 2,
+    margin: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initialText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 50,
   },
 });
 

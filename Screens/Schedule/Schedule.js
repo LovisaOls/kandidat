@@ -1,43 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
-  Alert,
+  Dimensions,
+  SafeAreaView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  SafeAreaView,
+  View,
 } from "react-native";
 import { Agenda } from "react-native-calendars";
-import TopMenu from "./TopMenu";
-import { useDispatch, useSelector } from "react-redux";
+import { Modalize } from "react-native-modalize";
 import { Actions } from "react-native-router-flux";
-import { fetchEvents } from "../actions/index";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchEvents } from "../../actions/index";
+import TopMenu from "../TopMenu";
+import EventModule from "./EventModule";
 
 export default function Schedule() {
+  const [activeEvent, setActiveEvent] = useState(null);
+  const events = useSelector((state) => state.scheduleEvents);
+  const modalRef = useRef(null);
+  const screenHeight = Dimensions.get("window").height;
+
   const { activeTeam } = useSelector((state) => state.currentTeams);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchEvents(activeTeam.teamId));
   }, [dispatch]);
 
-  const events = useSelector((state) => state.scheduleEvents);
-
-  function renderItems(item) {
-    return (
-      <TouchableOpacity
-        style={styles.hej}
-        onPress={() => Alert.alert(item.description)}
-      >
-        <Text>{item.title}</Text>
-        <Text>{item.time}</Text>
-        <Text>{item.description}</Text>
-      </TouchableOpacity>
-    );
-  }
-
-  function rowHasChanged(r1, r2) {
-    return r1.name !== r2.name;
-  }
+  const onOpen = (item) => {
+    const modal = modalRef.current;
+    setActiveEvent(item);
+    if (modal) {
+      modal.open();
+    }
+  };
 
   let structuredEvents = {};
 
@@ -45,12 +42,28 @@ export default function Schedule() {
     if (events != undefined) {
       {
         Object.keys(events).forEach((eventId) => {
-          structuredEvents[
-            Object.keys(events[eventId].eventDetails)
-          ] = Object.values(events[eventId].eventDetails);
+          structuredEvents[Object.keys(events[eventId].eventDetails)] =
+            Object.values(events[eventId].eventDetails);
         });
       }
     }
+  }
+
+  function renderItems(item) {
+    // Funkar inte att ha loopen här för att se om eventsen är unika, den skriver över eventen redan innan
+    return (
+      <View>
+        <TouchableOpacity style={styles.eventList} onPress={() => onOpen(item)}>
+          <View style={styles.eventHeader}>
+            <View style={{ width: "80%" }}>
+              <Text style={styles.eventTitle}>{item.title}</Text>
+            </View>
+            <Text style={styles.eventTime}>{item.time}</Text>
+          </View>
+          <Text style={styles.eventDescription}>{item.type}</Text>
+        </TouchableOpacity>
+      </View>
+    );
   }
 
   structureEvents();
@@ -84,33 +97,55 @@ export default function Schedule() {
               paddingBottom: 7,
               backgroundColor: "green",
             },
-            /* dotColor: "purple",
-          selectedDotColor: "purple", */
           },
         }}
-        // Max amount of months allowed to scroll to the past. Default = 50
         pastScrollRange={12}
-        // Max amount of months allowed to scroll to the future. Default = 50
         futureScrollRange={12}
         items={structuredEvents}
         renderItem={renderItems}
         selected={Date()}
         firstDay={1}
-        //rowHasChanged={rowHasChanged()}
+        renderEmptyData={() => null}
       />
+      <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
+        <EventModule activeEvent={activeEvent} />
+      </Modalize>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  hej: {
+  eventList: {
     backgroundColor: "white",
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17,
+    marginTop: 30,
+    borderLeftWidth: 2,
+    borderLeftColor: "green",
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
   },
-
+  eventHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  date: {
+    fontSize: 16,
+    color: "#333",
+    margin: 5,
+  },
+  time: {
+    fontSize: 16,
+    color: "#333",
+    margin: 5,
+  },
+  modal: {
+    justifyContent: "center",
+  },
+  eventTitle: {
+    fontWeight: "bold",
+  },
   container: {
     flex: 1,
     backgroundColor: "white",
@@ -134,16 +169,20 @@ const styles = StyleSheet.create({
     backgroundColor: "green",
     marginLeft: 40,
   },
-  emptyDate: {
-    backgroundColor: "white",
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-  },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     margin: 10,
+  },
+  type: {
+    backgroundColor: "green",
+    padding: 10,
+    margin: 5,
+    borderRadius: 10,
+  },
+  description: {
+    fontSize: 16,
+    color: "#333",
+    margin: 5,
   },
 });
