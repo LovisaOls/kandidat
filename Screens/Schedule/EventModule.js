@@ -43,12 +43,12 @@ const EventModule = ({ activeEvent }) => {
             <View>
               <Text style={styles.subTitle}>Going</Text>
               <ScrollView horizontal={true}>
-                {Object.keys(teamMembers).map((userId) => {
+                {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.id].participants[
                       teamMembers[userId].id
                     ] == true ? (
-                    <View style={styles.modalUser}>
+                    <View style={styles.modalUser} key={i}>
                       {teamMembers[userId].profilePicture != undefined ? (
                         <Image
                           source={{
@@ -75,12 +75,12 @@ const EventModule = ({ activeEvent }) => {
 
               <Text style={styles.subTitle}>Not Going</Text>
               <ScrollView horizontal={true}>
-                {Object.keys(teamMembers).map((userId) => {
+                {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.id].participants[
                       teamMembers[userId].id
                     ] == false ? (
-                    <View style={styles.modalUser}>
+                    <View style={styles.modalUser} key={i}>
                       {teamMembers[userId].profilePicture != undefined ? (
                         <Image
                           source={{
@@ -106,12 +106,12 @@ const EventModule = ({ activeEvent }) => {
               </ScrollView>
               <Text style={styles.subTitle}>Pending</Text>
               <ScrollView horizontal={true}>
-                {Object.keys(teamMembers).map((userId) => {
+                {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.id].participants[
                       teamMembers[userId].id
                     ] == "pending" ? (
-                    <View style={styles.modalUser}>
+                    <View style={styles.modalUser} key={i}>
                       {teamMembers[userId].profilePicture != undefined ? (
                         <Image
                           source={{
