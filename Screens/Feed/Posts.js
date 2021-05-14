@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
@@ -47,6 +47,7 @@ const Posts = ({ item, onOpenComments }) => {
     }
   };
 
+  const [activePost, setActivePost] = useState(null);
   const swipeableRef = useRef(null);
   const deletePost = (post) => {
     setActivePost(null);
