@@ -44,7 +44,7 @@ function MyProfileScreen() {
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <ScrollView>
         <View style={styles.profileIcon}>
-          {currentUser.profilePicture ? (
+          {currentUser && currentUser.profilePicture ? (
             <Image
               source={{
                 uri: currentUser.profilePicture,
@@ -53,15 +53,15 @@ function MyProfileScreen() {
             />
           ) : (
             <View style={styles.initialCircle}>
-              {/*  <Text style={styles.initialText}>
-                {currentUser && currentUser.firstName[0]}
-                {currentUser && currentUser.lastName[0]}
-              </Text> */}
+              <Icon style={styles.initialText} name="person-outline"></Icon>
             </View>
           )}
-          <Text style={styles.name}>
-            {currentUser.firstName} {currentUser.lastName}
-          </Text>
+          <View>
+            <Text style={styles.name}>
+              {currentUser.firstName} {currentUser.lastName}
+            </Text>
+            <Text style={styles.email}>{currentUser.email}</Text>
+          </View>
         </View>
         <View style={styles.myTeamsHeader}>
           <Text style={styles.title}> My Teams </Text>
@@ -120,6 +120,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontWeight: "bold",
   },
+  email: {
+    marginHorizontal: 10,
+    fontSize: 16,
+  },
+
   myTeamsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -164,8 +169,7 @@ const styles = StyleSheet.create({
   },
   initialText: {
     color: "white",
-    fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 60,
   },
 });
 
