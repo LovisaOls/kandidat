@@ -43,7 +43,6 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
     }
   };
 
-  const [activePost, setActivePost] = useState(null);
   const swipeableRef = useRef(null);
   const deletePost = (post) => {
     setActivePost(null);
