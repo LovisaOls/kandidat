@@ -7,13 +7,9 @@ import { like } from "../../actions/index";
 
 import { removeLike } from "../../actions/index";
 import { removePost } from "../../actions/index";
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
-
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
-const Posts = ({ item, onOpenComments }) => {
+const Posts = ({ item, onOpenComments, setActivePost }) => {
   const currentUser = useSelector((state) => state.currentUser);
 
   const { activeTeam } = useSelector((state) => state.currentTeams);
