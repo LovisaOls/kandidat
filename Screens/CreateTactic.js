@@ -22,47 +22,47 @@ export default function CreateTactic() {
   const [title, setTitle] = useState("");
 
 
-  const [player1, setPlayer1] = useState("");
+  const [initial1, setPlayer1] = useState("");
   const [positionX1, setPositionX1] = useState("");
   const [positionY1, setPositionY1] = useState("");
 
-  const [player2, setPlayer2] = useState("");
+  const [initial2, setPlayer2] = useState("");
   const [positionX2, setPositionX2] = useState("");
   const [positionY2, setPositionY2] = useState("");
 
-  const [player3, setPlayer3] = useState("");
+  const [initial3, setPlayer3] = useState("");
   const [positionX3, setPositionX3] = useState("");
   const [positionY3, setPositionY3] = useState("");
 
-  const [player4, setPlayer4] = useState("");
+  const [initial4, setPlayer4] = useState("");
   const [positionX4, setPositionX4] = useState("");
   const [positionY4, setPositionY4] = useState("");
 
-  const [player5, setPlayer5] = useState("");
+  const [initial5, setPlayer5] = useState("");
   const [positionX5, setPositionX5] = useState("");
   const [positionY5, setPositionY5] = useState("");
 
-  const [player6, setPlayer6] = useState("");
+  const [initial6, setPlayer6] = useState("");
   const [positionX6, setPositionX6] = useState("");
   const [positionY6, setPositionY6] = useState("");
 
-  const [player7, setPlayer7] = useState("");
+  const [initial7, setPlayer7] = useState("");
   const [positionX7, setPositionX7] = useState("");
   const [positionY7, setPositionY7] = useState("");
 
-  const [player8, setPlayer8] = useState("");
+  const [initial8, setPlayer8] = useState("");
   const [positionX8, setPositionX8] = useState("");
   const [positionY8, setPositionY8] = useState("");
 
-  const [player9, setPlayer9] = useState("");
+  const [initial9, setPlayer9] = useState("");
   const [positionX9, setPositionX9] = useState("");
   const [positionY9, setPositionY9] = useState("");
 
-  const [player10, setPlayer10] = useState("");
+  const [initial10, setPlayer10] = useState("");
   const [positionX10, setPositionX10] = useState("");
   const [positionY10, setPositionY10] = useState("");
 
-  const [player11, setPlayer11] = useState("");
+  const [initial11, setPlayer11] = useState("");
   const [positionX11, setPositionX11] = useState("");
   const [positionY11, setPositionY11] = useState("");
 
@@ -120,71 +120,50 @@ export default function CreateTactic() {
         teamId: activeTeam.teamId,
         tacticId: tacticKey,
         title: title,
-        player1: {
-          initial: player1,
-          positionX1,
-          positionY1,
-        },
 
-        player2: {
-          initial: player2,
-          positionX2,
-          positionY2,
-        },
+        initial1: initial1,
+        positionX1: positionX1,
+        positionY1: positionY1,
+        
+        initial2: initial2,
+        positionX2: positionX2,
+        positionY2: positionY2,
 
-        player3: {
-          initial: player3,
-          positionX3,
-          positionY3,
-        },
+        initial3: initial3,
+        positionX3: positionX3,
+        positionY3: positionY3,
 
-        player4: {
-          initial: player4,
-          positionX4,
-          positionY4,
-        },
+        initial4: initial4,
+        positionX4: positionX4,
+        positionY4: positionY4,
 
-        player5: {
-          initial: player5,
-          positionX5,
-          positionY5,
-        },
+        initial5: initial5,
+        positionX5: positionX5,
+        positionY5: positionY5,
 
-        player6: {
-          initial: player6,
-          positionX6,
-          positionY6,
-        },
+        initial6: initial6,
+        positionX6: positionX6,
+        positionY6: positionY6,
 
-        player7: {
-          initial: player7,
-          positionX7,
-          positionY7,
-        },
+        initial7: initial7,
+        positionX7: positionX7,
+        positionY7: positionY7,
 
-        player8: {
-          initial: player8,
-          positionX8,
-          positionY8,
-        },
+        initial8: initial8,
+        positionX8: positionX8,
+        positionY8: positionY8,
 
-        player9: {
-          initial: player9,
-          positionX9,
-          positionY9,
-        },
+        initial9: initial9,
+        positionX9: positionX9,
+        positionY9: positionY9,
 
-        player10: {
-          initial: player10,
-          positionX10,
-          positionY10,
-        },
+        initial10: initial10,
+        positionX10: positionX10,
+        positionY10: positionY10,
 
-        player11: {
-          initial: player11,
-          positionX11,
-          positionY11,
-        },
+        initial11: initial11,
+        positionX11: positionX11,
+        positionY11: positionY11,
       })
       .then(() => {
         Actions.TacticsCoach();
@@ -221,10 +200,10 @@ export default function CreateTactic() {
       <Draggable
         x={195}
         y={350}
-        minX={20}
+        minX={10}
         maxX={420}
-        maxY={870}
-        minY={230}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions1(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -233,7 +212,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer1(text)}
-            value={player1}
+            value={initial1}
           ></TextInput>
         </View>
       </Draggable>
@@ -241,6 +220,10 @@ export default function CreateTactic() {
       <Draggable
         x={30}
         y={450}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions2(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -249,7 +232,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer2(text)}
-            value={player2}
+            value={initial2}
           ></TextInput>
         </View>
       </Draggable>
@@ -257,6 +240,10 @@ export default function CreateTactic() {
       <Draggable
         x={195}
         y={450}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions3(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -265,7 +252,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer3(text)}
-            value={player3}
+            value={initial3}
           ></TextInput>
         </View>
       </Draggable>
@@ -273,6 +260,10 @@ export default function CreateTactic() {
       <Draggable
         x={350}
         y={450}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions4(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -281,7 +272,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer4(text)}
-            value={player4}
+            value={initial4}
           ></TextInput>
         </View>
       </Draggable>
@@ -289,6 +280,10 @@ export default function CreateTactic() {
       <Draggable
         x={110}
         y={600}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions5(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -297,7 +292,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer5(text)}
-            value={player5}
+            value={initial5}
           ></TextInput>
         </View>
       </Draggable>
@@ -305,6 +300,10 @@ export default function CreateTactic() {
       <Draggable
         x={280}
         y={600}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions6(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -313,7 +312,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer6(text)}
-            value={player6}
+            value={initial6}
           ></TextInput>
         </View>
       </Draggable>
@@ -321,6 +320,10 @@ export default function CreateTactic() {
       <Draggable
         x={25}
         y={680}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions7(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -329,7 +332,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer7(text)}
-            value={player7}
+            value={initial7}
           ></TextInput>
         </View>
       </Draggable>
@@ -337,6 +340,10 @@ export default function CreateTactic() {
       <Draggable
         x={100}
         y={740}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions8(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -345,7 +352,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer8(text)}
-            value={player8}
+            value={initial8}
           ></TextInput>
         </View>
       </Draggable>
@@ -353,6 +360,10 @@ export default function CreateTactic() {
       <Draggable
         x={290}
         y={740}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions9(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -361,7 +372,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer9(text)}
-            value={player9}
+            value={initial9}
           ></TextInput>
         </View>
       </Draggable>
@@ -369,6 +380,10 @@ export default function CreateTactic() {
       <Draggable
         x={370}
         y={680}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions10(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -377,7 +392,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer10(text)}
-            value={player10}
+            value={initial10}
           ></TextInput>
         </View>
       </Draggable>
@@ -385,6 +400,10 @@ export default function CreateTactic() {
       <Draggable
         x={195}
         y={800}
+        minX={10}
+        maxX={420}
+        maxY={840}
+        minY={210}
         onDragRelease={(e) =>
           setPositions11(e.nativeEvent.pageX, e.nativeEvent.pageY)
         }
@@ -393,7 +412,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer11(text)}
-            value={player11}
+            value={initial11}
           ></TextInput>
         </View>
       </Draggable>

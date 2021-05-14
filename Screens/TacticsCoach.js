@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity, Text, Modal } from 'react-native';
+
+import React, { useRef, useEffect, useState } from "react";
+import { View, ImageBackground, StyleSheet, SafeAreaView, TouchableOpacity, Text, Modal, Dimensions, } from 'react-native';
 import Draggable from 'react-native-draggable'; // first, run "npm run source" to get Draggable.js
 import firebase from "firebase/app";
 import "firebase/database";
@@ -7,14 +8,16 @@ require("firebase/auth");
 import { useDispatch, useSelector } from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import { fetchTactics } from "../actions/index";
+import { Modalize } from "react-native-modalize";
 import TopMenu from "./TopMenu";
-
+import Icon from "react-native-vector-icons/Ionicons";
+import { removeTactic } from "../actions/index";
 
 
 
 export default function TacticsCoach() {
-  
 
+  const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const dispatch = useDispatch();
@@ -23,61 +26,27 @@ export default function TacticsCoach() {
   }, [dispatch]);
 
   const tactics = useSelector((state) => state.lineUpTactics);
-  /* const [chooseTactic, setChooseTactic] = useState("Select tactic") */
+  const [activeTactic, setActiveTactic] = useState("")
+  const modalRef = useRef(null);
+  const onOpen = () => {
+    const modal = modalRef.current;
 
-  console.log(tactics)
+    if (modal) {
+      modal.open();
+    }
+  };
 
-  let titles;
-  let firstPlayer;
-  let secondPlayer;
-  let thirdPlayer;
-  let fourthPlayer;
-  let fifthPlayer;
-  let sixthPlayer;
-  let seventhPlayer;
-  let eighthPlayer;
-  let ninthPlayer;
-  let tenthPlayer;
-  let eleventhPlayer;
-
-  function hejhej() {
-    console.log("2")
-    
-    {
-      Object.keys(tactics).map((i) => {
-        titles = (tactics[i].title)
-        firstPlayer = (tactics[i].player1)
-        secondPlayer = (tactics[i].player2)
-        thirdPlayer = (tactics[i].player3)
-        fourthPlayer = (tactics[i].player4)
-        fifthPlayer = (tactics[i].player5)
-        sixthPlayer = (tactics[i].player6)
-        seventhPlayer = (tactics[i].player7)
-        eighthPlayer = (tactics[i].player8)
-        ninthPlayer = (tactics[i].player9)
-        tenthPlayer = (tactics[i].player10)
-        eleventhPlayer = (tactics[i].player11)
-        
-      }  ,
-      
-      )
-      console.log(tactics)
-    
-  }
-    /*     {
-          Object.keys(tactics).map((i) => {
-    console.log(tactics[i].title)
-          })
-      } */
+  const onTacticPressed = (tactic) => {
+    setActiveTactic(tactic.tacticId);
   }
 
-
-
-  hejhej();
+  const deleteTactic = (tactic) => {
+      dispatch(removeTactic(tactic.tacticId));
+  }
 
 
   return (
-    console.log(tactics),
+
     <SafeAreaView style={styles.container}>
 
       <TopMenu />
@@ -87,12 +56,20 @@ export default function TacticsCoach() {
         <Text style={styles.buttonTitle}> Create LineUp </Text>
       </TouchableOpacity>
 
+      <View>
+        <TouchableOpacity
+          onPress={() => onOpen()}
 
-
-      <View style={styles.tacticTitle}>
-        <Text style={styles.tacticTitleText}> {titles} </Text>
+        >
+          <View style={styles.tacticTitle}>
+            <Text style={styles.tacticTitleText}> CHOOSE TACTIC </Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
+      <View style={styles.tacticTitle}>
+        <Text style={styles.tacticTitleText}> {activeTactic && tactics[activeTactic].title} </Text>
+      </View>
 
       <ImageBackground
         source={require('../assets/footballfield.png')}
@@ -100,87 +77,172 @@ export default function TacticsCoach() {
           flex: 1,
         }}>
       </ImageBackground>
-
       
-      <Draggable
-        x={200} y={200}
-        minX={0}
-        maxX={"100%"}
         
+
+      {activeTactic && tactics ? (
+      <>
+
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX1}
+        y={activeTactic && tactics[activeTactic].positionY1}
+        disabled={true}
       >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
-
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial1}</Text>
         </View>
-
       </Draggable>
 
-
       <Draggable
-        x={200} y={200}
+        x={activeTactic && tactics[activeTactic].positionX2}
+        y={activeTactic && tactics[activeTactic].positionY2}
+        disabled={true}
       >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial2}</Text>
         </View>
       </Draggable>
 
       <Draggable
-        x={200} y={200}>
+        x={activeTactic && tactics[activeTactic].positionX3}
+        y={activeTactic && tactics[activeTactic].positionY3}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial3}</Text>
         </View>
       </Draggable>
 
       <Draggable
-        x={200} y={200}>
+        x={activeTactic && tactics[activeTactic].positionX4}
+        y={activeTactic && tactics[activeTactic].positionY4}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial4}</Text>
         </View>
       </Draggable>
 
       <Draggable
-        x={200} y={200}>
+        x={activeTactic && tactics[activeTactic].positionX5}
+        y={activeTactic && tactics[activeTactic].positionY5}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial5}</Text>
         </View>
       </Draggable>
 
       <Draggable
-        x={200} y={200}>
+        x={activeTactic && tactics[activeTactic].positionX6}
+        y={activeTactic && tactics[activeTactic].positionY6}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial6}</Text>
         </View>
       </Draggable>
 
-      <Draggable x={200} y={200}>
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX7}
+        y={activeTactic && tactics[activeTactic].positionY7}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial7}</Text>
         </View>
       </Draggable>
 
-      <Draggable x={200} y={200}>
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX8}
+        y={activeTactic && tactics[activeTactic].positionY8}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial8}</Text>
         </View>
       </Draggable>
 
-      <Draggable x={200} y={200}>
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX9}
+        y={activeTactic && tactics[activeTactic].positionY9}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial9}</Text>
         </View>
       </Draggable>
 
-      <Draggable x={200} y={200}>
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX10}
+        y={activeTactic && tactics[activeTactic].positionY10}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial10}</Text>
         </View>
       </Draggable>
 
-      <Draggable x={200} y={200}>
+      <Draggable
+        x={activeTactic && tactics[activeTactic].positionX11}
+        y={activeTactic && tactics[activeTactic].positionY11}
+        disabled={true}
+      >
         <View style={styles.players}>
-          <Text style={styles.initialText}>{200}</Text>
+          <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial11}</Text>
         </View>
       </Draggable>
+      </>):(null)
+            }     
+
+
+
+{tactics ? (
+  <>
+      <Modalize
+        ref={modalRef}
+        snapPoint={500}
+        modalHeight={screenHeight * 0.85}
+      >
+        <View style={styles.modal}>
+          <Text style={styles.title}> PICK A TACTIC </Text>
+          {
+            Object.keys(tactics).map((i) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => onTacticPressed(tactics[i])}
+                >
+                  <View key={i} style={styles.viewMembers}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+
+                      <View>
+                        <Text style={styles.nameTeamMember}>
+                          {tactics[i].title}
+                        </Text>
+                      </View>
+
+                      <View>
+                      <TouchableOpacity>
+                      <Icon
+                        onPress = { () => deleteTactic(tactics[i])} 
+                        name="ios-trash-outline"
+                        size={20}
+                                               
+                      ></Icon>
+                    </TouchableOpacity>
+                      </View>
+
+
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )
+            })}
+        </View>
+      </Modalize>
+      </>):(null)
+            }    
+
 
     </SafeAreaView>
   );
@@ -229,6 +291,24 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     height: 30,
+  },
+  title: {
+    fontSize: 24,
+    justifyContent: "center",
+    fontWeight: "bold",
+    margin: 10,
+  },
+
+  modal: {
+    padding: 20,
+  },
+
+  viewMembers: {
+    width: "100%",
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    margin: 1,
+    padding: 15,
   },
 
 })

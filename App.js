@@ -76,7 +76,7 @@ export default function App() {
                 key="TacticsCoach"
                 hideNavBar={true}
                 title=" Tactics"
-                component={CreateTactic}
+                component={TacticsCoach}
                 icon={iconTactic}
               />
             </Scene>
