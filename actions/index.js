@@ -261,9 +261,14 @@ export const like = (postId, userId) => {
 export const removeLike = (postId, userId) => {
   return (dispatch) => {
     firebase.database().ref(`/feed/${postId}/likes/${userId}`).remove();
-    // dispatch({ type: "DECLINE_MEMBER" });
   };
 };
+
+export const removePost = (postId) => {
+  return (dispatch) => {
+    firebase.database().ref(`/feed/${postId}`).remove();
+  };
+}
 
 
 

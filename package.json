@@ -58,6 +58,7 @@
     "react-navigation-material-bottom-tabs": "^2.3.4",
     "react-redux": "^7.2.3",
     "react-redux-firebase": "^3.10.0",
+    "react-swipe-to-delete-component": "^0.5.5",
     "react-usestateref": "^1.0.5",
     "redux-thunk": "^2.3.0"
   },
