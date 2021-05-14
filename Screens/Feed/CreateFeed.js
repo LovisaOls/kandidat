@@ -34,6 +34,7 @@ export default function CreateFeed() {
       postRef
         .set({
           author: currentUser.firstName + " " + currentUser.lastName,
+          authorId: currentUser.id,
           authorPicture: currentUser.profilePicture
             ? currentUser.profilePicture
             : null,
