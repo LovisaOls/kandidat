@@ -22,7 +22,7 @@ export default function TopMenu() {
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.teamName}>{activeTeam.teamName} </Text>
           {activeTeam.coach == currentUser.id ? (
-            <Icon name="shield-outline" size={20} color="purple"></Icon>
+            <Icon name="shield-checkmark" size={20} color="#A247D4"></Icon>
           ) : null}
         </View>
         <TouchableOpacity onPress={() => onProfilePressed()}>

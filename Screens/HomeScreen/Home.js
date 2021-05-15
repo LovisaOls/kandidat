@@ -18,7 +18,6 @@ import MembershipRequests from "./MembershipRequests";
 import ParticipationRequests from "./ParticipationRequests";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers } from "../../actions/index";
-
 export default function Home() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
@@ -42,7 +41,12 @@ export default function Home() {
   };
 
   const copyId = () => {
-    Clipboard.setString(activeTeam.teamId);
+    Clipboard.setString(
+      "Hi! Join the team " +
+        activeTeam.teamName +
+        " in the MyTeam App! TeamId:" +
+        activeTeam.teamId
+    );
     setCopied(true);
     setTimeout(() => {
       setCopied(false);
@@ -59,46 +63,49 @@ export default function Home() {
             style={styles.image}
           ></Image>
         ) : (
-          <Icon name="image-outline" size={100}></Icon>
+          <View style={styles.noImage}>
+            <Icon name="image-outline" color="white" size={50}></Icon>
+          </View>
         )}
 
         <View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.teamIdTitle}>Team: </Text>
-            <Text>{activeTeam.teamName}</Text>
+          <Text style={styles.teamName}>{activeTeam.teamName} </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginHorizontal: 10,
+            }}
+          >
+            <Icon name="pin-outline" size={15} color="#A247D4"></Icon>
+            <Text style={styles.place}>{activeTeam.city}</Text>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.teamIdTitle}>City: </Text>
-            <Text>{activeTeam.city}</Text>
-          </View>
-          <View style={{ flexDirection: "row" }}>
-            <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
-              <View style={styles.teamMembersNrBox}>
-                <Text style={styles.teamMembersNr}>
-                  {
-                    teamMembers.filter(
-                      (obj) => obj.teams[activeTeam.teamId] === true
-                    ).length
-                  }
-                </Text>
-              </View>
-              <Text style={styles.teamMembers}>Team members</Text>
-            </TouchableOpacity>
 
-            {!copied ? (
-              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
-                <Icon name="copy-outline" size={28} color="#A247D4"></Icon>
-                <Text style={styles.teamIdTitle}> Copy TeamId</Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.teamIdHeader} onPress={copyId}>
-                <Icon name="checkmark-outline" size={28} color="#A247D4"></Icon>
-                <Text style={styles.teamIdTitle}> Copied!</Text>
-              </TouchableOpacity>
-            )}
-          </View>
+          <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
+            <View style={styles.teamMembersNrBox}>
+              <Text style={styles.teamMembersNr}>
+                {
+                  teamMembers.filter(
+                    (obj) => obj.teams[activeTeam.teamId] === true
+                  ).length
+                }
+              </Text>
+            </View>
+            <Text style={styles.teamMembers}>Members</Text>
+          </TouchableOpacity>
         </View>
       </View>
+      {!copied ? (
+        <TouchableOpacity style={styles.copyBox} onPress={copyId}>
+          <Text style={styles.copyText}> Copy Team Invitation</Text>
+          <Icon name="copy-outline" size={20} color="#A247D4"></Icon>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity style={styles.copyBox} onPress={copyId}>
+          <Text style={styles.copyText}> Copied!</Text>
+          <Icon name="checkmark-outline" size={20} color="#A247D4"></Icon>
+        </TouchableOpacity>
+      )}
 
       {activeTeam.coach == currentUser.id ? (
         <View style={styles.MyMemberRequests}>
@@ -157,8 +164,11 @@ export default function Home() {
 
                     {teamMembers[key].id == activeTeam.coach ? (
                       <View style={{ alignItems: "center" }}>
-                        <Icon name="shield" color="purple" size={20}></Icon>
-                        <Text style={{ fontSize: 12 }}>Coach</Text>
+                        <Icon
+                          name="shield-checkmark"
+                          size={20}
+                          color="#A247D4"
+                        ></Icon>
                       </View>
                     ) : null}
                   </View>
@@ -177,8 +187,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
   },
-  /* ____________________________________________ */
-
   title: {
     fontSize: 24,
     justifyContent: "center",
@@ -186,22 +194,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   TeamInfoHeader: {
-    margin: 10,
+    marginHorizontal: 10,
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-
-  TeamInfo: {
-    marginTop: 10,
-    margin: 10,
-  },
-
-  image: {
-    marginBottom: 20,
-    height: 80,
-    width: 80,
-    margin: 10,
   },
   name: {
     fontSize: 18,
@@ -211,29 +205,28 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   teamMembersNr: {
-    fontSize: 18,
+    fontSize: 30,
     color: "white",
-    fontWeight: "bold",
   },
   teamMembersNrBox: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: screenWidth * 0.15,
+    height: screenWidth * 0.15,
+    borderRadius: (screenWidth * 0.15) / 2,
     backgroundColor: "green",
     alignItems: "center",
     justifyContent: "center",
   },
-  teamIdTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
-  teamIdHeader: {
+  copyBox: {
+    margin: 5,
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
   },
-  /* _____________________________________________ */
+  copyText: {
+    fontSize: 14,
+    padding: 5,
+  },
   memberBox: {
+    margin: 20,
     alignItems: "center",
   },
   viewMembers: {
@@ -245,77 +238,30 @@ const styles = StyleSheet.create({
   modal: {
     padding: 20,
   },
-  buttonText: {
-    fontSize: 16,
-    color: "white",
-    fontWeight: "bold",
-  },
-  smallBtn: {
-    width: "15%",
-    borderRadius: 20,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "green",
-    marginLeft: 40,
-  },
   nameTeamMember: {
     fontWeight: "bold",
     fontSize: 14,
-  },
-
-  /* _____________________________________________ */
-
-  memberRequestsBox: {
-    padding: 10,
-    margin: 10,
-  },
-
-  TheRequests: {
-    fontSize: 20,
-    fontWeight: "bold",
-    margin: 10,
-  },
-  RequestsName: {
-    fontSize: 20,
-    marginTop: 10,
-    marginLeft: 10,
-  },
-
-  TheBtns: {
-    flexDirection: "row",
-  },
-
-  AcceptBtn: {
-    width: "10%",
-    borderRadius: 25,
-    height: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "green",
-    marginLeft: 10,
-    marginTop: 10,
-  },
-  DeclineBtn: {
-    width: "10%",
-    borderRadius: 25,
-    height: 30,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "red",
-    marginLeft: 10,
-    marginTop: 10,
   },
   image: {
     width: screenWidth * 0.35,
     height: screenWidth * 0.35,
     borderRadius: 10,
-    margin: 10,
+    marginBottom: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+  },
+  noImage: {
+    width: screenWidth * 0.35,
+    height: screenWidth * 0.35,
+    borderRadius: 10,
+    marginBottom: 10,
     backgroundColor: "#DDDDDD",
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
   },
+
   initialCircle: {
     height: 50,
     width: 50,
@@ -331,15 +277,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-
-  /* --------------------------------------------- */
-
-  GameStats: {
-    marginTop: 50,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    margin: 10,
+  place: {
+    fontSize: 16,
+    color: "#333",
   },
-
-  /* --------------------------------------------- */
+  teamName: {
+    fontSize: 18,
+    marginLeft: 10,
+  },
 });

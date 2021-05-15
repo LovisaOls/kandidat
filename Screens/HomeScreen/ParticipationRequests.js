@@ -6,6 +6,8 @@ import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
+import { ScrollView } from "react-native-gesture-handler";
+
 const ParticipationRequests = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,7 +41,7 @@ const ParticipationRequests = () => {
   return (
     <View>
       <Text style={styles.title}>Participation Requests</Text>
-      <View>
+      <ScrollView contentContainerStyle={{ height: "50%" }}>
         {events &&
           Object.keys(events).map((eventId, key) => {
             return events[eventId].participants != undefined &&
@@ -92,7 +94,7 @@ const ParticipationRequests = () => {
                 })
               : null;
           })}
-      </View>
+      </ScrollView>
     </View>
   );
 };

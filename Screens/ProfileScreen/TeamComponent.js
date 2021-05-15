@@ -25,7 +25,9 @@ const TeamComponent = ({ team }) => {
       <TouchableOpacity style={styles.teamBox} onPress={() => onTeamPressed()}>
         <View style={{ alignItems: "center", flexDirection: "row", margin: 1 }}>
           {currentUser.id == team.coach ? (
-            <Icon name="shield-outline" size={20} color="black"></Icon>
+            <View>
+              <Icon name="shield-checkmark" size={16} color="#A247D4"></Icon>
+            </View>
           ) : null}
           <Text style={styles.teamsText}>{team.teamName}</Text>
         </View>
@@ -33,10 +35,7 @@ const TeamComponent = ({ team }) => {
       </TouchableOpacity>
     </View>
   ) : (
-    <TouchableOpacity
-      style={styles.teamBoxPending}
-      onPress={() => onPendingPressed()}
-    >
+    <TouchableOpacity style={styles.teamBox} onPress={() => onPendingPressed()}>
       <Text style={styles.teamsText}>{team.teamName}</Text>
       <Icon style={styles.teamsText} name="hourglass-outline"></Icon>
     </TouchableOpacity>
@@ -54,7 +53,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    margin: 1,
+    marginVertical: 1,
+    paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -63,7 +63,8 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    margin: 1,
+    marginVertical: 1,
+    paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-between",
   },

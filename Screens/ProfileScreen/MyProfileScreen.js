@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    height: screenWidth * 0.35,
-    width: screenWidth * 0.35,
-    borderRadius: (screenWidth * 0.35) / 2,
+    height: screenWidth * 0.3,
+    width: screenWidth * 0.3,
+    borderRadius: (screenWidth * 0.3) / 2,
     margin: 10,
   },
   name: {
@@ -159,9 +159,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   initialCircle: {
-    height: screenWidth * 0.35,
-    width: screenWidth * 0.35,
-    borderRadius: (screenWidth * 0.35) / 2,
+    height: screenWidth * 0.3,
+    width: screenWidth * 0.3,
+    borderRadius: (screenWidth * 0.3) / 2,
     margin: 10,
     backgroundColor: "#DDDDDD",
     justifyContent: "center",

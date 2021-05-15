@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    paddingLeft: 16,
+    paddingLeft: 10,
     marginHorizontal: 15,
     marginVertical: 5,
     flexDirection: "row",
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 5,
     marginRight: 30,
-    paddingLeft: 16,
+    paddingLeft: 10,
     width: screenWidth * 0.8,
   },
 
