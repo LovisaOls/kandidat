@@ -268,10 +268,21 @@ export const removePost = (postId) => {
   return (dispatch) => {
     firebase.database().ref(`/feed/${postId}`).remove();
   };
-}
+};
 
 export const removeTactic = (tacticId) => {
   return () => {
     firebase.database().ref(`/tactics/${tacticId}`).remove();
+  };
+};
+
+export const fetchAllTeams = () => {
+  return (dispatch) => {
+    firebase
+      .database()
+      .ref("/teams/")
+      .on("value", (snapshot) => {
+        dispatch({ type: "FETCH_ALL_TEAMS", allTeams: snapshot.val() });
+      });
   };
 };

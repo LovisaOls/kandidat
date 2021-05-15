@@ -21,7 +21,6 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import rootReducer from "./reducers";
 import Icon from "react-native-vector-icons/Ionicons";
-
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 const iconHome = () => <Icon name="ios-home-outline" size={30}></Icon>;

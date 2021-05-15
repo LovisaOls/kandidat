@@ -9,23 +9,27 @@ import {
   Platform,
   Image,
   Dimensions,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from "react-native-router-flux";
-import { registerTeam, joinTeam } from "../actions/index";
+import { registerTeam, joinTeam, fetchAllTeams } from "../actions/index";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
 
 function TeamRegistration() {
   const [teamName, setTeamName] = useState("");
   const [city, setCity] = useState("");
-  const [teamId, setTeamId] = useState("");
   const currentUser = useSelector((state) => state.currentUser);
   const [image, setImage] = useState(null);
+  const { allTeams } = useSelector((state) => state.currentTeams);
+
+  const [data, setData] = useState(null);
+  const searchData = Object.keys(allTeams);
+
   const dispatch = useDispatch();
   useEffect(() => {
     (async () => {
@@ -37,7 +41,8 @@ function TeamRegistration() {
         }
       }
     })();
-  }, []);
+    dispatch(fetchAllTeams());
+  }, [dispatch]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -70,6 +75,20 @@ function TeamRegistration() {
     }
   };
 
+  const searchFunction = (text) => {
+    if (text != "") {
+      const newData = searchData.filter((item) => {
+        const itemData = `${allTeams[item].teamName.toUpperCase()}   
+      ${allTeams[item].teamId.toUpperCase()}`;
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setData(newData);
+    } else {
+      setData(null);
+    }
+  };
+
   const addTeamButtonPressed = async () => {
     if (teamName != "" && city != "") {
       await uploadImage();
@@ -82,7 +101,7 @@ function TeamRegistration() {
     }
   };
 
-  const onJoinTeamPress = () => {
+  const onJoinTeamPress = (teamId) => {
     if (teamId != "") {
       dispatch(joinTeam(currentUser.id, teamId));
     }
@@ -99,6 +118,42 @@ function TeamRegistration() {
           resetScrollToCoords={{ x: 0, y: 0 }}
           scrollEnabled={false}
         >
+          <View style={styles.joinTeamBox}>
+            <Text style={styles.title}>Join a Team</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Team Name or TeamId..."
+              onChangeText={(text) => searchFunction(text)}
+              autoCorrect={false}
+            />
+
+            {allTeams != undefined ? (
+              <FlatList
+                data={data}
+                renderItem={({ item, index }) => (
+                  <View key={index} style={styles.teamBox}>
+                    <View>
+                      <Text style={styles.teamName}>
+                        {allTeams[item].teamName}
+                      </Text>
+                      <Text>TeamId: {allTeams[item].teamId}</Text>
+                    </View>
+                    {currentUser.teams[item] == undefined ? (
+                      <TouchableOpacity
+                        style={styles.joinButton}
+                        onPress={() => onJoinTeamPress(allTeams[item].teamId)}
+                      >
+                        <Text style={styles.buttonText}>Join</Text>
+                      </TouchableOpacity>
+                    ) : null}
+                  </View>
+                )}
+              ></FlatList>
+            ) : null}
+          </View>
+          <Text style={styles.text}> or ...</Text>
+
           <View style={styles.createTeamBox}>
             <Text style={styles.title}>Create New Team</Text>
             <View
@@ -144,30 +199,9 @@ function TeamRegistration() {
               <Text style={styles.buttonText}> Create Team </Text>
             </TouchableOpacity>
           </View>
-
-          <Text style={styles.text}> or ...</Text>
-          <View style={styles.joinTeamBox}>
-            <Text style={styles.title}>Join an Already Existing Team</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Team Id"
-              placeholderTextColor="#aaaaaa"
-              onChangeText={(text) => setTeamId(text)}
-              value={teamId}
-              autoCapitalize="none"
-            ></TextInput>
-
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={() => onJoinTeamPress()}
-            >
-              <Text style={styles.buttonText}> Join Team </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => onCancelPress()}>
-              <Text style={styles.cancelText}> Cancel </Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity onPress={() => onCancelPress()}>
+            <Text style={styles.cancelText}> Cancel </Text>
+          </TouchableOpacity>
         </KeyboardAwareScrollView>
       </ScrollView>
     </SafeAreaView>
@@ -236,6 +270,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
     textAlign: "center",
+    margin: 10,
   },
   image: {
     width: screenWidth * 0.35,
@@ -251,6 +286,29 @@ const styles = StyleSheet.create({
     color: "#aaaaaa",
     fontSize: 14,
     textAlign: "center",
+  },
+  teamBox: {
+    marginHorizontal: 10,
+    marginVertical: 2,
+    padding: 10,
+    backgroundColor: "#DDDDDD",
+    borderRadius: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  teamName: {
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  joinButton: {
+    backgroundColor: "green",
+    borderRadius: 5,
+    padding: 5,
+  },
+  buttonText: {
+    fontWeight: "bold",
+    color: "white",
   },
 });
 
