@@ -89,6 +89,7 @@ export default function Feed() {
         {feedPosts != undefined ? (
           <FlatList
             data={feedPosts && Object.keys(feedPosts).reverse()}
+            keyExtractor={(item) => feedPosts[item].postId}
             renderItem={({ item, index }) => (
               <Posts
                 item={item}
@@ -115,7 +116,7 @@ export default function Feed() {
             <View>
               <View style={styles.modalPost}>
                 <Text style={styles.postName}>
-                  {feedPosts[activePost].author}
+                  {feedPosts[activePost] && feedPosts[activePost].author}
                 </Text>
                 <Text style={styles.postDate}>
                   {new Date(feedPosts[activePost].createdOn)
@@ -131,8 +132,8 @@ export default function Feed() {
                   feedPosts[activePost].comments &&
                   Object.keys(feedPosts[activePost].comments)
                 }
-                renderItem={({ item }) => (
-                  <View style={styles.commentBorder}>
+                renderItem={({ item, index }) => (
+                  <View key={index} style={styles.commentBorder}>
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
@@ -237,9 +238,9 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    paddingLeft: 16,
+    paddingLeft: 10,
     marginHorizontal: 15,
-    width: screenWidth * 0.65,
+    width: screenWidth * 0.7,
   },
   commentBorder: {
     margin: 10,
@@ -255,9 +256,9 @@ const styles = StyleSheet.create({
   },
   commentButton: {
     backgroundColor: "green",
-    height: screenWidth * 0.15,
-    width: screenWidth * 0.15,
-    borderRadius: (screenWidth * 0.15) / 2,
+    height: screenWidth * 0.12,
+    width: screenWidth * 0.12,
+    borderRadius: (screenWidth * 0.12) / 2,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -272,20 +273,5 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     marginBottom: 5,
     paddingBottom: 5,
-  },
-  initialCircle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    margin: 5,
-    marginRight: 10,
-    backgroundColor: "#DDDDDD",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  initialText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
   },
 });

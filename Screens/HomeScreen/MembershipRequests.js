@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
+import { ScrollView } from "react-native-gesture-handler";
 
 const MembershipRequests = () => {
   const { activeTeam } = useSelector((state) => state.currentTeams);
@@ -40,37 +41,38 @@ const MembershipRequests = () => {
   return (
     <View>
       <Text style={styles.title}>Membership Requests</Text>
-
-      {teamMembers &&
-        Object.keys(teamMembers).map((key, i) => {
-          return teamMembers[key].teams[activeTeam.teamId] == false ? (
-            <View key={i} style={styles.requestBox}>
-              <Text style={styles.name}>
-                {teamMembers[key].firstName} {teamMembers[key].lastName}
-              </Text>
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  onPress={() => onAcceptPressed(teamMembers[key].id)}
-                >
-                  <Icon
-                    name="checkmark-circle-sharp"
-                    size={30}
-                    color="green"
-                  ></Icon>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => onDeclinePressed(teamMembers[key].id)}
-                >
-                  <Icon
-                    name="close-circle-sharp"
-                    size={30}
-                    color="tomato"
-                  ></Icon>
-                </TouchableOpacity>
+      <ScrollView contentContainerStyle={{ height: "50%" }}>
+        {teamMembers &&
+          Object.keys(teamMembers).map((key, i) => {
+            return teamMembers[key].teams[activeTeam.teamId] == false ? (
+              <View key={i} style={styles.requestBox}>
+                <Text style={styles.name}>
+                  {teamMembers[key].firstName} {teamMembers[key].lastName}
+                </Text>
+                <View style={styles.buttons}>
+                  <TouchableOpacity
+                    onPress={() => onAcceptPressed(teamMembers[key].id)}
+                  >
+                    <Icon
+                      name="checkmark-circle-sharp"
+                      size={30}
+                      color="green"
+                    ></Icon>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => onDeclinePressed(teamMembers[key].id)}
+                  >
+                    <Icon
+                      name="close-circle-sharp"
+                      size={30}
+                      color="tomato"
+                    ></Icon>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          ) : null;
-        })}
+            ) : null;
+          })}
+      </ScrollView>
     </View>
   );
 };

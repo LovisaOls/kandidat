@@ -18,9 +18,8 @@ require("firebase/auth");
 import { Actions } from "react-native-router-flux";
 
 export default function CreateTactic() {
-  const { activeTeam } = useSelector(state => state.currentTeams);
+  const { activeTeam } = useSelector((state) => state.currentTeams);
   const [title, setTitle] = useState("");
-
 
   const [initial1, setPlayer1] = useState("");
   const [positionX1, setPositionX1] = useState("");
@@ -124,7 +123,7 @@ export default function CreateTactic() {
         initial1: initial1,
         positionX1: positionX1,
         positionY1: positionY1,
-        
+
         initial2: initial2,
         positionX2: positionX2,
         positionY2: positionY2,
@@ -459,7 +458,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginLeft: 30,
     marginRight: 30,
-    paddingLeft: 16,
+    paddingLeft: 10,
     borderWidth: 0.25,
   },
 });
