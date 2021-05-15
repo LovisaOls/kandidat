@@ -2,7 +2,7 @@ const initState = {
   userTeams: [],
   activeTeam: {},
   teamMembers: [],
-  fetchDone: false,
+  allTeams: {},
 };
 
 const teamReducer = (state = initState, action) => {
@@ -15,6 +15,8 @@ const teamReducer = (state = initState, action) => {
       return { ...state, activeTeam: action.activeTeam };
     case "FETCH_TEAMMEMBERS":
       return { ...state, teamMembers: action.teamMembers };
+    case "FETCH_ALL_TEAMS":
+      return { ...state, allTeams: action.allTeams };
     default:
       return state;
   }
