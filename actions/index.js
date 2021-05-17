@@ -286,3 +286,9 @@ export const fetchAllTeams = () => {
       });
   };
 };
+
+export const removeEvent = (eventId) => {
+  return () => {
+    firebase.database().ref(`/events/${eventId}`).remove();
+  };
+}
