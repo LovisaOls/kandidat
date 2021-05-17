@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   userName: {
-    fontSize: 14,
+    fontSize: 12,
   },
   image: {
     height: 50,
