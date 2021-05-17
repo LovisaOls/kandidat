@@ -86,12 +86,14 @@ export default function Schedule() {
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        <TouchableOpacity
-          style={styles.smallBtn}
-          onPress={() => Actions.CreateEventSchedule()}
-        >
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
+        {activeTeam.coach == currentUser.id ? (
+          <TouchableOpacity
+            style={styles.smallBtn}
+            onPress={() => Actions.CreateEventSchedule()}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
       <Agenda
         theme={{
