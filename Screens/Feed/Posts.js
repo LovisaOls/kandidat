@@ -72,9 +72,9 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
       >
         <View style={styles.postBorder}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            {currentUser.profilePicture ? (
+            {feedPosts[item].authorPicture != undefined ? (
               <Image
-                source={{ uri: currentUser.profilePicture }}
+                source={{ uri: feedPosts[item].authorPicture }}
                 style={{
                   height: 50,
                   width: 50,
