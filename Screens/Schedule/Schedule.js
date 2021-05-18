@@ -14,13 +14,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvents } from "../../actions/index";
 import TopMenu from "../TopMenu";
 import EventModule from "./EventModule";
+import Icon from "react-native-vector-icons/Ionicons";
+import { removeEvent } from "../../actions/index";
 
 export default function Schedule() {
   const [activeEvent, setActiveEvent] = useState(null);
   const events = useSelector((state) => state.scheduleEvents);
   const modalRef = useRef(null);
   const screenHeight = Dimensions.get("window").height;
-
+  const currentUser = useSelector((state) => state.currentUser);
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const dispatch = useDispatch();
@@ -49,6 +51,10 @@ export default function Schedule() {
     }
   }
 
+  const deleteEvent = (event) => {
+    dispatch(removeEvent(event.eventId));
+  };
+
   function renderItems(item) {
     // Funkar inte att ha loopen här för att se om eventsen är unika, den skriver över eventen redan innan
     return (
@@ -58,6 +64,13 @@ export default function Schedule() {
             <View style={{ width: "80%" }}>
               <Text style={styles.eventTitle}>{item.title}</Text>
             </View>
+            {activeTeam.coach == currentUser.id ? (
+              <Icon
+                name="ios-trash-outline"
+                size={30}
+                onPress={() => deleteEvent(item)}
+              ></Icon>
+            ) : null}
             <Text style={styles.eventTime}>{item.time}</Text>
           </View>
           <Text style={styles.eventDescription}>{item.type}</Text>
@@ -73,12 +86,14 @@ export default function Schedule() {
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        <TouchableOpacity
-          style={styles.smallBtn}
-          onPress={() => Actions.CreateEventSchedule()}
-        >
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
+        {activeTeam.coach == currentUser.id ? (
+          <TouchableOpacity
+            style={styles.smallBtn}
+            onPress={() => Actions.CreateEventSchedule()}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
       <Agenda
         theme={{
