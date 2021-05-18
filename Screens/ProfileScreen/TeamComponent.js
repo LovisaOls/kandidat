@@ -20,11 +20,11 @@ const TeamComponent = ({ team }) => {
     );
   };
 
-  return team.members[currentUser.id] == true ? (
+  return team.members[currentUser.id] != false ? (
     <View style={styles.teamBox}>
       <TouchableOpacity style={styles.teamBox} onPress={() => onTeamPressed()}>
         <View style={{ alignItems: "center", flexDirection: "row", margin: 1 }}>
-          {currentUser.id == team.coach ? (
+          {team.members[currentUser.id] == "coach" ? (
             <View>
               <Icon name="shield-checkmark" size={16} color="#A247D4"></Icon>
             </View>

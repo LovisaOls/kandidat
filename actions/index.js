@@ -87,7 +87,6 @@ export const registerTeam = (userId, teamName, city, url) => {
         teamId: teamKey,
         teamName: teamName,
         city: city,
-        coach: userId,
         members: {},
         teamPicture: url,
       })
@@ -97,7 +96,7 @@ export const registerTeam = (userId, teamName, city, url) => {
           .database()
           .ref(`/teams/${teamKey}/members/`)
           .child(userId)
-          .set(true)
+          .set("coach")
       )
       .then(() => {
         //Lägger in lagId hos user
@@ -105,7 +104,7 @@ export const registerTeam = (userId, teamName, city, url) => {
           .database()
           .ref(`/users/${userId}/teams/`)
           .child(teamKey)
-          .set(true);
+          .set("coach");
         dispatch({ type: "ADD_TEAM" });
         Actions.Profile();
       });

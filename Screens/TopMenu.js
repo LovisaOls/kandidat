@@ -8,10 +8,6 @@ export default function TopMenu() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const currentUser = useSelector((state) => state.currentUser);
 
-  /*   const onSettingsPressed = () => {
-    Actions.Settings();
-  }; */
-
   const onProfilePressed = () => {
     Actions.Profile();
   };
@@ -21,17 +17,13 @@ export default function TopMenu() {
       <View style={styles.top}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={styles.teamName}>{activeTeam.teamName} </Text>
-          {activeTeam.coach == currentUser.id ? (
+          {activeTeam.members[currentUser.id] == "coach" ? (
             <Icon name="shield-checkmark" size={20} color="#A247D4"></Icon>
           ) : null}
         </View>
         <TouchableOpacity onPress={() => onProfilePressed()}>
           <Icon name="person-outline" size={30}></Icon>
         </TouchableOpacity>
-
-        {/*         <TouchableOpacity onPress={() => onSettingsPressed()}>
-          <Icon name="settings-outline" size={30}></Icon>
-        </TouchableOpacity> */}
       </View>
     </View>
   );
