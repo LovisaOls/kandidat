@@ -22,12 +22,15 @@ import Posts from "./Posts";
 export default function Feed() {
   const currentUser = useSelector((state) => state.currentUser);
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const modalRef = useRef(null);
+  const [activePost, setActivePost] = useState(null);
+  const [commentText, setCommentText] = useState("");
+  const { feedPosts } = useSelector((state) => state.feedPosts);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchFeed(activeTeam.teamId));
   }, [dispatch]);
-
-  const { feedPosts } = useSelector((state) => state.feedPosts);
 
   const onCreateFeedPressed = () => {
     Actions.CreateFeed();
@@ -46,10 +49,6 @@ export default function Feed() {
       setCommentText("");
     }
   };
-
-  const modalRef = useRef(null);
-  const [activePost, setActivePost] = useState(null);
-  const [commentText, setCommentText] = useState("");
 
   const onOpenComments = (post) => {
     setActivePost(post.postId);
@@ -98,7 +97,7 @@ export default function Feed() {
       <Modalize ref={modalRef} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
           <Text style={styles.title}> Comments </Text>
-          {activePost != null ? (
+          {activePost != null && feedPosts != undefined ? (
             <View>
               <View style={styles.modalPost}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
