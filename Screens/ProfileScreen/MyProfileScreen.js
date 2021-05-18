@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginLeft: 40,
   },
   buttonText: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
   },
 
   signOutButton: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginVertical: 20,
     marginHorizontal: 50,
     height: 48,

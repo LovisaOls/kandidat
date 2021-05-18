@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -213,7 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   type: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     padding: 10,
     margin: 5,
     borderRadius: 10,

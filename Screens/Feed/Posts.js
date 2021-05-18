@@ -23,16 +23,13 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
   const onLikePressed = (post) => {
     let alreadyLiked = false;
     if (post.likes != undefined) {
-      console.log(currentUser.id);
       Object.keys(post.likes).every((i) => {
-        console.log(i);
         if (i == currentUser.id) {
           alreadyLiked = true;
         } else {
           return true;
         }
       });
-      console.log(alreadyLiked);
       if (alreadyLiked) {
         dispatch(removeLike(post.postId, currentUser.id));
       } else {
@@ -85,12 +82,16 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
             ) : (
               <View style={styles.initialCircle}>
                 <Text style={styles.initialText}>
-                  {feedPosts[item].author[0]}
+                  {feedPosts[item].authorFirstName[0]}
+                  {feedPosts[item].authorLastName[0]}
                 </Text>
               </View>
             )}
             <View>
-              <Text style={styles.postName}>{feedPosts[item].author}</Text>
+              <Text style={styles.postName}>
+                {feedPosts[item].authorFirstName}{" "}
+                {feedPosts[item].authorLastName}
+              </Text>
               <Text style={styles.postDate}>
                 {new Date(feedPosts[item].createdOn)
                   .toString()
@@ -109,7 +110,7 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
                     onPress={() => onLikePressed(feedPosts[item])}
                     style={styles.likeBox}
                   >
-                    <Icon name="heart-dislike" size={23} color="tomato"></Icon>
+                    <Icon name="heart-dislike" size={23} color="#FF6347"></Icon>
                     <Text style={styles.likeCommentText}>
                       Dislike{" "}
                       {feedPosts[item].likes &&
@@ -123,12 +124,12 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
                     style={styles.likeBox}
                     onPress={() => onLikePressed(feedPosts[item])}
                   >
-                    <Icon name="heart" size={23} color="tomato"></Icon>
+                    <Icon name="heart" size={23} color="#FF6347"></Icon>
 
                     <Text style={styles.likeCommentText}>
                       Like{" "}
                       {feedPosts[item].likes &&
-                        Object.keys(feedPosts[item].likes).length}{" "}
+                        Object.keys(feedPosts[item].likes).length}
                     </Text>
                   </TouchableOpacity>
                 </View>

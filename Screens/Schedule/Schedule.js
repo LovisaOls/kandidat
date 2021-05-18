@@ -14,13 +14,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvents } from "../../actions/index";
 import TopMenu from "../TopMenu";
 import EventModule from "./EventModule";
+import Icon from "react-native-vector-icons/Ionicons";
+import { removeEvent } from "../../actions/index";
 
 export default function Schedule() {
   const [activeEvent, setActiveEvent] = useState(null);
   const events = useSelector((state) => state.scheduleEvents);
   const modalRef = useRef(null);
   const screenHeight = Dimensions.get("window").height;
-
+  const currentUser = useSelector((state) => state.currentUser);
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const dispatch = useDispatch();
@@ -40,45 +42,65 @@ export default function Schedule() {
 
   function structureEvents() {
     if (events != undefined) {
-      {
-        Object.keys(events).forEach((eventId) => {
-          structuredEvents[Object.keys(events[eventId].eventDetails)] =
-            Object.values(events[eventId].eventDetails);
-        });
-      }
+      Object.keys(events).map((eventId) => {
+        {
+          structuredEvents[Object.keys(events[eventId].eventDetails)] ==
+          undefined
+            ? (structuredEvents[Object.keys(events[eventId].eventDetails)] = [
+                Object.values(events[eventId].eventDetails),
+              ])
+            : structuredEvents[Object.keys(events[eventId].eventDetails)].push(
+                Object.values(events[eventId].eventDetails)
+              );
+        }
+      });
     }
   }
 
+  const deleteEvent = (event) => {
+    dispatch(removeEvent(event.eventId));
+  };
+
   function renderItems(item) {
-    // Funkar inte att ha loopen här för att se om eventsen är unika, den skriver över eventen redan innan
     return (
       <View>
-        <TouchableOpacity style={styles.eventList} onPress={() => onOpen(item)}>
+        <TouchableOpacity
+          style={styles.eventList}
+          onPress={() => onOpen(item[0])}
+        >
           <View style={styles.eventHeader}>
             <View style={{ width: "80%" }}>
-              <Text style={styles.eventTitle}>{item.title}</Text>
+              <Text style={styles.eventTitle}>{item[0].title}</Text>
             </View>
-            <Text style={styles.eventTime}>{item.time}</Text>
+            <Text style={styles.eventTime}>{item[0].time}</Text>
+            {activeTeam.members[currentUser.id] == "coach" ? (
+              <Icon
+                name="ios-trash-outline"
+                size={30}
+                onPress={() => deleteEvent(item[0])}
+              ></Icon>
+            ) : null}
           </View>
-          <Text style={styles.eventDescription}>{item.type}</Text>
+          <Text style={styles.eventDescription}>{item[0].type}</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
   structureEvents();
-
   return (
     <SafeAreaView style={styles.container}>
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        <TouchableOpacity
-          style={styles.smallBtn}
-          onPress={() => Actions.CreateEventSchedule()}
-        >
-          <Text style={styles.buttonText}>+</Text>
-        </TouchableOpacity>
+        {activeTeam.members[currentUser.id] == "coach" ? (
+          <TouchableOpacity
+            style={styles.smallBtn}
+            onPress={() => Actions.CreateEvent()}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        ) : null}
       </View>
       <Agenda
         theme={{
@@ -95,7 +117,7 @@ export default function Schedule() {
               marginRight: 15,
               paddingTop: 15,
               paddingBottom: 7,
-              backgroundColor: "green",
+              backgroundColor: "#007E34",
             },
           },
         }}
@@ -122,7 +144,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginTop: 30,
     borderLeftWidth: 2,
-    borderLeftColor: "green",
+    borderLeftColor: "#007E34",
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
   },
@@ -166,7 +188,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginLeft: 40,
   },
   title: {
@@ -175,7 +197,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   type: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     padding: 10,
     margin: 5,
     borderRadius: 10,

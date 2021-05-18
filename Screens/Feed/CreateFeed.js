@@ -6,21 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useSelector } from "react-redux";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
-
+import { useSelector, useDispatch } from "react-redux";
+import { createPost } from "../../actions/index";
 import { Actions } from "react-native-router-flux";
 
 export default function CreateFeed() {
   const [textValue, setValue] = useState("");
-  const dateTime = new Date();
-
   const currentUser = useSelector((state) => state.currentUser);
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const dispatch = useDispatch();
 
   const onCancelPostPressed = () => {
     Actions.pop();
@@ -28,29 +22,10 @@ export default function CreateFeed() {
 
   const onPostInFeedPressed = () => {
     if (textValue != "") {
-      const postRef = firebase.database().ref("/feed/").push();
-      const postKey = postRef.key;
-
-      postRef
-        .set({
-          author: currentUser.firstName + " " + currentUser.lastName,
-          authorId: currentUser.id,
-          authorPicture: currentUser.profilePicture
-            ? currentUser.profilePicture
-            : null,
-          teamId: activeTeam.teamId,
-          text: textValue,
-          createdOn: dateTime.getTime(),
-          postId: postKey,
-          comments: [],
-          likes: [],
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      dispatch(createPost(currentUser, activeTeam.teamId, textValue));
+      setValue("");
+      Actions.pop();
     }
-    Actions.pop();
-    setValue("");
   };
 
   return (
@@ -100,7 +75,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   addPostButton: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,

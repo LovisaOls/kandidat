@@ -14,7 +14,7 @@ import Settings from "./Screens/Settings";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
 import CreateFeed from "./Screens/Feed/CreateFeed";
 import Feed from "./Screens/Feed/Feed";
-import CreateEventSchedule from "./Screens/CreateEventSchedule";
+import CreateEvent from "./Screens/Schedule/CreateEvent";
 import CreateTactic from "./Screens/CreateTactic";
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -95,7 +95,7 @@ export default function App() {
             <Scene key="CreateFeed" component={CreateFeed} />
             <Scene key="Feed" component={Feed} />
             <Scene key="TacticsCoach" component={TacticsCoach} />
-            <Scene key="CreateEventSchedule" component={CreateEventSchedule} />
+            <Scene key="CreateEvent" component={CreateEvent} />
             <Scene key="CreateTactic" component={CreateTactic} />
           </Scene>
         </Stack>
