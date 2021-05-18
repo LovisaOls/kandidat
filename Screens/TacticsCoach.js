@@ -17,8 +17,9 @@ import { removeTactic } from "../actions/index";
 
 export default function TacticsCoach() {
 
-  const screenHeight = Dimensions.get("window").height;
+
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const currentUser = useSelector((state) => state.currentUser);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -40,29 +41,43 @@ export default function TacticsCoach() {
     setActiveTactic(tactic.tacticId);
   }
 
+
   const deleteTactic = (tactic) => {
+    if (tactic.tacticId == activeTactic) {
+      setActiveTactic("");
       dispatch(removeTactic(tactic.tacticId));
+    } else {
+      dispatch(removeTactic(tactic.tacticId));
+    }
   }
 
 
   return (
 
+
     <SafeAreaView style={styles.container}>
 
       <TopMenu />
+
+<View style= {styles.theHeader}>
+      {activeTeam.coach == currentUser.id ? (
       <TouchableOpacity
         style={styles.button}
         onPress={() => Actions.CreateTactic()}>
         <Text style={styles.buttonTitle}> Create LineUp </Text>
       </TouchableOpacity>
+      ) : (
+      <TouchableOpacity
+      style={styles.button}>
+      </TouchableOpacity>)}
 
       <View>
         <TouchableOpacity
           onPress={() => onOpen()}
 
         >
-          <View style={styles.tacticTitle}>
-            <Text style={styles.tacticTitleText}> CHOOSE TACTIC </Text>
+          <View style={styles.chooseTactic}>
+            <Text style={styles.chooseTacticText}> CHOOSE TACTIC </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -70,23 +85,30 @@ export default function TacticsCoach() {
       <View style={styles.tacticTitle}>
         <Text style={styles.tacticTitleText}> {activeTactic && tactics[activeTactic].title} </Text>
       </View>
+      </View>
 
+        <View style={styles.theField}>
       <ImageBackground
-        source={require('../assets/footballfield.png')}
+        source={require('../assets/hejhej.png')}
+        
         style={{
           flex: 1,
+          align: 'center',
+
         }}>
       </ImageBackground>
-      
+      </View>
         
 
       {activeTactic && tactics ? (
       <>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX1}
-        y={activeTactic && tactics[activeTactic].positionY1}
+        x={activeTactic && tactics[activeTactic].positionX1*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY1*(screenHeight)-15}
         disabled={true}
+        isCircle={true}
+        renderSize={13}
       >
         <View style={styles.players}>
           <Text style={styles.initialText}>{activeTactic && tactics[activeTactic].initial1}</Text>
@@ -94,8 +116,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX2}
-        y={activeTactic && tactics[activeTactic].positionY2}
+        x={activeTactic && tactics[activeTactic].positionX2*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY2*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -104,8 +126,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX3}
-        y={activeTactic && tactics[activeTactic].positionY3}
+        x={activeTactic && tactics[activeTactic].positionX3*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY3*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -114,8 +136,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX4}
-        y={activeTactic && tactics[activeTactic].positionY4}
+        x={activeTactic && tactics[activeTactic].positionX4*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY4*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -124,8 +146,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX5}
-        y={activeTactic && tactics[activeTactic].positionY5}
+        x={activeTactic && tactics[activeTactic].positionX5*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY5*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -134,8 +156,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX6}
-        y={activeTactic && tactics[activeTactic].positionY6}
+        x={activeTactic && tactics[activeTactic].positionX6*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY6*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -144,8 +166,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX7}
-        y={activeTactic && tactics[activeTactic].positionY7}
+        x={(activeTactic && tactics[activeTactic].positionX7)*(screenWidth)-25}
+        y={(activeTactic && tactics[activeTactic].positionY7)*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -154,8 +176,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX8}
-        y={activeTactic && tactics[activeTactic].positionY8}
+        x={activeTactic && tactics[activeTactic].positionX8*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY8*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -164,8 +186,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX9}
-        y={activeTactic && tactics[activeTactic].positionY9}
+        x={activeTactic && tactics[activeTactic].positionX9*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY9*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -174,8 +196,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX10}
-        y={activeTactic && tactics[activeTactic].positionY10}
+        x={activeTactic && tactics[activeTactic].positionX10*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY10*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -184,8 +206,8 @@ export default function TacticsCoach() {
       </Draggable>
 
       <Draggable
-        x={activeTactic && tactics[activeTactic].positionX11}
-        y={activeTactic && tactics[activeTactic].positionY11}
+        x={activeTactic && tactics[activeTactic].positionX11*(screenWidth)-25}
+        y={activeTactic && tactics[activeTactic].positionY11*(screenHeight)-15}
         disabled={true}
       >
         <View style={styles.players}>
@@ -207,12 +229,13 @@ export default function TacticsCoach() {
         <View style={styles.modal}>
           <Text style={styles.title}> PICK A TACTIC </Text>
           {
-            Object.keys(tactics).map((i) => {
+            Object.keys(tactics).map((i,index) => {
               return (
                 <TouchableOpacity
+                key={index}
                   onPress={() => onTacticPressed(tactics[i])}
                 >
-                  <View key={i} style={styles.viewMembers}>
+                  <View style={styles.viewTactics}>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
 
                       <View>
@@ -221,7 +244,9 @@ export default function TacticsCoach() {
                         </Text>
                       </View>
 
+
                       <View>
+                       
                       <TouchableOpacity>
                       <Icon
                         onPress = { () => deleteTactic(tactics[i])} 
@@ -248,6 +273,9 @@ export default function TacticsCoach() {
   );
 }
 
+const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -255,43 +283,53 @@ const styles = StyleSheet.create({
 
   players: {
     backgroundColor: 'red',
-    padding: 8,
+    padding: 5,
     borderRadius: 15,
-  },
-  button: {
-    backgroundColor: 'red',
-    marginBottom: 5,
-    height: 30,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
 
   initialText: {
     fontSize: 12,
   },
 
-  cancelText: {
+  theHeader: {
+    height: screenHeight * 0.11,
+    alignItems: 'center',
+  },
+
+  button: {
+    backgroundColor: 'red',
+    width: screenWidth*0.7,
+    marginBottom: 5,
+    borderRadius: 24,
+    alignItems: 'center',
+  },
+
+  chooseTacticText: {
     fontSize: 16,
     color: 'blue',
-    margin: 5,
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center'
-  },
-  tacticTitle: {
-    marginTop: 5,
-    marginBottom: 5,
-  },
-
-
-  tacticTitleText: {
     alignContent: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 16,
-    height: 30,
+    marginBottom: 5
   },
+
+  tacticTitleText: {
+    fontSize: 20,
+    marginBottom: 5,
+  },
+
+  theField: {
+    width:"100%",
+    height: "100%",
+    flex:1,
+    justifyContent: 'center'
+  },
+
+
+  modal: {
+    padding: 20,
+  },
+
   title: {
     fontSize: 24,
     justifyContent: "center",
@@ -299,11 +337,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 
-  modal: {
-    padding: 20,
-  },
 
-  viewMembers: {
+  viewTactics: {
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#DDDDDD",

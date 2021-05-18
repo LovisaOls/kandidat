@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
+  Dimensions
 } from "react-native";
 import Draggable from "react-native-draggable"; // first, run "npm run source" to get Draggable.js
 import TopMenu from "../Screens/TopMenu";
@@ -16,9 +17,13 @@ import "firebase/database";
 require("firebase/auth");
 
 import { Actions } from "react-native-router-flux";
+import { color } from "react-native-reanimated";
 
 export default function CreateTactic() {
+
   const { activeTeam } = useSelector((state) => state.currentTeams);
+
+
   const [title, setTitle] = useState("");
 
   const [initial1, setPlayer1] = useState("");
@@ -172,39 +177,57 @@ export default function CreateTactic() {
       });
   };
 
+  const screenHeight = Dimensions.get("screen").height;
+  const screenWidth = Dimensions.get("screen").width;
+
+  
+
   return (
+
     <SafeAreaView style={styles.container}>
       <TopMenu />
-      <TouchableOpacity style={styles.button} onPress={() => onCreateLineUp()}>
-        <Text style={styles.buttonTitle}> Save Team </Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => Actions.TacticsCoach()}>
-        <Text style={styles.cancelText}> Cancel </Text>
-      </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Title"
-        placeholderTextColor="#aaaaaa"
-        onChangeText={(text) => setTitle(text)}
-        value={title}
-      />
 
-      <ImageBackground
-        source={require("../assets/footballfield.png")}
-        style={{
-          flex: 1,
-        }}
-      ></ImageBackground>
+
+      <View style={styles.theHeader}>
+        {title ? (
+          <TouchableOpacity style={styles.button} onPress={() => onCreateLineUp()}>
+            <Text style={styles.buttonTitle}> Save Team </Text>
+          </TouchableOpacity>
+        ) : (<TouchableOpacity style={styles.button} >
+          <Text style={styles.buttonTitle}> Save Team </Text>
+        </TouchableOpacity>)}
+
+
+        <TouchableOpacity onPress={() => Actions.TacticsCoach()}>
+          <Text style={styles.cancelText}> Cancel </Text>
+        </TouchableOpacity>
+
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          placeholderTextColor="#aaaaaa"
+          onChangeText={(text) => setTitle(text)}
+          value={title}
+        />
+      </View>
+
+      <View style={styles.theField}>
+        <ImageBackground
+          source={require("../assets/hejhej.png")}
+          style={{
+            flex: 1,
+            align: 'center'
+          }}
+        ></ImageBackground>
+      
 
       <Draggable
-        x={195}
-        y={350}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions1(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions1(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -218,13 +241,11 @@ export default function CreateTactic() {
 
       <Draggable
         x={30}
-        y={450}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions2(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions2(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -237,14 +258,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={195}
-        y={450}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions3(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions3(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -257,14 +276,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={350}
-        y={450}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions4(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions4(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -277,14 +294,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={110}
-        y={600}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions5(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions5(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -297,14 +312,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={280}
-        y={600}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions6(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions6(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -317,14 +330,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={25}
-        y={680}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions7(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions7(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -337,14 +348,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={100}
-        y={740}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions8(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions8(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -357,14 +366,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={290}
-        y={740}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions9(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions9(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -377,14 +384,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={370}
-        y={680}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions10(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions10(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -397,14 +402,12 @@ export default function CreateTactic() {
       </Draggable>
 
       <Draggable
-        x={195}
-        y={800}
-        minX={10}
-        maxX={420}
-        maxY={840}
-        minY={210}
+        x={30}
+        y={60}
+        minX={0}
+        minY={0}
         onDragRelease={(e) =>
-          setPositions11(e.nativeEvent.pageX, e.nativeEvent.pageY)
+          setPositions11(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
         }
       >
         <View style={styles.players}>
@@ -415,50 +418,71 @@ export default function CreateTactic() {
           ></TextInput>
         </View>
       </Draggable>
+      </View>
+
+      <View style={styles.bottomMenu}>
+      </View>
     </SafeAreaView>
   );
 }
 
+const screenHeight = Dimensions.get("screen").height;
+const screenWidth = Dimensions.get("screen").width;
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 80,
   },
 
   players: {
     backgroundColor: "red",
-    padding: 8,
+    padding: 5,
     borderRadius: 15,
   },
 
+  theField: {
+    width:"100%",
+    height: "100%",
+    flex:1,
+    justifyContent: 'center'
+  },
+
+  theHeader: {
+    height: screenHeight * 0.11,
+    alignItems: 'center',
+  },
+
   button: {
-    backgroundColor: "red",
+    backgroundColor: 'red',
+    width: screenWidth*0.7,
+    height: "30%",
     marginBottom: 5,
-    height: 30,
     borderRadius: 24,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   cancelText: {
     fontSize: 16,
-    color: "blue",
-    margin: 5,
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
+    color: 'blue',
+    alignContent: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    marginBottom: 5
   },
+
+
   input: {
     fontSize: 16,
-    height: 30,
-    borderRadius: 24,
-    overflow: "hidden",
+    width: screenWidth * 0.7,
+    borderRadius: 12,
+    textAlign: 'center',
     backgroundColor: "white",
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 30,
-    marginRight: 30,
-    paddingLeft: 10,
     borderWidth: 0.25,
   },
+
+  bottomMenu: {
+    height: 50,
+  }
 });
