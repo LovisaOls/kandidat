@@ -16,6 +16,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
 import MembershipRequests from "./MembershipRequests";
 import ParticipationRequests from "./ParticipationRequests";
+import MemberBox from "./MemberBox";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers } from "../../actions/index";
 export default function Home() {
@@ -81,12 +82,12 @@ export default function Home() {
             <Text style={styles.place}>{activeTeam.city}</Text>
           </View>
 
-          <TouchableOpacity style={styles.memberBox} onPress={onOpen}>
+          <TouchableOpacity style={styles.teamMemberBox} onPress={onOpen}>
             <View style={styles.teamMembersNrBox}>
               <Text style={styles.teamMembersNr}>
                 {
                   teamMembers.filter(
-                    (obj) => obj.teams[activeTeam.teamId] === true
+                    (obj) => obj.teams[activeTeam.teamId] != false
                   ).length
                 }
               </Text>
@@ -107,7 +108,7 @@ export default function Home() {
         </TouchableOpacity>
       )}
 
-      {activeTeam.coach == currentUser.id ? (
+      {activeTeam.members[currentUser.id] == "coach" ? (
         <View style={styles.MyMemberRequests}>
           <MembershipRequests />
         </View>
@@ -121,58 +122,9 @@ export default function Home() {
         <View style={styles.modal}>
           <Text style={styles.title}> Team members </Text>
           {teamMembers &&
-            Object.keys(teamMembers).map((key, i) => {
-              return teamMembers[key].teams[activeTeam.teamId] == true ? (
-                <View key={i} style={styles.viewMembers}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      {teamMembers[key].profilePicture ? (
-                        <Image
-                          source={{ uri: teamMembers[key].profilePicture }}
-                          style={{
-                            height: 50,
-                            width: 50,
-                            borderRadius: 25,
-                            marginRight: 10,
-                          }}
-                        />
-                      ) : (
-                        <View style={styles.initialCircle}>
-                          <Text style={styles.initialText}>
-                            {teamMembers[key].firstName[0]}
-                            {teamMembers[key].lastName[0]}
-                          </Text>
-                        </View>
-                      )}
-
-                      <View>
-                        <Text style={styles.nameTeamMember}>
-                          {teamMembers[key].firstName}{" "}
-                          {teamMembers[key].lastName}
-                        </Text>
-                        <Text>{teamMembers[key].email}</Text>
-                      </View>
-                    </View>
-
-                    {teamMembers[key].id == activeTeam.coach ? (
-                      <View style={{ alignItems: "center" }}>
-                        <Icon
-                          name="shield-checkmark"
-                          size={20}
-                          color="#A247D4"
-                        ></Icon>
-                      </View>
-                    ) : null}
-                  </View>
-                </View>
+            Object.keys(teamMembers).map((user, i) => {
+              return teamMembers[user].teams[activeTeam.teamId] != false ? (
+                <MemberBox key={i} user={user} />
               ) : null;
             })}
         </View>
@@ -225,22 +177,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     padding: 5,
   },
-  memberBox: {
+  teamMemberBox: {
     margin: 20,
     alignItems: "center",
   },
-  viewMembers: {
-    width: "100%",
-    borderRadius: 10,
-    margin: 1,
-    padding: 5,
-  },
   modal: {
     padding: 20,
-  },
-  nameTeamMember: {
-    fontWeight: "bold",
-    fontSize: 14,
   },
   image: {
     width: screenWidth * 0.35,
@@ -260,22 +202,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
-  },
-
-  initialCircle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    marginHorizontal: 10,
-    marginVertical: 5,
-    backgroundColor: "#DDDDDD",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  initialText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
   },
   place: {
     fontSize: 16,

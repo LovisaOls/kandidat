@@ -64,8 +64,8 @@ export default function CreateEventSchedule() {
         //Invite teammembers
         Object.keys(activeTeam.members).map((userId) => {
           if (
-            activeTeam.members[userId] == true &&
-            userId != activeTeam.coach
+            activeTeam.members[userId] == true ||
+            activeTeam.members[userId] == "coach"
           ) {
             firebase
               .database()
