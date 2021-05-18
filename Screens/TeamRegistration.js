@@ -20,8 +20,6 @@ import { registerTeam, joinTeam, fetchAllTeams } from "../actions/index";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
-import { ScreenStackHeaderRightView } from "react-native-screens";
-import { set } from "react-native-reanimated";
 
 function TeamRegistration() {
   const [teamName, setTeamName] = useState("");
@@ -32,7 +30,7 @@ function TeamRegistration() {
   const [join, setJoin] = useState(true);
 
   const [data, setData] = useState(null);
-  const searchData = Object.keys(allTeams);
+  const searchData = allTeams != undefined ? Object.keys(allTeams) : null;
 
   const dispatch = useDispatch();
   useEffect(() => {

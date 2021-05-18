@@ -1,6 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { fetchEvents } from "../../actions/index";
 import "firebase/database";
 require("firebase/auth");
@@ -23,6 +29,7 @@ const ParticipationRequests = () => {
     ("0" + parseInt(date.getMonth() + 1)).slice(-2) +
     "-" +
     date.getDate();
+  const screenHeight = Dimensions.get("window").height;
 
   const onAcceptPressed = (eventId) => {
     firebase
@@ -39,7 +46,7 @@ const ParticipationRequests = () => {
   return (
     <View>
       <Text style={styles.title}>Participation Requests</Text>
-      <ScrollView contentContainerStyle={{ height: "50%" }}>
+      <ScrollView style={{ maxHeight: screenHeight * 0.45 }}>
         {events &&
           Object.keys(events).map((eventId, key) => {
             return events[eventId].participants != undefined &&

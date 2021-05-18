@@ -1,6 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React from "react";
+import { useSelector } from "react-redux";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import "firebase/database";
 require("firebase/auth");
@@ -10,6 +16,7 @@ import { ScrollView } from "react-native-gesture-handler";
 const MembershipRequests = () => {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const { teamMembers } = useSelector((state) => state.currentTeams);
+  const screenHeight = Dimensions.get("window").height;
 
   const onAcceptPressed = (userId) => {
     firebase
@@ -39,7 +46,7 @@ const MembershipRequests = () => {
   return (
     <View>
       <Text style={styles.title}>Membership Requests</Text>
-      <ScrollView contentContainerStyle={{ height: "50%" }}>
+      <ScrollView style={{ maxHeight: screenHeight * 0.45 }}>
         {teamMembers &&
           Object.keys(teamMembers).map((key, i) => {
             return teamMembers[key].teams[activeTeam.teamId] == false ? (

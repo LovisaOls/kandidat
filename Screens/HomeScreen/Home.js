@@ -109,13 +109,9 @@ export default function Home() {
       )}
 
       {activeTeam.members[currentUser.id] == "coach" ? (
-        <View style={styles.MyMemberRequests}>
-          <MembershipRequests />
-        </View>
+        <MembershipRequests />
       ) : (
-        <View>
-          <ParticipationRequests />
-        </View>
+        <ParticipationRequests />
       )}
 
       <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
