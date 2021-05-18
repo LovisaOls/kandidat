@@ -11,21 +11,17 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
-
-import { useSelector } from "react-redux";
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
-
+import { createEvent } from "../../actions/index";
+import { useSelector, useDispatch } from "react-redux";
 import { Actions } from "react-native-router-flux";
 
-export default function CreateEventSchedule() {
+export default function CreateEvent() {
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("other");
   const [date, setDate] = useState(new Date());
   const [place, setPlace] = useState("");
   const [description, setDescription] = useState("");
-
+  const dispatch = useDispatch();
   const { activeTeam } = useSelector((state) => state.currentTeams);
 
   const onDateChange = (event, selectedDate) => {
@@ -34,53 +30,17 @@ export default function CreateEventSchedule() {
   };
 
   const onCreatePress = () => {
-    const eventRef = firebase.database().ref("/events/").push();
-    const eventKey = eventRef.key;
-    const monthFormatted = ("0" + (date.getMonth() + 1)).slice(-2);
-    const dateFormatted = ("0" + date.getDate()).slice(-2);
-    const hoursFormatted = ("0" + date.getHours()).slice(-2);
-    const minutesFormatted = ("0" + date.getMinutes()).slice(-2);
-    eventRef
-      .set({
-        teamId: activeTeam.teamId,
-      })
-      .then(
-        firebase
-          .database()
-          .ref(`/events/${eventKey}/eventDetails/`)
-          .child(`${date.getFullYear()}-${monthFormatted}-${dateFormatted}`)
-          .set({
-            title: title,
-            type: type,
-            time: `${hoursFormatted}:${minutesFormatted}`,
-            place: place,
-            description: description,
-            id: eventKey,
-            date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
-            eventId: eventKey,
-          })
+    dispatch(
+      createEvent(
+        activeTeam.teamId,
+        date,
+        title,
+        type,
+        place,
+        description,
+        activeTeam.members
       )
-      .then(() => {
-        //Invite teammembers
-        Object.keys(activeTeam.members).map((userId) => {
-          if (
-            activeTeam.members[userId] == true ||
-            activeTeam.members[userId] == "coach"
-          ) {
-            firebase
-              .database()
-              .ref(`/events/${eventKey}/participants/`)
-              .child(userId)
-              .set("pending");
-          }
-        });
-      })
-      .then(() => {
-        Actions.pop();
-      })
-      .catch((error) => {
-        alert(error);
-      });
+    );
   };
 
   return (
@@ -218,7 +178,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,
@@ -265,7 +225,7 @@ const styles = StyleSheet.create({
     opacity: 10,
   },
   typeChosen: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     padding: 12,
     borderRadius: 10,
     opacity: 10,

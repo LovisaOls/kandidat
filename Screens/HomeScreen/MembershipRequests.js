@@ -12,7 +12,6 @@ const MembershipRequests = () => {
   const { teamMembers } = useSelector((state) => state.currentTeams);
 
   const onAcceptPressed = (userId) => {
-    console.log("accepted", userId);
     firebase
       .database()
       .ref(`/users/${userId}/teams/${activeTeam.teamId}`)
@@ -25,7 +24,6 @@ const MembershipRequests = () => {
       );
   };
   const onDeclinePressed = (userId) => {
-    console.log("declined", userId);
     firebase
       .database()
       .ref(`/users/${userId}/teams/${activeTeam.teamId}`)
@@ -56,7 +54,7 @@ const MembershipRequests = () => {
                     <Icon
                       name="checkmark-circle-sharp"
                       size={30}
-                      color="green"
+                      color="#007E34"
                     ></Icon>
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -65,7 +63,7 @@ const MembershipRequests = () => {
                     <Icon
                       name="close-circle-sharp"
                       size={30}
-                      color="tomato"
+                      color="#FF6347"
                     ></Icon>
                   </TouchableOpacity>
                 </View>

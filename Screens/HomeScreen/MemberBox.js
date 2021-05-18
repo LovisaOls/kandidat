@@ -61,6 +61,12 @@ const MemberBox = ({ user }) => {
     setModalVisible(true);
   };
 
+  const onCancel = () => {
+    setSureAssignVisible(false);
+    setSureRemoveVisible(false);
+    setModalVisible(false);
+  };
+
   return (
     <View style={styles.viewMembers}>
       <View
@@ -111,12 +117,15 @@ const MemberBox = ({ user }) => {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <TouchableOpacity
           style={styles.modalBackground}
-          onPress={() => setModalVisible(!modalVisible)}
+          onPress={() => onCancel()}
         >
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>Edit Team Member</Text>
+            <Text style={styles.modalText}>
+              Member: {teamMembers[user].firstName} {teamMembers[user].lastName}
+            </Text>
             {sureRemoveVisible || sureAssignVisible ? (
-              <Text>Are you sure?</Text>
+              <Text style={styles.modalText}>Are you sure?</Text>
             ) : null}
             <View style={styles.buttonView}>
               {!sureAssignVisible ? (
@@ -222,6 +231,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: screenWidth * 0.9,
+    height: screenWidth * 0.6,
   },
   modalTitle: {
     fontSize: 18,
@@ -236,7 +246,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     margin: 10,
     width: "50%",
     justifyContent: "center",
@@ -245,7 +255,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     elevation: 2,
-    backgroundColor: "tomato",
+    backgroundColor: "#FF6347",
     margin: 10,
     width: "50%",
     justifyContent: "center",
@@ -273,6 +283,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     marginBottom: 15,
+    fontSize: 16,
     textAlign: "center",
   },
   absolute: {

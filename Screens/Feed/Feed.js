@@ -16,23 +16,11 @@ import TopMenu from "../TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../../actions/index";
 import { createComment } from "../../actions/index";
-import firebase from "firebase/app";
-import "firebase/database";
 import { Actions } from "react-native-router-flux";
-require("firebase/auth");
 import Posts from "./Posts";
 
 export default function Feed() {
-  const screenHeight = Dimensions.get("window").height;
-  const screenWidth = Dimensions.get("window").width;
   const currentUser = useSelector((state) => state.currentUser);
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
-
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -107,46 +95,75 @@ export default function Feed() {
           </View>
         )}
       </View>
-
-      {/* Här börjar model */}
       <Modalize ref={modalRef} modalHeight={screenHeight * 0.8}>
         <View style={styles.modal}>
           <Text style={styles.title}> Comments </Text>
           {activePost != null ? (
             <View>
               <View style={styles.modalPost}>
-                <Text style={styles.postName}>
-                  {feedPosts[activePost] && feedPosts[activePost].author}
-                </Text>
-                <Text style={styles.postDate}>
-                  {new Date(feedPosts[activePost].createdOn)
-                    .toString()
-                    .substring(0, 16)}
-                </Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  {feedPosts[activePost].authorPicture != undefined ? (
+                    <Image
+                      source={{ uri: feedPosts[activePost].authorPicture }}
+                      style={{
+                        height: 50,
+                        width: 50,
+                        borderRadius: 25,
+                        marginRight: 10,
+                      }}
+                    />
+                  ) : (
+                    <View style={styles.initialCircle}>
+                      <Text style={styles.initialText}>
+                        {feedPosts[activePost].authorFirstName[0]}
+                        {feedPosts[activePost].authorLastName[0]}
+                      </Text>
+                    </View>
+                  )}
+                  <View>
+                    <Text style={styles.postName}>
+                      {feedPosts[activePost] &&
+                        feedPosts[activePost].authorFirstName}{" "}
+                      {feedPosts[activePost] &&
+                        feedPosts[activePost].authorLastName}
+                    </Text>
+                    <Text style={styles.postDate}>
+                      {new Date(feedPosts[activePost].createdOn)
+                        .toString()
+                        .substring(0, 16)}
+                    </Text>
+                  </View>
+                </View>
                 <Text style={styles.postText}>
                   {feedPosts[activePost].text}
                 </Text>
               </View>
-              <FlatList
-                data={
-                  feedPosts[activePost].comments &&
-                  Object.keys(feedPosts[activePost].comments)
-                }
-                renderItem={({ item, index }) => (
-                  <View key={index} style={styles.commentBorder}>
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <View>
-                        <Text style={{ fontWeight: "bold" }}>
-                          {feedPosts[activePost].comments[item].author}
-                        </Text>
+              {feedPosts[activePost].comments &&
+                Object.keys(feedPosts[activePost].comments).map(
+                  (item, index) => {
+                    return (
+                      <View key={index} style={styles.commentBorder}>
+                        <View
+                          style={{ flexDirection: "row", alignItems: "center" }}
+                        >
+                          <View>
+                            <Text style={{ fontWeight: "bold" }}>
+                              {
+                                feedPosts[activePost].comments[item]
+                                  .authorFirstName
+                              }{" "}
+                              {
+                                feedPosts[activePost].comments[item]
+                                  .authorLastName
+                              }
+                            </Text>
+                          </View>
+                        </View>
+                        <Text>{feedPosts[activePost].comments[item].text}</Text>
                       </View>
-                    </View>
-                    <Text>{feedPosts[activePost].comments[item].text}</Text>
-                  </View>
+                    );
+                  }
                 )}
-              ></FlatList>
             </View>
           ) : null}
           <View style={styles.inputBox}>
@@ -218,7 +235,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginLeft: 40,
   },
   title: {
@@ -255,7 +272,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   commentButton: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     height: screenWidth * 0.12,
     width: screenWidth * 0.12,
     borderRadius: (screenWidth * 0.12) / 2,
@@ -273,5 +290,20 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     marginBottom: 5,
     paddingBottom: 5,
+  },
+  initialCircle: {
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+    margin: 5,
+    marginRight: 10,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  initialText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
