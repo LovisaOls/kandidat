@@ -64,14 +64,14 @@ export default function Schedule() {
             <View style={{ width: "80%" }}>
               <Text style={styles.eventTitle}>{item.title}</Text>
             </View>
-            {activeTeam.coach == currentUser.id ? (
+            <Text style={styles.eventTime}>{item.time}</Text>
+            {activeTeam.members[currentUser.id] == "coach" ? (
               <Icon
                 name="ios-trash-outline"
                 size={30}
                 onPress={() => deleteEvent(item)}
               ></Icon>
             ) : null}
-            <Text style={styles.eventTime}>{item.time}</Text>
           </View>
           <Text style={styles.eventDescription}>{item.type}</Text>
         </TouchableOpacity>
@@ -86,7 +86,7 @@ export default function Schedule() {
       <TopMenu />
       <View style={styles.header}>
         <Text style={styles.title}>Schedule</Text>
-        {activeTeam.coach == currentUser.id ? (
+        {activeTeam.members[currentUser.id] == "coach" ? (
           <TouchableOpacity
             style={styles.smallBtn}
             onPress={() => Actions.CreateEventSchedule()}
