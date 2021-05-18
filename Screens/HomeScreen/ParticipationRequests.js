@@ -25,14 +25,12 @@ const ParticipationRequests = () => {
     date.getDate();
 
   const onAcceptPressed = (eventId) => {
-    console.log("accepted", eventId);
     firebase
       .database()
       .ref(`/events/${eventId}/participants/${currentUser.id}`)
       .set(true);
   };
   const onDeclinePressed = (eventId) => {
-    console.log("declined", eventId);
     firebase
       .database()
       .ref(`/events/${eventId}/participants/${currentUser.id}`)
@@ -76,7 +74,7 @@ const ParticipationRequests = () => {
                           <Icon
                             name="checkmark-circle-sharp"
                             size={30}
-                            color="green"
+                            color="#007E34"
                           ></Icon>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -85,7 +83,7 @@ const ParticipationRequests = () => {
                           <Icon
                             name="close-circle-sharp"
                             size={30}
-                            color="tomato"
+                            color="#FF6347"
                           ></Icon>
                         </TouchableOpacity>
                       </View>
@@ -132,7 +130,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   eventType: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     borderRadius: 5,
     padding: 5,
   },

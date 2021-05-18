@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   type: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     padding: 10,
     margin: 5,
     borderRadius: 10,

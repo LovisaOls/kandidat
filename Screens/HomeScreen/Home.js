@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.15,
     height: screenWidth * 0.15,
     borderRadius: (screenWidth * 0.15) / 2,
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     alignItems: "center",
     justifyContent: "center",
   },

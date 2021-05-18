@@ -240,7 +240,8 @@ export const createComment = (postId, commentText, firstname, lastname) => {
       .ref(`/feed/${postId}/comments/`)
       .push();
     commentRef.set({
-      author: firstname + " " + lastname,
+      authorFirstName: firstname,
+      authorLastName: lastname,
       text: commentText,
     });
     dispatch({ type: "COMMENT_ADDED" });
@@ -290,4 +291,88 @@ export const removeEvent = (eventId) => {
   return () => {
     firebase.database().ref(`/events/${eventId}`).remove();
   };
-}
+};
+
+export const createEvent = (
+  teamId,
+  date,
+  title,
+  type,
+  place,
+  description,
+  members
+) => {
+  return () => {
+    const eventRef = firebase.database().ref("/events/").push();
+    const eventKey = eventRef.key;
+    const monthFormatted = ("0" + (date.getMonth() + 1)).slice(-2);
+    const dateFormatted = ("0" + date.getDate()).slice(-2);
+    const hoursFormatted = ("0" + date.getHours()).slice(-2);
+    const minutesFormatted = ("0" + date.getMinutes()).slice(-2);
+    eventRef
+      .set({
+        teamId: teamId,
+      })
+      .then(
+        firebase
+          .database()
+          .ref(`/events/${eventKey}/eventDetails/`)
+          .child(`${date.getFullYear()}-${monthFormatted}-${dateFormatted}`)
+          .set({
+            title: title,
+            type: type,
+            time: `${hoursFormatted}:${minutesFormatted}`,
+            place: place,
+            description: description,
+            id: eventKey,
+            date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
+            eventId: eventKey,
+          })
+      )
+      .then(() => {
+        //Invite teammembers
+        Object.keys(members).map((userId) => {
+          if (members[userId] == true || members[userId] == "coach") {
+            firebase
+              .database()
+              .ref(`/events/${eventKey}/participants/`)
+              .child(userId)
+              .set("pending");
+          }
+        });
+      })
+      .then(() => {
+        Actions.pop();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+};
+
+export const createPost = (currentUser, teamId, textValue) => {
+  return () => {
+    const dateTime = new Date();
+    const postRef = firebase.database().ref("/feed/").push();
+    const postKey = postRef.key;
+
+    postRef
+      .set({
+        authorFirstName: currentUser.firstName,
+        authorLastName: currentUser.lastName,
+        authorId: currentUser.id,
+        authorPicture: currentUser.profilePicture
+          ? currentUser.profilePicture
+          : null,
+        teamId: teamId,
+        text: textValue,
+        createdOn: dateTime.getTime(),
+        postId: postKey,
+        comments: [],
+        likes: [],
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+};

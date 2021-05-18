@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 
   forgot_button: {
     fontSize: 16,
-    color: "blue",
+    color: "#A247D4",
     margin: 10,
     alignContent: "center",
     justifyContent: "center",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
   },
 
   loginBtn: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,

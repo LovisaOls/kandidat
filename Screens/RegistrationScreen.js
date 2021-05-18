@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   button: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,

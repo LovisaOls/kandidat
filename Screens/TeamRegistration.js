@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.5,
   },
   submitButton: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     marginTop: 20,
     marginLeft: 50,
     marginRight: 50,
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   joinButton: {
-    backgroundColor: "green",
+    backgroundColor: "#007E34",
     borderRadius: 5,
     padding: 5,
   },
