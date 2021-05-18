@@ -158,7 +158,8 @@ function TeamRegistration() {
                     </Text>
                     <Text>TeamId: {allTeams[item].teamId}</Text>
                   </View>
-                  {currentUser.teams[item] == undefined ? (
+                  {currentUser.teams == undefined ||
+                  currentUser.teams[item] == undefined ? (
                     <TouchableOpacity
                       style={styles.joinButton}
                       onPress={() => onJoinTeamPress(allTeams[item].teamId)}

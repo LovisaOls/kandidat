@@ -34,7 +34,10 @@ const MemberBox = ({ user }) => {
             .ref(`/teams/${activeTeam.teamId}/members/${teamMembers[user].id}`)
             .remove()
         )
-        .then(setModalVisible(!modalVisible));
+        .then(() => {
+          setSureRemoveVisible(false);
+          setModalVisible(!modalVisible);
+        });
     } else {
       setSureRemoveVisible(true);
     }
@@ -52,7 +55,10 @@ const MemberBox = ({ user }) => {
             .ref(`/teams/${activeTeam.teamId}/members/${teamMembers[user].id}`)
             .set("coach")
         )
-        .then(setModalVisible(!modalVisible));
+        .then(() => {
+          setSureAssignVisible(false);
+          setModalVisible(!modalVisible);
+        });
     } else {
       setSureAssignVisible(true);
     }
@@ -138,7 +144,8 @@ const MemberBox = ({ user }) => {
                   </Text>
                 </TouchableOpacity>
               ) : null}
-              {!sureRemoveVisible ? (
+              {!sureRemoveVisible &&
+              activeTeam.members[teamMembers[user].id] != "coach" ? (
                 <TouchableOpacity
                   style={styles.buttonAssign}
                   onPress={() => onAssignPressed()}

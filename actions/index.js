@@ -332,7 +332,7 @@ export const createEvent = (
       .then(() => {
         //Invite teammembers
         Object.keys(members).map((userId) => {
-          if (members[userId] == true || members[userId] == "coach") {
+          if (members[userId] == true) {
             firebase
               .database()
               .ref(`/events/${eventKey}/participants/`)
