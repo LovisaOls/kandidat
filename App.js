@@ -12,7 +12,6 @@ import TeamRegistration from "./Screens/TeamRegistration";
 import LoadingScreen from "./Screens/LoadingScreen";
 import Settings from "./Screens/Settings";
 import { Router, Scene, Stack, Tabs } from "react-native-router-flux";
-import CreateFeed from "./Screens/Feed/CreateFeed";
 import Feed from "./Screens/Feed/Feed";
 import CreateEvent from "./Screens/Schedule/CreateEvent";
 import CreateTactic from "./Screens/CreateTactic";
@@ -92,7 +91,6 @@ export default function App() {
             />
             <Scene key="Home" component={Home} />
             <Scene key="Settings" component={Settings} />
-            <Scene key="CreateFeed" component={CreateFeed} />
             <Scene key="Feed" component={Feed} />
             <Scene key="TacticsCoach" component={TacticsCoach} />
             <Scene key="CreateEvent" component={CreateEvent} />
