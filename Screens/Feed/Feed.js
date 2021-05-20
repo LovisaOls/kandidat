@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   Dimensions,
   TextInput,
+  Modal,
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -16,7 +17,7 @@ import TopMenu from "../TopMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../../actions/index";
 import { createComment } from "../../actions/index";
-import { Actions } from "react-native-router-flux";
+import { createPost } from "../../actions/index";
 import Posts from "./Posts";
 
 export default function Feed() {
@@ -26,14 +27,29 @@ export default function Feed() {
   const [activePost, setActivePost] = useState(null);
   const [commentText, setCommentText] = useState("");
   const { feedPosts } = useSelector((state) => state.feedPosts);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [textValue, setValue] = useState("");
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchFeed(activeTeam.teamId));
   }, [dispatch]);
 
-  const onCreateFeedPressed = () => {
-    Actions.CreateFeed();
+  const onCreatePostPressed = () => {
+    setModalVisible(true);
+  };
+
+  const onPostInFeedPressed = () => {
+    if (textValue != "") {
+      dispatch(createPost(currentUser, activeTeam.teamId, textValue));
+      setValue("");
+      setModalVisible(false);
+    }
+  };
+
+  const onCancelPostPressed = () => {
+    setModalVisible(false);
+    setValue("");
   };
 
   const onCreateComment = () => {
@@ -66,7 +82,7 @@ export default function Feed() {
         <Text style={styles.title}>Feed</Text>
         <TouchableOpacity
           style={styles.smallBtn}
-          onPress={() => onCreateFeedPressed()}
+          onPress={() => onCreatePostPressed()}
         >
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
@@ -194,6 +210,47 @@ export default function Feed() {
           </View>
         </View>
       </Modalize>
+
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <TouchableOpacity style={styles.modalBackground}>
+          <View style={styles.modalView}>
+            <Text style={styles.title}>Create new Post</Text>
+            <View style={styles.inputPostBox}>
+              <TextInput
+                placeholder={"What's on your mind?"}
+                numberOfLines={20}
+                value={textValue}
+                onChangeText={(res) => {
+                  setValue(res);
+                }}
+                multiline
+                style={styles.input}
+              ></TextInput>
+
+              <TouchableOpacity
+                style={styles.commentButton}
+                onPress={() => onPostInFeedPressed()}
+              >
+                {textValue == "" ? (
+                  <Icon
+                    name="chatbubble-ellipses-outline"
+                    size={25}
+                    color="white"
+                  ></Icon>
+                ) : (
+                  <Icon name="arrow-up-outline" size={25} color="white"></Icon>
+                )}
+              </TouchableOpacity>
+            </View>
+            <Text
+              style={styles.cancelPost}
+              onPress={() => onCancelPostPressed()}
+            >
+              Cancel
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -304,5 +361,57 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 16,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000099",
+  },
+  modalView: {
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: screenWidth * 0.95,
+    height: screenWidth * 0.5,
+  },
+  cancelPost: {
+    fontSize: 15,
+    color: "#A247D4",
+    margin: 10,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  addPostButton: {
+    backgroundColor: "#007E34",
+    height: screenWidth * 0.12,
+    width: screenWidth * 0.12,
+    borderRadius: (screenWidth * 0.12) / 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputPost: {
+    margin: 10,
+    borderRadius: 10,
+    padding: 15,
+    height: "30%",
+    fontSize: 16,
+    backgroundColor: "#DDDDDD",
+  },
+  inputPostBox: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
