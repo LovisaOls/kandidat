@@ -52,18 +52,22 @@ const Posts = ({ item, onOpenComments, setActivePost }) => {
       <Swipeable
         ref={swipeableRef}
         renderRightActions={() => (
-          <Text>
-            <TouchableOpacity>
-              <Icon
-                name="ios-trash-outline"
-                size={35}
-                onPress={() => deletePost(feedPosts[item])}
-                color={
-                  feedPosts[item].authorId == currentUser.id ? "black" : "white"
-                }
-              ></Icon>
-            </TouchableOpacity>
-          </Text>
+          <TouchableOpacity
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              margin: 3,
+            }}
+          >
+            <Icon
+              name="ios-trash-outline"
+              size={30}
+              onPress={() => deletePost(feedPosts[item])}
+              color={
+                feedPosts[item].authorId == currentUser.id ? "black" : "white"
+              }
+            ></Icon>
+          </TouchableOpacity>
         )}
         friction={feedPosts[item].authorId == currentUser.id ? 2 : 1000}
       >

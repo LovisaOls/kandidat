@@ -324,23 +324,10 @@ export const createEvent = (
             time: `${hoursFormatted}:${minutesFormatted}`,
             place: place,
             description: description,
-            id: eventKey,
             date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
             eventId: eventKey,
           })
       )
-      .then(() => {
-        //Invite teammembers
-        Object.keys(members).map((userId) => {
-          if (members[userId] == true) {
-            firebase
-              .database()
-              .ref(`/events/${eventKey}/participants/`)
-              .child(userId)
-              .set("pending");
-          }
-        });
-      })
       .then(() => {
         Actions.pop();
       })
@@ -374,5 +361,45 @@ export const createPost = (currentUser, teamId, textValue) => {
       .catch((error) => {
         alert(error);
       });
+  };
+};
+export const updateEvent = (
+  eventId,
+  title,
+  type,
+  place,
+  description,
+  date,
+  time
+) => {
+  return () => {
+    firebase
+      .database()
+      .ref("/events/" + eventId + "/eventDetails/")
+      .child(date)
+      .set({
+        title: title,
+        type: type,
+        place: place,
+        description: description,
+        time: time,
+        date: date,
+        eventId: eventId,
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+};
+
+export const sendInvitations = (invitationList, eventId) => {
+  return () => {
+    for (let userId in invitationList) {
+      firebase
+        .database()
+        .ref(`/events/${eventId}/participants/`)
+        .child(invitationList[userId])
+        .set("pending");
+    }
   };
 };
