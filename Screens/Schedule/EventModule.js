@@ -10,7 +10,12 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
-import { removeEvent, sendInvitations } from "../../actions/index";
+import {
+  removeEvent,
+  sendInvitations,
+  acceptParticipation,
+  declineParticipation,
+} from "../../actions/index";
 import EditEvent from "./EditEvent";
 import MemberInvitationBox from "./MemberInvitationBox";
 import { ScrollView } from "react-native-gesture-handler";
@@ -73,8 +78,39 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
     setInviteModalVisible(false);
   };
 
+  const onAcceptPressed = () => {
+    dispatch(acceptParticipation(activeEvent.eventId, currentUser.id));
+  };
+  const onDeclinePressed = () => {
+    dispatch(declineParticipation(activeEvent.eventId, currentUser.id));
+  };
   return (
     <View style={styles.modal}>
+      {events[activeEvent.eventId].participants != undefined &&
+      events[activeEvent.eventId].participants[currentUser.id] == "pending" ? (
+        <View>
+          <Text>Let your teammates know if you are going! </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <TouchableOpacity
+              style={[styles.editButton, { width: null }]}
+              onPress={() => onAcceptPressed()}
+            >
+              <Text style={styles.buttonText}>Accept</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.buttonSkip, { width: null }]}
+              onPress={() => onDeclinePressed()}
+            >
+              <Text style={styles.textStyleSkip}>Decline</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      ) : null}
       {activeEvent != null ? (
         <View>
           <View style={styles.modalEvents}>
@@ -88,7 +124,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                   marginBottom: 10,
                 }}
               >
-                <Text style={{ color: "#A247D4", fontSize: "18", padding: 5 }}>
+                <Text style={{ color: "#A247D4", fontSize: 18, padding: 5 }}>
                   Edit
                 </Text>
                 <Icon name="pencil" size={18} color="#A247D4"></Icon>
@@ -102,21 +138,35 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
               }}
             >
               <Text style={styles.modalTitle}>{activeEvent.title}</Text>
-              <View style={styles.type}>
+              <View
+                style={[
+                  styles.type,
+                  {
+                    backgroundColor:
+                      activeEvent.type == "game"
+                        ? "#007E34"
+                        : activeEvent.type == "practice"
+                        ? "#A247D4"
+                        : activeEvent.type == "other"
+                        ? "#FF6347"
+                        : null,
+                  },
+                ]}
+              >
                 <Text style={styles.typeText}>{activeEvent.type}</Text>
               </View>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="calendar-outline" size={20} color="#A247D4"></Icon>
-              <Text style={styles.date}>{activeEvent.date}</Text>
+              <Text style={styles.dateTimePlace}>{activeEvent.date}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="time-outline" size={20} color="#A247D4"></Icon>
-              <Text style={styles.time}>{activeEvent.time}</Text>
+              <Text style={styles.dateTimePlace}>{activeEvent.time}</Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="pin-outline" size={20} color="#A247D4"></Icon>
-              <Text style={styles.place}>{activeEvent.place}</Text>
+              <Text style={styles.dateTimePlace}>{activeEvent.place}</Text>
             </View>
             <Text style={[styles.subTitle, { margin: 0 }]}>Description</Text>
             <Text style={styles.description}>{activeEvent.description}</Text>
@@ -140,7 +190,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                   margin: 5,
                 }}
               >
-                <Text style={{ color: "#A247D4", fontSize: "18", padding: 5 }}>
+                <Text style={{ color: "#A247D4", fontSize: 18, padding: 5 }}>
                   Invite
                 </Text>
                 <Icon
@@ -151,6 +201,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
               </TouchableOpacity>
             ) : null}
           </View>
+
           {events[activeEvent.eventId].participants != undefined ? (
             <View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -354,13 +405,12 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
               {Object.keys(teamMembers).map((user, i) => {
                 return activeEvent != null &&
                   activeTeam.members[teamMembers[user].id] == true ? (
-                  <View>
+                  <View key={i}>
                     {events[activeEvent.eventId].participants == undefined ||
                     events[activeEvent.eventId].participants[
                       teamMembers[user].id
                     ] == undefined ? (
                       <MemberInvitationBox
-                        key={i}
                         user={teamMembers[user]}
                         addToInvitationList={addToInvitationList}
                         removeFromInvitationList={removeFromInvitationList}
@@ -392,17 +442,7 @@ const styles = StyleSheet.create({
     padding: 15,
     paddingLeft: 10,
   },
-  date: {
-    fontSize: 16,
-    color: "#333",
-    margin: 5,
-  },
-  time: {
-    fontSize: 16,
-    color: "#333",
-    margin: 5,
-  },
-  place: {
+  dateTimePlace: {
     fontSize: 16,
     color: "#333",
     margin: 5,
@@ -530,15 +570,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  smallBtn: {
-    width: "15%",
-    borderRadius: 20,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#007E34",
-    marginLeft: 40,
   },
   invitationButton: {
     backgroundColor: "#007E34",

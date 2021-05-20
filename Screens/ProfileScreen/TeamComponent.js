@@ -20,7 +20,7 @@ const TeamComponent = ({ team }) => {
     );
   };
 
-  return team.members[currentUser.id] != false ? (
+  return currentUser && team.members[currentUser.id] != false ? (
     <View style={styles.teamBox}>
       <TouchableOpacity style={styles.teamBox} onPress={() => onTeamPressed()}>
         <View style={{ alignItems: "center", flexDirection: "row", margin: 1 }}>

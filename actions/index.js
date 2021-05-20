@@ -403,3 +403,20 @@ export const sendInvitations = (invitationList, eventId) => {
     }
   };
 };
+
+export const declineParticipation = (eventId, userId) => {
+  return () => {
+    firebase
+      .database()
+      .ref(`/events/${eventId}/participants/${userId}`)
+      .set(false);
+  };
+};
+export const acceptParticipation = (eventId, userId) => {
+  return () => {
+    firebase
+      .database()
+      .ref(`/events/${eventId}/participants/${userId}`)
+      .set(true);
+  };
+};
