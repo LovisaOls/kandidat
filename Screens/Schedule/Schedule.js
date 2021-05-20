@@ -14,8 +14,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEvents } from "../../actions/index";
 import TopMenu from "../TopMenu";
 import EventModule from "./EventModule";
-import Icon from "react-native-vector-icons/Ionicons";
-import { removeEvent } from "../../actions/index";
 
 export default function Schedule() {
   const [activeEvent, setActiveEvent] = useState(null);
@@ -37,6 +35,12 @@ export default function Schedule() {
       modal.open();
     }
   };
+  const onClose = () => {
+    const modal = modalRef.current;
+    if (modal) {
+      modal.close();
+    }
+  };
 
   let structuredEvents = {};
 
@@ -56,11 +60,6 @@ export default function Schedule() {
       });
     }
   }
-
-  const deleteEvent = (event) => {
-    dispatch(removeEvent(event.eventId));
-  };
-
   function renderItems(item) {
     return (
       <View>
@@ -73,13 +72,6 @@ export default function Schedule() {
               <Text style={styles.eventTitle}>{item[0].title}</Text>
             </View>
             <Text style={styles.eventTime}>{item[0].time}</Text>
-            {activeTeam.members[currentUser.id] == "coach" ? (
-              <Icon
-                name="ios-trash-outline"
-                size={30}
-                onPress={() => deleteEvent(item[0])}
-              ></Icon>
-            ) : null}
           </View>
           <Text style={styles.eventDescription}>{item[0].type}</Text>
         </TouchableOpacity>
@@ -130,7 +122,11 @@ export default function Schedule() {
         renderEmptyData={() => null}
       />
       <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
-        <EventModule activeEvent={activeEvent} />
+        <EventModule
+          activeEvent={activeEvent}
+          setActiveEvent={setActiveEvent}
+          onClose={onClose}
+        />
       </Modalize>
     </SafeAreaView>
   );

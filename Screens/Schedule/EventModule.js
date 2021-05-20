@@ -1,24 +1,99 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
-  ScrollView,
   TouchableOpacity,
+  Modal,
+  Dimensions,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Icon from "react-native-vector-icons/Ionicons";
+import { removeEvent, sendInvitations } from "../../actions/index";
+import EditEvent from "./EditEvent";
+import MemberInvitationBox from "./MemberInvitationBox";
+import { ScrollView } from "react-native-gesture-handler";
 
-const EventModule = ({ activeEvent }) => {
+const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const events = useSelector((state) => state.scheduleEvents);
   const { teamMembers } = useSelector((state) => state.currentTeams);
+  const currentUser = useSelector((state) => state.currentUser);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [inviteModalVisible, setInviteModalVisible] = useState(false);
+  const [sureRemoveVisible, setSureRemoveVisible] = useState(false);
+  const [editVisible, setEditVisible] = useState(false);
+  const [invitationList, setInvitationList] = useState([]);
+  const dispatch = useDispatch();
+  const onChangePressed = () => {
+    setEditModalVisible(true);
+  };
+
+  const onDeletePressed = () => {
+    if (sureRemoveVisible) {
+      dispatch(removeEvent(activeEvent.eventId));
+      setActiveEvent(null);
+      setEditModalVisible(false);
+      setSureRemoveVisible(false);
+      onClose();
+    } else {
+      setSureRemoveVisible(true);
+    }
+  };
+  const onEditPressed = () => {
+    setEditVisible(true);
+  };
+
+  const onInvitePressed = () => {
+    setInviteModalVisible(true);
+  };
+  const onCancel = () => {
+    if (editModalVisible) {
+      setEditModalVisible(false);
+      setEditVisible(false);
+      setSureRemoveVisible(false);
+    } else if (inviteModalVisible) {
+      setInviteModalVisible(false);
+    }
+  };
+
+  const addToInvitationList = (userId) => {
+    invitationList.push(userId);
+  };
+  const removeFromInvitationList = (userId) => {
+    const index = invitationList.indexOf(userId);
+    if (index != -1) {
+      invitationList.splice(index, 1);
+    }
+  };
+
+  const onSendInvitations = () => {
+    dispatch(sendInvitations(invitationList, activeEvent.eventId));
+    setInviteModalVisible(false);
+  };
+
   return (
     <View style={styles.modal}>
       {activeEvent != null ? (
         <View>
           <View style={styles.modalEvents}>
+            {activeTeam.members[currentUser.id] == "coach" ? (
+              <TouchableOpacity
+                onPress={() => onChangePressed()}
+                style={{
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: 10,
+                }}
+              >
+                <Text style={{ color: "#A247D4", fontSize: "18", padding: 5 }}>
+                  Edit
+                </Text>
+                <Icon name="pencil" size={18} color="#A247D4"></Icon>
+              </TouchableOpacity>
+            ) : null}
             <View
               style={{
                 flexDirection: "row",
@@ -43,16 +118,55 @@ const EventModule = ({ activeEvent }) => {
               <Icon name="pin-outline" size={20} color="#A247D4"></Icon>
               <Text style={styles.place}>{activeEvent.place}</Text>
             </View>
-            <Text style={{ fontWeight: "bold" }}> Event Description</Text>
+            <Text style={[styles.subTitle, { margin: 0 }]}>Description</Text>
             <Text style={styles.description}>{activeEvent.description}</Text>
           </View>
-          {events[activeEvent.id].participants != undefined ? (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Text style={styles.title}>Participants</Text>
+            {activeTeam.members[currentUser.id] == "coach" ? (
+              <TouchableOpacity
+                onPress={() => onInvitePressed()}
+                style={{
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  marginBottom: 10,
+                  margin: 5,
+                }}
+              >
+                <Text style={{ color: "#A247D4", fontSize: "18", padding: 5 }}>
+                  Invite
+                </Text>
+                <Icon
+                  name="add-circle-outline"
+                  size={18}
+                  color="#A247D4"
+                ></Icon>
+              </TouchableOpacity>
+            ) : null}
+          </View>
+          {events[activeEvent.eventId].participants != undefined ? (
             <View>
-              <Text style={styles.subTitle}>Going</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.subTitle}>Going</Text>
+                <Text style={styles.numOfUsers}>
+                  {
+                    Object.values(
+                      events[activeEvent.eventId].participants
+                    ).filter((obj) => obj == true).length
+                  }
+                </Text>
+              </View>
               <ScrollView horizontal={true}>
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
-                    events[activeEvent.id].participants[
+                    events[activeEvent.eventId].participants[
                       teamMembers[userId].id
                     ] == true ? (
                     <View style={styles.modalUser} key={i}>
@@ -79,12 +193,20 @@ const EventModule = ({ activeEvent }) => {
                   ) : null;
                 })}
               </ScrollView>
-
-              <Text style={styles.subTitle}>Not Going</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.subTitle}>Not Going</Text>
+                <Text style={styles.numOfUsers}>
+                  {
+                    Object.values(
+                      events[activeEvent.eventId].participants
+                    ).filter((obj) => obj == false).length
+                  }
+                </Text>
+              </View>
               <ScrollView horizontal={true}>
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
-                    events[activeEvent.id].participants[
+                    events[activeEvent.eventId].participants[
                       teamMembers[userId].id
                     ] == false ? (
                     <View style={styles.modalUser} key={i}>
@@ -111,11 +233,20 @@ const EventModule = ({ activeEvent }) => {
                   ) : null;
                 })}
               </ScrollView>
-              <Text style={styles.subTitle}>Pending</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.subTitle}>Pending</Text>
+                <Text style={styles.numOfUsers}>
+                  {
+                    Object.values(
+                      events[activeEvent.eventId].participants
+                    ).filter((obj) => obj == "pending").length
+                  }
+                </Text>
+              </View>
               <ScrollView horizontal={true}>
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
-                    events[activeEvent.id].participants[
+                    events[activeEvent.eventId].participants[
                       teamMembers[userId].id
                     ] == "pending" ? (
                     <View style={styles.modalUser} key={i}>
@@ -146,9 +277,114 @@ const EventModule = ({ activeEvent }) => {
           ) : null}
         </View>
       ) : null}
+
+      <Modal animationType="fade" transparent={true} visible={editModalVisible}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalView}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.subTitle}>Edit Event</Text>
+              <TouchableOpacity onPress={() => onCancel()}>
+                <Icon
+                  name="close-circle-sharp"
+                  size={30}
+                  color="#DDDDDD"
+                ></Icon>
+              </TouchableOpacity>
+            </View>
+            {sureRemoveVisible ? <Text> Are you sure?</Text> : null}
+
+            {!editVisible ? (
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+              >
+                {!sureRemoveVisible && !editVisible ? (
+                  <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => onEditPressed()}
+                  >
+                    <Text style={styles.buttonText}>Edit</Text>
+                  </TouchableOpacity>
+                ) : null}
+                <TouchableOpacity
+                  style={styles.buttonRemove}
+                  onPress={() => onDeletePressed()}
+                >
+                  <Text style={styles.buttonText}>
+                    {!sureRemoveVisible ? "Delete Event" : "Yes, delete"}
+                  </Text>
+                </TouchableOpacity>
+                {sureRemoveVisible ? (
+                  <TouchableOpacity
+                    style={styles.buttonSkip}
+                    onPress={() => setSureRemoveVisible(false)}
+                  >
+                    <Text style={styles.textStyleSkip}>No</Text>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
+            ) : (
+              <EditEvent
+                activeEvent={activeEvent}
+                onClose={onClose}
+                onCancel={onCancel}
+              />
+            )}
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={inviteModalVisible}
+      >
+        <View style={styles.modalBackground}>
+          <View style={styles.modalView}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.subTitle}>Invite Members</Text>
+              <TouchableOpacity onPress={() => onCancel()}>
+                <Icon
+                  name="close-circle-sharp"
+                  size={30}
+                  color="#DDDDDD"
+                ></Icon>
+              </TouchableOpacity>
+            </View>
+            <ScrollView>
+              {Object.keys(teamMembers).map((user, i) => {
+                return activeEvent != null &&
+                  activeTeam.members[teamMembers[user].id] == true ? (
+                  <View>
+                    {events[activeEvent.eventId].participants == undefined ||
+                    events[activeEvent.eventId].participants[
+                      teamMembers[user].id
+                    ] == undefined ? (
+                      <MemberInvitationBox
+                        key={i}
+                        user={teamMembers[user]}
+                        addToInvitationList={addToInvitationList}
+                        removeFromInvitationList={removeFromInvitationList}
+                      />
+                    ) : null}
+                  </View>
+                ) : null;
+              })}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.invitationButton}
+              onPress={() => onSendInvitations()}
+            >
+              <Text style={styles.buttonText}>Send Invitations</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
+
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   modalEvents: {
     padding: 20,
@@ -185,7 +421,7 @@ const styles = StyleSheet.create({
     width: "75%",
   },
   subTitle: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     margin: 10,
   },
@@ -233,6 +469,90 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     margin: 5,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000099",
+  },
+  modalView: {
+    width: screenWidth * 0.9,
+    maxHeight: screenHeight * 0.7,
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+  },
+  buttonRemove: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FF6347",
+    margin: 10,
+    width: "40%",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  textStyleSkip: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonSkip: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#DDDDDD",
+    margin: 10,
+    width: "40%",
+    justifyContent: "center",
+  },
+  editButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#007E34",
+    margin: 10,
+    width: "40%",
+    justifyContent: "center",
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  smallBtn: {
+    width: "15%",
+    borderRadius: 20,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007E34",
+    marginLeft: 40,
+  },
+  invitationButton: {
+    backgroundColor: "#007E34",
+    marginVertical: 20,
+    marginHorizontal: 50,
+    height: 48,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  numOfUsers: {
+    fontSize: 18,
+    fontWeight: "bold",
+    opacity: 0.6,
   },
 });
 export default EventModule;
