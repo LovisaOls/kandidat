@@ -56,11 +56,13 @@ function MyProfileScreen() {
               <Icon style={styles.initialText} name="person-outline"></Icon>
             </View>
           )}
+
           <View>
             <Text style={styles.name}>
-              {currentUser.firstName} {currentUser.lastName}
+              {currentUser && currentUser.firstName}{" "}
+              {currentUser && currentUser.lastName}
             </Text>
-            <Text style={styles.email}>{currentUser.email}</Text>
+            <Text style={styles.email}>{currentUser && currentUser.email}</Text>
           </View>
         </View>
         <View style={styles.myTeamsHeader}>

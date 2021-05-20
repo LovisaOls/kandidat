@@ -61,10 +61,23 @@ export default function Schedule() {
     }
   }
   function renderItems(item) {
+    console.log(item[0].type);
     return (
       <View>
         <TouchableOpacity
-          style={styles.eventList}
+          style={[
+            {
+              borderLeftColor:
+                item[0].type == "game"
+                  ? "#007E34"
+                  : item[0].type == "practice"
+                  ? "#A247D4"
+                  : item[0].type == "other"
+                  ? "#FF6347"
+                  : null,
+            },
+            styles.eventList,
+          ]}
           onPress={() => onOpen(item[0])}
         >
           <View style={styles.eventHeader}>
@@ -121,7 +134,7 @@ export default function Schedule() {
         firstDay={1}
         renderEmptyData={() => null}
       />
-      <Modalize ref={modalRef} snapPoint={500} modalHeight={screenHeight * 0.8}>
+      <Modalize ref={modalRef} modalHeight={screenHeight * 0.8}>
         <EventModule
           activeEvent={activeEvent}
           setActiveEvent={setActiveEvent}
@@ -139,10 +152,10 @@ const styles = StyleSheet.create({
     padding: 10,
     marginRight: 10,
     marginTop: 30,
-    borderLeftWidth: 2,
-    borderLeftColor: "#007E34",
+    borderLeftWidth: 3,
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
+    borderRadius: 10,
   },
   eventHeader: {
     flexDirection: "row",

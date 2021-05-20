@@ -7,7 +7,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { fetchEvents } from "../../actions/index";
+import {
+  fetchEvents,
+  declineParticipation,
+  acceptParticipation,
+} from "../../actions/index";
 import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
@@ -32,16 +36,10 @@ const ParticipationRequests = () => {
   const screenHeight = Dimensions.get("window").height;
 
   const onAcceptPressed = (eventId) => {
-    firebase
-      .database()
-      .ref(`/events/${eventId}/participants/${currentUser.id}`)
-      .set(true);
+    dispatch(acceptParticipation(eventId, currentUser.id));
   };
   const onDeclinePressed = (eventId) => {
-    firebase
-      .database()
-      .ref(`/events/${eventId}/participants/${currentUser.id}`)
-      .set(false);
+    dispatch(declineParticipation(eventId, currentUser.id));
   };
   return (
     <View>
@@ -53,45 +51,61 @@ const ParticipationRequests = () => {
               events[eventId].participants[currentUser.id] == "pending"
               ? Object.keys(events[eventId].eventDetails).map((date) => {
                   return date >= today ? (
-                    <View key={key} style={styles.requestBox}>
-                      <View style={{ width: "75%" }}>
+                    <View
+                      key={key}
+                      style={[
+                        styles.requestBox,
+                        {
+                          borderLeftColor:
+                            events[eventId].eventDetails[date].type == "game"
+                              ? "#007E34"
+                              : events[eventId].eventDetails[date].type ==
+                                "practice"
+                              ? "#A247D4"
+                              : events[eventId].eventDetails[date].type ==
+                                "other"
+                              ? "#FF6347"
+                              : null,
+                        },
+                      ]}
+                    >
+                      <View style={{ width: "50%" }}>
                         <View
                           style={{ flexDirection: "row", alignItems: "center" }}
                         >
-                          <View style={styles.eventType}>
+                          {/* <View style={styles.eventType}>
                             <Text style={styles.eventTypeText}>
                               {events[eventId].eventDetails[date].type}
                             </Text>
-                          </View>
+                          </View> */}
                           <Text style={styles.eventTitle}>
                             {events[eventId].eventDetails[date].title}
                           </Text>
                         </View>
-                        <Text style={styles.eventDate}>{date}</Text>
+                        <View style={{ flexDirection: "row" }}>
+                          <Text style={styles.eventDate}>{date} </Text>
+                          <Text style={styles.eventDate}>
+                            {events[eventId].eventDetails[date].time}
+                          </Text>
+                        </View>
                       </View>
                       <View
                         style={{
                           flexDirection: "row",
-                          justifyContent: "space-between",
+                          justifyContent: "flex-end",
                         }}
                       >
                         <TouchableOpacity
+                          style={[styles.editButton, { width: null }]}
                           onPress={() => onAcceptPressed(eventId)}
                         >
-                          <Icon
-                            name="checkmark-circle-sharp"
-                            size={30}
-                            color="#007E34"
-                          ></Icon>
+                          <Text style={styles.buttonText}>Accept</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
+                          style={[styles.buttonSkip, { width: null }]}
                           onPress={() => onDeclinePressed(eventId)}
                         >
-                          <Icon
-                            name="close-circle-sharp"
-                            size={30}
-                            color="#FF6347"
-                          ></Icon>
+                          <Text style={styles.textStyleSkip}>Decline</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -112,10 +126,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 10,
-    marginTop: 5,
+    margin: 1,
     padding: 10,
-    backgroundColor: "#DDDDDD",
     borderRadius: 10,
+    borderBottomWidth: 0.25,
+    borderLeftWidth: 5,
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
   },
   buttons: {
     flexDirection: "row",
@@ -145,6 +162,34 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
     fontSize: 12,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  textStyleSkip: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonSkip: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#DDDDDD",
+    margin: 5,
+    width: "40%",
+    justifyContent: "center",
+  },
+  editButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#007E34",
+    margin: 5,
+    width: "40%",
+    justifyContent: "center",
   },
 });
 
