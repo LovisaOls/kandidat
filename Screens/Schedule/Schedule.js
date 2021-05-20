@@ -61,7 +61,6 @@ export default function Schedule() {
     }
   }
   function renderItems(item) {
-    console.log(item[0].type);
     return (
       <View>
         <TouchableOpacity

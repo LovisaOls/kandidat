@@ -39,38 +39,38 @@ export default function App() {
     <Provider store={store}>
       <Router>
         <Stack>
-          <Scene key="root" hideNavBar={true} gesturesEnabled={false}>
+          <Scene key="root" headerShown={false} gestureEnabled={false}>
             <Scene key="Loading" component={LoadingScreen} />
             <Scene
               key="BottomMenu"
               tabs={true}
               activeTintColor="#A247D4"
-              hideNavBar={true}
+              headerShown={false}
             >
               <Scene
                 key="Home"
                 component={Home}
-                hideNavBar={true}
+                headerShown={false}
                 title="Home"
                 icon={iconHome}
               />
               <Scene
                 key="feed"
                 component={Feed}
-                hideNavBar={true}
+                headerShown={false}
                 title="Feed"
                 icon={iconFeed}
               />
               <Scene
                 key="Schedule"
-                hideNavBar={true}
+                headerShown={false}
                 title="Schedule"
                 component={Schedule}
                 icon={iconCalendar}
               />
               <Scene
                 key="TacticsCoach"
-                hideNavBar={true}
+                headerShown={false}
                 title=" Tactics"
                 component={TacticsCoach}
                 icon={iconTactic}

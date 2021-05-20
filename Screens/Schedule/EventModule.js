@@ -37,11 +37,11 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
 
   const onDeletePressed = () => {
     if (sureRemoveVisible) {
-      dispatch(removeEvent(activeEvent.eventId));
-      setActiveEvent(null);
+      dispatch(removeEvent(activeEvent.eventId))
       setEditModalVisible(false);
       setSureRemoveVisible(false);
-      onClose();
+      onClose()
+      setActiveEvent(null)
     } else {
       setSureRemoveVisible(true);
     }
@@ -86,7 +86,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   };
   return (
     <View style={styles.modal}>
-      {events[activeEvent.eventId].participants != undefined &&
+      {activeEvent != null && events[activeEvent.eventId].participants != undefined &&
       events[activeEvent.eventId].participants[currentUser.id] == "pending" ? (
         <View>
           <Text>Let your teammates know if you are going! </Text>

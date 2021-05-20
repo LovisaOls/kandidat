@@ -12,10 +12,7 @@ import {
   declineParticipation,
   acceptParticipation,
 } from "../../actions/index";
-import "firebase/database";
-require("firebase/auth");
-import * as firebase from "firebase";
-import Icon from "react-native-vector-icons/Ionicons";
+
 import { ScrollView } from "react-native-gesture-handler";
 
 const ParticipationRequests = () => {
