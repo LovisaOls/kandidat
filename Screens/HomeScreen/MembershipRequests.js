@@ -54,24 +54,20 @@ const MembershipRequests = () => {
                 <Text style={styles.name}>
                   {teamMembers[key].firstName} {teamMembers[key].lastName}
                 </Text>
-                <View style={styles.buttons}>
+
+                <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
                   <TouchableOpacity
                     onPress={() => onAcceptPressed(teamMembers[key].id)}
+                    style={[styles.acceptButton, { width: null }]}
                   >
-                    <Icon
-                      name="checkmark-circle-sharp"
-                      size={30}
-                      color="#007E34"
-                    ></Icon>
+                    <Text style={styles.acceptButtonText}>Accept</Text>
                   </TouchableOpacity>
+
                   <TouchableOpacity
                     onPress={() => onDeclinePressed(teamMembers[key].id)}
+                    style={[styles.declineButton, { width: null }]}
                   >
-                    <Icon
-                      name="close-circle-sharp"
-                      size={30}
-                      color="#FF6347"
-                    ></Icon>
+                    <Text style={styles.declineButtonText}>Decline</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -91,13 +87,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 10,
-    marginTop: 5,
+    margin: 1,
     padding: 10,
-    backgroundColor: "#DDDDDD",
     borderRadius: 10,
-  },
-  buttons: {
-    flexDirection: "row",
+    borderBottomWidth: 0.25,
+    borderLeftWidth: 5,
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
   },
   title: {
     fontSize: 24,
@@ -105,6 +101,34 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontWeight: "bold",
     margin: 10,
+  },
+  acceptButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#007E34",
+    margin: 5,
+    width: "40%",
+    justifyContent: "center",
+  },
+  declineButton: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#DDDDDD",
+    margin: 5,
+    width: "40%",
+    justifyContent: "center",
+  },
+  acceptButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  declineButtonText: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

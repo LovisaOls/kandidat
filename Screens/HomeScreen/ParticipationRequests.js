@@ -70,11 +70,6 @@ const ParticipationRequests = () => {
                         <View
                           style={{ flexDirection: "row", alignItems: "center" }}
                         >
-                          {/* <View style={styles.eventType}>
-                            <Text style={styles.eventTypeText}>
-                              {events[eventId].eventDetails[date].type}
-                            </Text>
-                          </View> */}
                           <Text style={styles.eventTitle}>
                             {events[eventId].eventDetails[date].title}
                           </Text>
