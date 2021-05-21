@@ -14,11 +14,10 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { Modalize } from "react-native-modalize";
 import TopMenu from "../TopMenu";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchFeed } from "../../actions/index";
-import { createComment } from "../../actions/index";
-import { createPost } from "../../actions/index";
 import Posts from "./Posts";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFeed, createComment, createPost } from "../../actions/index";
+
 
 export default function Feed() {
   const currentUser = useSelector((state) => state.currentUser);

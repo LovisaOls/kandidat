@@ -37,11 +37,11 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
 
   const onDeletePressed = () => {
     if (sureRemoveVisible) {
-      dispatch(removeEvent(activeEvent.eventId))
+      dispatch(removeEvent(activeEvent.eventId));
       setEditModalVisible(false);
       setSureRemoveVisible(false);
-      onClose()
-      setActiveEvent(null)
+      onClose();
+      setActiveEvent(null);
     } else {
       setSureRemoveVisible(true);
     }
@@ -86,31 +86,6 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   };
   return (
     <View style={styles.modal}>
-      {activeEvent != null && events[activeEvent.eventId].participants != undefined &&
-      events[activeEvent.eventId].participants[currentUser.id] == "pending" ? (
-        <View>
-          <Text>Let your teammates know if you are going! </Text>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <TouchableOpacity
-              style={[styles.editButton, { width: null }]}
-              onPress={() => onAcceptPressed()}
-            >
-              <Text style={styles.buttonText}>Accept</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.buttonSkip, { width: null }]}
-              onPress={() => onDeclinePressed()}
-            >
-              <Text style={styles.textStyleSkip}>Decline</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      ) : null}
       {activeEvent != null ? (
         <View>
           <View style={styles.modalEvents}>
@@ -179,6 +154,33 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
             }}
           >
             <Text style={styles.title}>Participants</Text>
+            {activeEvent != null &&
+            events[activeEvent.eventId].participants != undefined &&
+            events[activeEvent.eventId].participants[currentUser.id] ==
+              "pending" ? (
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={[styles.editButton, { width: null }]}
+                    onPress={() => onAcceptPressed()}
+                  >
+                    <Text style={styles.buttonText}>Going</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[styles.buttonSkip, { width: null }]}
+                    onPress={() => onDeclinePressed()}
+                  >
+                    <Text style={styles.textStyleSkip}>Not Going</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ) : null}
+
             {activeTeam.members[currentUser.id] == "coach" ? (
               <TouchableOpacity
                 onPress={() => onInvitePressed()}
@@ -426,6 +428,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
             >
               <Text style={styles.buttonText}>Send Invitations</Text>
             </TouchableOpacity>
+
           </View>
         </View>
       </Modal>
