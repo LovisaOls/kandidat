@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  Modal,
+  Platform,
 } from "react-native";
 import TeamComponent from "./TeamComponent";
 import { Actions } from "react-native-router-flux";
@@ -17,6 +19,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
+
+import * as ImagePicker from "expo-image-picker";
+import { updateUser } from "../../actions/index";
+
 
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
@@ -40,22 +46,90 @@ function MyProfileScreen() {
       });
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(null);
+  const dispatch = useDispatch();
+
+  const addProfilePic = () => {
+    setModalVisible(true);
+  };
+
+  const cancel = () => {
+    setModalVisible(false);
+    setImage(null);
+  };
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("You have not allowed premission to your cameraroll");
+        }
+      }
+    })();
+  }, []);
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.image,
+      allowsEditing: true,
+      aspect: [4, 4],
+      quality: 0.5,
+    });
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  const uploadProfilePic = async () => {
+    let url = await uploadImage();
+    changeUser(url)
+  };
+
+  const uploadImage = async () => {
+    if (image != null) {
+      let filename = image.split("/").pop();
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const ref = firebase
+        .storage()
+        .ref()
+        .child("images/" + filename);
+
+      const snapshot = await ref.put(blob);
+      blob.close();
+
+      return url = snapshot.ref.getDownloadURL();
+    }
+  };
+
+  const changeUser = (url) => {
+    console.log(url)
+    console.log(currentUser)
+    dispatch(updateUser(currentUser.id, url));
+    cancel();
+  };
+
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <ScrollView>
         <View style={styles.profileIcon}>
-          {currentUser && currentUser.profilePicture ? (
-            <Image
-              source={{
-                uri: currentUser.profilePicture,
-              }}
-              style={styles.image}
-            />
-          ) : (
-            <View style={styles.initialCircle}>
-              <Icon style={styles.initialText} name="person-outline"></Icon>
-            </View>
-          )}
+          <TouchableOpacity onPress={() => addProfilePic()}>
+            {currentUser && currentUser.profilePicture ? (
+              <Image
+                source={{
+                  uri: currentUser.profilePicture,
+                }}
+                style={styles.image}
+              />
+            ) : (
+              <View style={styles.initialCircle}>
+                <Icon style={styles.initialText} name="person-outline"></Icon>
+              </View>
+            )}
+          </TouchableOpacity>
 
           <View>
             <Text style={styles.name}>
@@ -89,6 +163,35 @@ function MyProfileScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={() => cancel()}
+        >
+          <View style={styles.modalView}>
+            <Text style={styles.title}>
+              Do you want to change your profile picture?
+            </Text>
+
+            {image ? (
+              <TouchableOpacity onPress={pickImage}>
+                <Image source={{ uri: image }} style={styles.image} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.noImage} onPress={pickImage}>
+                <Text style={styles.imageText}>Open picture library</Text>
+              </TouchableOpacity>
+            )}
+            <TouchableOpacity
+              style={styles.signOutButton}
+              onPress={() => uploadProfilePic()}
+            >
+              <Text style={styles.buttonText}>Change my profile picture</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -126,7 +229,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     fontSize: 16,
   },
-
   myTeamsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -135,7 +237,6 @@ const styles = StyleSheet.create({
   teamsBox: {
     margin: 10,
   },
-
   addTeamBtn: {
     width: "15%",
     borderRadius: 20,
@@ -149,8 +250,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
+    margin: 10,
   },
-
   signOutButton: {
     backgroundColor: "#007E34",
     marginVertical: 20,
@@ -172,6 +273,44 @@ const styles = StyleSheet.create({
   initialText: {
     color: "white",
     fontSize: 60,
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#00000099",
+  },
+  modalView: {
+    margin: 5,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: screenWidth * 0.95,
+    height: screenWidth * 0.95,
+  },
+  noImage: {
+    width: screenWidth * 0.3,
+    height: screenWidth * 0.3,
+    borderRadius: 80,
+    margin: 30,
+    backgroundColor: "#DDDDDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageText: {
+    color: "#aaaaaa",
+    fontSize: 16,
+    textAlign: "center",
+    padding: 10,
   },
 });
 

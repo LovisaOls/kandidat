@@ -211,7 +211,7 @@ export default function Feed() {
       </Modalize>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <TouchableOpacity style={styles.modalBackground}>
+        <TouchableOpacity style={styles.modalBackground} onPress={() => onCancelPostPressed()}>
           <View style={styles.modalView}>
             <Text style={styles.title}>Create new Post</Text>
             <View style={styles.inputPostBox}>
@@ -241,12 +241,6 @@ export default function Feed() {
                 )}
               </TouchableOpacity>
             </View>
-            <Text
-              style={styles.cancelPost}
-              onPress={() => onCancelPostPressed()}
-            >
-              Cancel
-            </Text>
           </View>
         </TouchableOpacity>
       </Modal>
@@ -383,14 +377,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: screenWidth * 0.95,
     height: screenWidth * 0.5,
-  },
-  cancelPost: {
-    fontSize: 15,
-    color: "#A247D4",
-    margin: 10,
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
   },
   addPostButton: {
     backgroundColor: "#007E34",

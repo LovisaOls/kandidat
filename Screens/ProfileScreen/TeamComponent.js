@@ -21,7 +21,7 @@ const TeamComponent = ({ team }) => {
   };
 
   return currentUser && team.members[currentUser.id] != false ? (
-    <View style={styles.teamBox}>
+    <View>
       <TouchableOpacity style={styles.teamBox} onPress={() => onTeamPressed()}>
         <View style={{ alignItems: "center", flexDirection: "row", margin: 1 }}>
           {team.members[currentUser.id] == "coach" ? (
@@ -50,14 +50,17 @@ const styles = StyleSheet.create({
   },
 
   teamBox: {
-    width: "100%",
-    borderRadius: 10,
-    backgroundColor: "#DDDDDD",
-    marginVertical: 1,
-    paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginHorizontal: 10,
+    margin: 1,
+    padding: 10,
+    borderRadius: 10,
+    borderBottomWidth: 0.25,
+    borderLeftWidth: 5,
+    borderBottomLeftRadius: 0,
+    borderTopLeftRadius: 0,
   },
   teamBoxPending: {
     width: "100%",

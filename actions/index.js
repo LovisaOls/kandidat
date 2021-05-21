@@ -392,6 +392,16 @@ export const updateEvent = (
   };
 };
 
+export const updateUser = (userId, url) => {
+  return () => {
+    firebase
+      .database()
+      .ref(`/users/${userId}`)
+      .child(`profilePicture`)
+      .set(url);
+  };
+};
+
 export const sendInvitations = (invitationList, eventId) => {
   return () => {
     for (let userId in invitationList) {
