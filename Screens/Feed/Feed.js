@@ -18,7 +18,6 @@ import Posts from "./Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed, createComment, createPost } from "../../actions/index";
 
-
 export default function Feed() {
   const currentUser = useSelector((state) => state.currentUser);
   const { activeTeam } = useSelector((state) => state.currentTeams);
@@ -116,7 +115,8 @@ export default function Feed() {
             <View>
               <View style={styles.modalPost}>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {feedPosts[activePost].authorPicture != undefined ? (
+                  {feedPosts[activePost].authorPicture != undefined &&
+                  feedPosts[activePost].authorPicture != null ? (
                     <Image
                       source={{ uri: feedPosts[activePost].authorPicture }}
                       style={{
@@ -211,7 +211,10 @@ export default function Feed() {
       </Modalize>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <TouchableOpacity style={styles.modalBackground} onPress={() => onCancelPostPressed()}>
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={() => onCancelPostPressed()}
+        >
           <View style={styles.modalView}>
             <Text style={styles.title}>Create new Post</Text>
             <View style={styles.inputPostBox}>
@@ -293,7 +296,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   modal: {
-    padding: 20,
+    padding: 10,
   },
   noPostsText: {
     fontSize: 20,
@@ -301,12 +304,13 @@ const styles = StyleSheet.create({
   },
   input: {
     fontSize: 16,
-    height: 48,
+    minHeight: 48,
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    paddingLeft: 10,
+    padding: 10,
     marginHorizontal: 15,
     width: screenWidth * 0.7,
+    maxHeight: screenHeight * 0.3,
   },
   commentBorder: {
     margin: 10,
@@ -331,7 +335,7 @@ const styles = StyleSheet.create({
   inputBox: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   modalPost: {
     borderBottomWidth: 1,
@@ -376,7 +380,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: screenWidth * 0.95,
-    height: screenWidth * 0.5,
+    maxHeight: screenHeight * 0.5,
   },
   addPostButton: {
     backgroundColor: "#007E34",
@@ -397,6 +401,6 @@ const styles = StyleSheet.create({
   inputPostBox: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
 });
