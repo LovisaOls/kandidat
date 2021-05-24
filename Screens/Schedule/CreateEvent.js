@@ -14,6 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { createEvent } from "../../actions/index";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from "react-native-router-flux";
+import { Alert } from "react-native";
 
 export default function CreateEvent() {
   const [title, setTitle] = useState("");
@@ -30,17 +31,29 @@ export default function CreateEvent() {
   };
 
   const onCreatePress = () => {
-    dispatch(
-      createEvent(
-        activeTeam.teamId,
-        date,
-        title,
-        type,
-        place,
-        description,
-        activeTeam.members
+    if (title == "") {
+      Alert.alert(
+        "An event must have a title"
       )
-    );
+    }
+    else if (place == "") {
+      Alert.alert(
+        "An event must have a location"
+      )
+    }
+    else {
+      dispatch(
+        createEvent(
+          activeTeam.teamId,
+          date,
+          title,
+          type,
+          place,
+          description,
+          activeTeam.members
+        )
+      );
+    }
   };
 
   return (
@@ -65,19 +78,19 @@ export default function CreateEvent() {
             <View style={styles.typeContainer}>
               <Text style={styles.typeText}>Event Type</Text>
               <TouchableOpacity
-                style={type == "game" ? styles.typeChosen : styles.type}
+                style={type == "game" ? styles.typeChosenGame : styles.type}
                 onPress={() => setType("game")}
               >
                 <Text style={styles.buttonText}>Game</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={type == "practice" ? styles.typeChosen : styles.type}
+                style={type == "practice" ? styles.typeChosenPractice : styles.type}
                 onPress={() => setType("practice")}
               >
                 <Text style={styles.buttonText}>Practice</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={type == "other" ? styles.typeChosen : styles.type}
+                style={type == "other" ? styles.typeChosenOther : styles.type}
                 onPress={() => setType("other")}
               >
                 <Text style={styles.buttonText}>Other</Text>
@@ -224,8 +237,20 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 10,
   },
-  typeChosen: {
+  typeChosenGame: {
     backgroundColor: "#007E34",
+    padding: 12,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  typeChosenPractice: {
+    backgroundColor: "#A247D4",
+    padding: 12,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  typeChosenOther: {
+    backgroundColor: "#FF6347",
     padding: 12,
     borderRadius: 10,
     opacity: 10,

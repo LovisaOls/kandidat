@@ -17,6 +17,7 @@ import TopMenu from "../TopMenu";
 import Posts from "./Posts";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed, createComment, createPost } from "../../actions/index";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Feed() {
   const currentUser = useSelector((state) => state.currentUser);
@@ -101,113 +102,119 @@ export default function Feed() {
             )}
           ></FlatList>
         ) : (
-          <View>
-            <Text style={styles.noPostsText}>
-              Click on the plus to create the first post!
-            </Text>
-          </View>
-        )}
-      </View>
-      <Modalize ref={modalRef} modalHeight={screenHeight * 0.8}>
-        <View style={styles.modal}>
-          <Text style={styles.title}> Comments </Text>
-          {activePost != null && feedPosts != undefined ? (
             <View>
-              <View style={styles.modalPost}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  {feedPosts[activePost].authorPicture != undefined &&
-                  feedPosts[activePost].authorPicture != null ? (
-                    <Image
-                      source={{ uri: feedPosts[activePost].authorPicture }}
-                      style={{
-                        height: 50,
-                        width: 50,
-                        borderRadius: 25,
-                        marginRight: 10,
-                      }}
-                    />
-                  ) : (
-                    <View style={styles.initialCircle}>
-                      <Text style={styles.initialText}>
-                        {feedPosts[activePost].authorFirstName[0]}
-                        {feedPosts[activePost].authorLastName[0]}
+              <Text style={styles.noPostsText}>
+                Click on the plus to create the first post!
+            </Text>
+            </View>
+          )}
+      </View>
+
+      <Modalize ref={modalRef} modalHeight={screenHeight * 0.8}>
+        <KeyboardAwareScrollView
+          resetScrollToCoords={{ x: 0, y: 0 }}
+          scrollEnabled={false}
+        >
+          <View style={styles.modal}>
+            <Text style={styles.title}> Comments </Text>
+            {activePost != null && feedPosts != undefined ? (
+              <View>
+                <View style={styles.modalPost}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {feedPosts[activePost].authorPicture != undefined &&
+                      feedPosts[activePost].authorPicture != null ? (
+                        <Image
+                          source={{ uri: feedPosts[activePost].authorPicture }}
+                          style={{
+                            height: 50,
+                            width: 50,
+                            borderRadius: 25,
+                            marginRight: 10,
+                          }}
+                        />
+                      ) : (
+                        <View style={styles.initialCircle}>
+                          <Text style={styles.initialText}>
+                            {feedPosts[activePost].authorFirstName[0]}
+                            {feedPosts[activePost].authorLastName[0]}
+                          </Text>
+                        </View>
+                      )}
+                    <View>
+                      <Text style={styles.postName}>
+                        {feedPosts[activePost] &&
+                          feedPosts[activePost].authorFirstName}{" "}
+                        {feedPosts[activePost] &&
+                          feedPosts[activePost].authorLastName}
+                      </Text>
+                      <Text style={styles.postDate}>
+                        {new Date(feedPosts[activePost].createdOn)
+                          .toString()
+                          .substring(0, 16)}
                       </Text>
                     </View>
-                  )}
-                  <View>
-                    <Text style={styles.postName}>
-                      {feedPosts[activePost] &&
-                        feedPosts[activePost].authorFirstName}{" "}
-                      {feedPosts[activePost] &&
-                        feedPosts[activePost].authorLastName}
-                    </Text>
-                    <Text style={styles.postDate}>
-                      {new Date(feedPosts[activePost].createdOn)
-                        .toString()
-                        .substring(0, 16)}
-                    </Text>
                   </View>
+                  <Text style={styles.postText}>
+                    {feedPosts[activePost].text}
+                  </Text>
                 </View>
-                <Text style={styles.postText}>
-                  {feedPosts[activePost].text}
-                </Text>
-              </View>
-              {feedPosts[activePost].comments &&
-                Object.keys(feedPosts[activePost].comments).map(
-                  (item, index) => {
-                    return (
-                      <View key={index} style={styles.commentBorder}>
-                        <View
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                        >
-                          <View>
-                            <Text style={{ fontWeight: "bold" }}>
-                              {
-                                feedPosts[activePost].comments[item]
-                                  .authorFirstName
-                              }{" "}
-                              {
-                                feedPosts[activePost].comments[item]
-                                  .authorLastName
-                              }
-                            </Text>
+                {feedPosts[activePost].comments &&
+                  Object.keys(feedPosts[activePost].comments).map(
+                    (item, index) => {
+                      return (
+                        <View key={index} style={styles.commentBorder}>
+                          <View
+                            style={{ flexDirection: "row", alignItems: "center" }}
+                          >
+                            <View>
+                              <Text style={{ fontWeight: "bold" }}>
+                                {
+                                  feedPosts[activePost].comments[item]
+                                    .authorFirstName
+                                }{" "}
+                                {
+                                  feedPosts[activePost].comments[item]
+                                    .authorLastName
+                                }
+                              </Text>
+                            </View>
                           </View>
+                          <Text>{feedPosts[activePost].comments[item].text}</Text>
                         </View>
-                        <Text>{feedPosts[activePost].comments[item].text}</Text>
-                      </View>
-                    );
-                  }
-                )}
-            </View>
-          ) : null}
-          <View style={styles.inputBox}>
-            <View>
-              <TextInput
-                placeholder={"Type your comment here"}
-                onChangeText={(text) => setCommentText(text)}
-                value={commentText}
-                multiline
-                style={styles.input}
-              ></TextInput>
-            </View>
-            <View>
-              <TouchableOpacity
-                style={styles.commentButton}
-                onPress={() => onCreateComment()}
-              >
-                {commentText == "" ? (
-                  <Icon
-                    name="chatbubble-ellipses-outline"
-                    size={25}
-                    color="white"
-                  ></Icon>
-                ) : (
-                  <Icon name="arrow-up-outline" size={25} color="white"></Icon>
-                )}
-              </TouchableOpacity>
+                      );
+                    }
+                  )}
+              </View>
+            ) : null}
+            <View style={styles.inputBox}>
+              <View>
+                <TextInput
+                  placeholder={"Type your comment here"}
+                  onChangeText={(text) => setCommentText(text)}
+                  value={commentText}
+                  multiline
+                  style={styles.input}
+                ></TextInput>
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.commentButton}
+                  onPress={() => onCreateComment()}
+                >
+                  {commentText == "" ? (
+                    <Icon
+                      name="chatbubble-ellipses-outline"
+                      size={25}
+                      color="white"
+                    ></Icon>
+                  ) : (
+                      <Icon name="arrow-up-outline" size={25} color="white"></Icon>
+                    )}
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
+        </KeyboardAwareScrollView>
       </Modalize>
 
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
@@ -215,36 +222,36 @@ export default function Feed() {
           style={styles.modalBackground}
           onPress={() => onCancelPostPressed()}
         >
-          <View style={styles.modalView}>
-            <Text style={styles.title}>Create new Post</Text>
-            <View style={styles.inputPostBox}>
-              <TextInput
-                placeholder={"What's on your mind?"}
-                numberOfLines={20}
-                value={textValue}
-                onChangeText={(res) => {
-                  setValue(res);
-                }}
-                multiline
-                style={styles.input}
-              ></TextInput>
+            <View style={styles.modalView}>
+              <Text style={styles.title}>Create new Post</Text>
+              <View style={styles.inputPostBox}>
+                <TextInput
+                  placeholder={"What's on your mind?"}
+                  numberOfLines={20}
+                  value={textValue}
+                  onChangeText={(res) => {
+                    setValue(res);
+                  }}
+                  multiline
+                  style={styles.input}
+                ></TextInput>
 
-              <TouchableOpacity
-                style={styles.commentButton}
-                onPress={() => onPostInFeedPressed()}
-              >
-                {textValue == "" ? (
-                  <Icon
-                    name="chatbubble-ellipses-outline"
-                    size={25}
-                    color="white"
-                  ></Icon>
-                ) : (
-                  <Icon name="arrow-up-outline" size={25} color="white"></Icon>
-                )}
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.commentButton}
+                  onPress={() => onPostInFeedPressed()}
+                >
+                  {textValue == "" ? (
+                    <Icon
+                      name="chatbubble-ellipses-outline"
+                      size={25}
+                      color="white"
+                    ></Icon>
+                  ) : (
+                      <Icon name="arrow-up-outline" size={25} color="white"></Icon>
+                    )}
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
         </TouchableOpacity>
       </Modal>
     </SafeAreaView>
@@ -361,11 +368,11 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#00000099",
   },
   modalView: {
+    top: 100,
     margin: 5,
     backgroundColor: "white",
     borderRadius: 20,
@@ -380,7 +387,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: screenWidth * 0.95,
-    maxHeight: screenHeight * 0.5,
+    maxHeight: screenHeight * 0.9,
   },
   addPostButton: {
     backgroundColor: "#007E34",
