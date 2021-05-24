@@ -422,13 +422,21 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 ) : null;
               })}
             </ScrollView>
-            <TouchableOpacity
-              style={styles.invitationButton}
-              onPress={() => onSendInvitations()}
-            >
-              <Text style={styles.buttonText}>Send Invitations</Text>
-            </TouchableOpacity>
-
+            {activeEvent &&
+            Object.keys(events[activeEvent.eventId].participants).length ==
+              Object.values(activeTeam.members).filter((obj) => obj == true)
+                .length ? (
+              <Text style={styles.description}>
+                Everybody in the team is already invited!
+              </Text>
+            ) : (
+              <TouchableOpacity
+                style={styles.invitationButton}
+                onPress={() => onSendInvitations()}
+              >
+                <Text style={styles.buttonText}>Send Invitations</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </Modal>
