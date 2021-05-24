@@ -8,6 +8,7 @@ import {
   Image,
   Platform,
   Dimensions,
+  View,
 } from "react-native";
 import { Actions } from "react-native-router-flux";
 import { registerUser } from "../actions";
@@ -16,6 +17,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as firebase from "firebase";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export default function RegistrationScreen() {
   const dispatch = useDispatch();
@@ -137,13 +139,21 @@ export default function RegistrationScreen() {
             value={confirmPassword}
             autoCapitalize="none"
           />
+          <View style={{ alignItems: "center" }}>
+            <View style={{ flexDirection: "row" }}> 
+            <Icon name="ios-hammer-outline" size={15}></Icon>
+            <Text style={styles.passwordText}>Password requirements:</Text>
+            </View>
+            <Text style={styles.passwordSmallText}>
+              at least six letters and/or characters
+            </Text>
+          </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => onRegisterPress()}
           >
             <Text style={styles.buttonTitle}> Register </Text>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => onCancelPress()}>
             <Text style={styles.cancelText}> Cancel </Text>
           </TouchableOpacity>
@@ -208,6 +218,14 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     textAlign: "center",
+  },
+  passwordText: {
+    fontSize: 14,
+    color: "#FF6347",
+    marginLeft: 5,
+  },
+  passwordSmallText: {
+    fontSize: 13,
   },
   imageText: {
     color: "#aaaaaa",
