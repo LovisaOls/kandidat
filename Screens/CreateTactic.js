@@ -213,7 +213,7 @@ export default function CreateTactic() {
 
       <View style={styles.theField}>
         <ImageBackground
-          source={require("../assets/hejhej.png")}
+          source={require("../assets/field_1.png")}
           style={{
             flex: 1,
             align: 'center'
@@ -378,7 +378,7 @@ export default function CreateTactic() {
           <TextInput
             placeholder={"...."}
             onChangeText={(text) => setPlayer9(text)}
-            value={initial9}
+            value={initial9} 
           ></TextInput>
         </View>
       </Draggable>
@@ -435,32 +435,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  players: {
-    backgroundColor: "red",
-    padding: 5,
-    borderRadius: 15,
-  },
-
-  theField: {
-    width:"100%",
-    height: "100%",
-    flex:1,
-    justifyContent: 'center'
-  },
-
   theHeader: {
     height: screenHeight * 0.11,
     alignItems: 'center',
   },
 
   button: {
-    backgroundColor: 'red',
-    width: screenWidth*0.7,
+    backgroundColor: "#007E34",
+    width: "70%",
     height: "30%",
     marginBottom: 5,
     borderRadius: 24,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  buttonTitle: {
+      fontSize: 12,
+      color: "white",
+      fontWeight: "bold",
   },
 
   cancelText: {
@@ -480,6 +473,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: "white",
     borderWidth: 0.25,
+  },
+
+
+  players: {
+    backgroundColor: "red",
+    padding: 5,
+    borderRadius: 15,
+  },
+
+  theField: {
+    width:"100%",
+    height: "100%",
+    flex:1,
+    justifyContent: 'center'
   },
 
   bottomMenu: {

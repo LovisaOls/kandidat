@@ -58,42 +58,53 @@ export default function TacticsCoach() {
     <SafeAreaView style={styles.container}>
       <TopMenu />
 
-      <View style={styles.theHeader}>
-        {activeTeam.members[currentUser.id] == "coach" ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => Actions.CreateTactic()}
-          >
-            <Text style={styles.buttonTitle}> Create LineUp </Text>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button}></TouchableOpacity>
-        )}
 
-        <View>
+      <View style={styles.theHeader}>
+        <View style={styles.titleHeader}>
+          {activeTeam.members[currentUser.id] == "coach" ? (
+            <>
+
+              <Text style={styles.coachTitle}>Tactics</Text>
+              <TouchableOpacity
+                style={styles.smallBtn}
+                onPress={() => Actions.CreateTactic()}
+              >
+                <Text style={styles.buttonText}> + </Text>
+              </TouchableOpacity>
+
+            </>
+          ) : (
+
+            <Text style={styles.coachTitle}>Tactics</Text>
+
+
+          )}
+        </View>
+
+        <View style={styles.chooseTitle}>
           <TouchableOpacity onPress={() => onOpen()}>
-            <View style={styles.chooseTactic}>
-              <Text style={styles.chooseTacticText}> CHOOSE TACTIC </Text>
-            </View>
+            <Text style={styles.chooseTacticText}> CHOOSE TACTIC </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.tacticTitle}>
           <Text style={styles.tacticTitleText}>
-            {" "}
-            {activeTactic && tactics[activeTactic].title}{" "}
+            {activeTactic && tactics[activeTactic].title}
           </Text>
         </View>
       </View>
 
       <View style={styles.theField}>
         <ImageBackground
-          source={require("../assets/hejhej.png")}
+          source={require("../assets/field_1.png")}
           style={{
             flex: 1,
-            align: "center",
+            align: 'center'
           }}
         ></ImageBackground>
+      </View>
+
+      <View style={styles.bottomMenu}>
       </View>
 
       {activeTactic && tactics ? (
@@ -215,7 +226,7 @@ export default function TacticsCoach() {
             }
             y={
               (activeTactic && tactics[activeTactic].positionY7) *
-                screenHeight -
+              screenHeight -
               15
             }
             disabled={true}
@@ -325,16 +336,17 @@ export default function TacticsCoach() {
                             {tactics[i].title}
                           </Text>
                         </View>
-
-                        <View>
-                          <TouchableOpacity>
-                            <Icon
-                              onPress={() => deleteTactic(tactics[i])}
-                              name="ios-trash-outline"
-                              size={20}
-                            ></Icon>
-                          </TouchableOpacity>
-                        </View>
+                        {activeTeam.members[currentUser.id] == "coach" ? (
+                          <View>
+                            <TouchableOpacity>
+                              <Icon
+                                onPress={() => deleteTactic(tactics[i])}
+                                name="ios-trash-outline"
+                                size={20}
+                              ></Icon>
+                            </TouchableOpacity>
+                          </View>
+                        ) : (null)}
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -344,6 +356,8 @@ export default function TacticsCoach() {
           </Modalize>
         </>
       ) : null}
+
+    
     </SafeAreaView>
   );
 }
@@ -353,7 +367,77 @@ const screenWidth = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: screenHeight,
+  },
+
+  theHeader: {
+    height: screenHeight * 0.11,
+  },
+
+  titleHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: screenHeight * 0.05,
+    backgroundColor: "yellow"
+  },
+
+
+  coachTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginLeft: 10,
+  },
+
+
+  smallBtn: {
+    width: "15%",
+    height: "100%",
+    borderRadius: 20,
+    marginRight: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#007E34",
+  },
+
+  buttonText: {
+    fontSize: 16,
+    color: "white",
+    fontWeight: "bold",
+  },
+
+  chooseTitle: {
+    height: screenHeight * 0.03,
+    backgroundColor: "red"
+  },
+
+  chooseTacticText: {
+    fontSize: 12,
+    color: "blue",
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+
+  tacticTitle: {
+    height: screenHeight * 0.04,
+    marginBottom: 7,
+    /* backgroundColor: "green" */
+  },
+
+  tacticTitleText: {
+    fontSize: 18,
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+  },
+
+
+
+  theField: {
+    height: screenHeight*0.71,
+    width: "100%",
+    justifyContent: "center",
+    backgroundColor: "black",
   },
 
   players: {
@@ -362,54 +446,15 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
 
+
   initialText: {
     fontSize: 12,
-  },
-
-  theHeader: {
-    height: screenHeight * 0.11,
-    alignItems: "center",
-  },
-
-  button: {
-    backgroundColor: "red",
-    width: screenWidth * 0.7,
-    marginBottom: 5,
-    borderRadius: 24,
-    alignItems: "center",
-  },
-
-  chooseTacticText: {
-    fontSize: 16,
-    color: "blue",
-    alignContent: "center",
-    justifyContent: "center",
-    textAlign: "center",
-    marginBottom: 5,
-  },
-
-  tacticTitleText: {
-    fontSize: 20,
-    marginBottom: 5,
-  },
-
-  theField: {
-    width: "100%",
-    height: "100%",
-    flex: 1,
-    justifyContent: "center",
   },
 
   modal: {
     padding: 20,
   },
 
-  title: {
-    fontSize: 24,
-    justifyContent: "center",
-    fontWeight: "bold",
-    margin: 10,
-  },
 
   viewTactics: {
     width: "100%",
@@ -418,4 +463,9 @@ const styles = StyleSheet.create({
     margin: 1,
     padding: 15,
   },
+
+  bottomMenu: {
+    backgroundColor: "blue",
+    height: screenHeight * 0.05
+  }
 });
