@@ -12,7 +12,9 @@ const MemberInvitationBox = ({
   useEffect(() => {
     setPlayerChosen(allChosen);
   }, [allChosen]);
+
   const [playerChosen, setPlayerChosen] = useState(false);
+
   const onPlayerChosen = () => {
     if (!playerChosen) {
       addToInvitationList(user.id);
@@ -22,6 +24,7 @@ const MemberInvitationBox = ({
       setPlayerChosen(!playerChosen);
     }
   };
+
   return (
     <View style={styles.invitationBox}>
       <Text>
@@ -37,6 +40,7 @@ const MemberInvitationBox = ({
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   invitationBox: {
     marginVertical: 2,

@@ -47,6 +47,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
       setSureRemoveVisible(true);
     }
   };
+
   const onEditPressed = () => {
     setEditVisible(true);
   };
@@ -54,6 +55,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const onInvitePressed = () => {
     setInviteModalVisible(true);
   };
+
   const onCancel = () => {
     if (editModalVisible) {
       setEditModalVisible(false);
@@ -69,6 +71,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const addToInvitationList = (userId) => {
     invitationList.push(userId);
   };
+
   const removeFromInvitationList = (userId) => {
     const index = invitationList.indexOf(userId);
     if (index != -1) {
@@ -85,6 +88,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const onAcceptPressed = () => {
     dispatch(acceptParticipation(activeEvent.eventId, currentUser.id));
   };
+
   const onDeclinePressed = () => {
     dispatch(declineParticipation(activeEvent.eventId, currentUser.id));
   };
@@ -97,7 +101,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
           activeTeam.members[teamMembers[user].id] == true
           ? events[activeEvent.eventId].participants == undefined ||
             events[activeEvent.eventId].participants[teamMembers[user].id] ==
-              undefined
+            undefined
             ? addToInvitationList(teamMembers[user].id)
             : null
           : null;
@@ -109,7 +113,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
           activeTeam.members[teamMembers[user].id] == true
           ? events[activeEvent.eventId].participants == undefined ||
             events[activeEvent.eventId].participants[teamMembers[user].id] ==
-              undefined
+            undefined
             ? removeFromInvitationList(teamMembers[user].id)
             : null
           : null;
@@ -154,10 +158,10 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                       activeEvent.type == "game"
                         ? "#007E34"
                         : activeEvent.type == "practice"
-                        ? "#A247D4"
-                        : activeEvent.type == "other"
-                        ? "#FF6347"
-                        : null,
+                          ? "#A247D4"
+                          : activeEvent.type == "other"
+                            ? "#FF6347"
+                            : null,
                   },
                 ]}
               >
@@ -188,31 +192,31 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
           >
             <Text style={styles.title}>Participants</Text>
             {activeEvent != null &&
-            events[activeEvent.eventId].participants != undefined &&
-            events[activeEvent.eventId].participants[currentUser.id] ==
+              events[activeEvent.eventId].participants != undefined &&
+              events[activeEvent.eventId].participants[currentUser.id] ==
               "pending" ? (
-              <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <TouchableOpacity
-                    style={[styles.editButton, { width: null }]}
-                    onPress={() => onAcceptPressed()}
+                <View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                    }}
                   >
-                    <Text style={styles.buttonText}>Going</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.buttonSkip, { width: null }]}
-                    onPress={() => onDeclinePressed()}
-                  >
-                    <Text style={styles.textStyleSkip}>Not Going</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.editButton, { width: null }]}
+                      onPress={() => onAcceptPressed()}
+                    >
+                      <Text style={styles.buttonText}>Going</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.buttonSkip, { width: null }]}
+                      onPress={() => onDeclinePressed()}
+                    >
+                      <Text style={styles.textStyleSkip}>Not Going</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
-            ) : null}
+              ) : null}
 
             {activeTeam.members[currentUser.id] == "coach" ? (
               <TouchableOpacity
@@ -253,30 +257,30 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.eventId].participants[
-                      teamMembers[userId].id
+                    teamMembers[userId].id
                     ] == true ? (
-                    <View style={styles.modalUser} key={i}>
-                      {teamMembers[userId].profilePicture != undefined ? (
-                        <Image
-                          source={{
-                            uri: teamMembers[userId].profilePicture,
-                          }}
-                          style={styles.image}
-                        />
-                      ) : (
-                        <View style={styles.initialCircle}>
-                          <Text style={styles.initialText}>
-                            {teamMembers[userId].firstName[0]}
-                            {teamMembers[userId].lastName[0]}
-                          </Text>
-                        </View>
-                      )}
-                      <Text style={styles.userName}>
-                        {teamMembers[userId].firstName}{" "}
-                        {teamMembers[userId].lastName}
-                      </Text>
-                    </View>
-                  ) : null;
+                      <View style={styles.modalUser} key={i}>
+                        {teamMembers[userId].profilePicture != undefined ? (
+                          <Image
+                            source={{
+                              uri: teamMembers[userId].profilePicture,
+                            }}
+                            style={styles.image}
+                          />
+                        ) : (
+                            <View style={styles.initialCircle}>
+                              <Text style={styles.initialText}>
+                                {teamMembers[userId].firstName[0]}
+                                {teamMembers[userId].lastName[0]}
+                              </Text>
+                            </View>
+                          )}
+                        <Text style={styles.userName}>
+                          {teamMembers[userId].firstName}{" "}
+                          {teamMembers[userId].lastName}
+                        </Text>
+                      </View>
+                    ) : null;
                 })}
               </ScrollView>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -293,30 +297,30 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.eventId].participants[
-                      teamMembers[userId].id
+                    teamMembers[userId].id
                     ] == false ? (
-                    <View style={styles.modalUser} key={i}>
-                      {teamMembers[userId].profilePicture != undefined ? (
-                        <Image
-                          source={{
-                            uri: teamMembers[userId].profilePicture,
-                          }}
-                          style={styles.image}
-                        />
-                      ) : (
-                        <View style={styles.initialCircle}>
-                          <Text style={styles.initialText}>
-                            {teamMembers[userId].firstName[0]}
-                            {teamMembers[userId].lastName[0]}
-                          </Text>
-                        </View>
-                      )}
-                      <Text style={styles.userName}>
-                        {teamMembers[userId].firstName}{" "}
-                        {teamMembers[userId].lastName}
-                      </Text>
-                    </View>
-                  ) : null;
+                      <View style={styles.modalUser} key={i}>
+                        {teamMembers[userId].profilePicture != undefined ? (
+                          <Image
+                            source={{
+                              uri: teamMembers[userId].profilePicture,
+                            }}
+                            style={styles.image}
+                          />
+                        ) : (
+                            <View style={styles.initialCircle}>
+                              <Text style={styles.initialText}>
+                                {teamMembers[userId].firstName[0]}
+                                {teamMembers[userId].lastName[0]}
+                              </Text>
+                            </View>
+                          )}
+                        <Text style={styles.userName}>
+                          {teamMembers[userId].firstName}{" "}
+                          {teamMembers[userId].lastName}
+                        </Text>
+                      </View>
+                    ) : null;
                 })}
               </ScrollView>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -333,30 +337,30 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 {Object.keys(teamMembers).map((userId, i) => {
                   return activeEvent != null &&
                     events[activeEvent.eventId].participants[
-                      teamMembers[userId].id
+                    teamMembers[userId].id
                     ] == "pending" ? (
-                    <View style={styles.modalUser} key={i}>
-                      {teamMembers[userId].profilePicture != undefined ? (
-                        <Image
-                          source={{
-                            uri: teamMembers[userId].profilePicture,
-                          }}
-                          style={styles.image}
-                        />
-                      ) : (
-                        <View style={styles.initialCircle}>
-                          <Text style={styles.initialText}>
-                            {teamMembers[userId].firstName[0]}
-                            {teamMembers[userId].lastName[0]}
-                          </Text>
-                        </View>
-                      )}
-                      <Text style={styles.userName}>
-                        {teamMembers[userId].firstName}{" "}
-                        {teamMembers[userId].lastName}
-                      </Text>
-                    </View>
-                  ) : null;
+                      <View style={styles.modalUser} key={i}>
+                        {teamMembers[userId].profilePicture != undefined ? (
+                          <Image
+                            source={{
+                              uri: teamMembers[userId].profilePicture,
+                            }}
+                            style={styles.image}
+                          />
+                        ) : (
+                            <View style={styles.initialCircle}>
+                              <Text style={styles.initialText}>
+                                {teamMembers[userId].firstName[0]}
+                                {teamMembers[userId].lastName[0]}
+                              </Text>
+                            </View>
+                          )}
+                        <Text style={styles.userName}>
+                          {teamMembers[userId].firstName}{" "}
+                          {teamMembers[userId].lastName}
+                        </Text>
+                      </View>
+                    ) : null;
                 })}
               </ScrollView>
             </View>
@@ -409,12 +413,12 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 ) : null}
               </View>
             ) : (
-              <EditEvent
-                activeEvent={activeEvent}
-                onClose={onClose}
-                onCancel={onCancel}
-              />
-            )}
+                <EditEvent
+                  activeEvent={activeEvent}
+                  onClose={onClose}
+                  onCancel={onCancel}
+                />
+              )}
           </View>
         </View>
       </Modal>
@@ -438,60 +442,60 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
             </View>
 
             {activeEvent &&
-            events[activeEvent.eventId].participants != undefined &&
-            Object.keys(events[activeEvent.eventId].participants).length ==
+              events[activeEvent.eventId].participants != undefined &&
+              Object.keys(events[activeEvent.eventId].participants).length ==
               Object.values(activeTeam.members).filter((obj) => obj == true)
                 .length ? (
-              <Text style={styles.description}>
-                Everybody in the team is already invited!
-              </Text>
-            ) : (
-              <View style={{ maxHeight: screenHeight * 0.6 }}>
-                <View style={styles.invitationBox}>
-                  <Text style={{ fontWeight: "bold" }}>Invite all</Text>
-                  <TouchableOpacity onPress={() => allChosenPressed()}>
-                    {allChosen ? (
-                      <Icon name="close-circle" size={35} color="green"></Icon>
-                    ) : (
-                      <Icon
-                        name="add-circle-outline"
-                        size={35}
-                        color="green"
-                      ></Icon>
-                    )}
+                <Text style={styles.description}>
+                  Everybody in the team is already invited!
+                </Text>
+              ) : (
+                <View style={{ maxHeight: screenHeight * 0.6 }}>
+                  <View style={styles.invitationBox}>
+                    <Text style={{ fontWeight: "bold" }}>Invite all</Text>
+                    <TouchableOpacity onPress={() => allChosenPressed()}>
+                      {allChosen ? (
+                        <Icon name="close-circle" size={35} color="green"></Icon>
+                      ) : (
+                          <Icon
+                            name="add-circle-outline"
+                            size={35}
+                            color="green"
+                          ></Icon>
+                        )}
+                    </TouchableOpacity>
+                  </View>
+
+                  <ScrollView>
+                    {Object.keys(teamMembers).map((user, i) => {
+                      return activeEvent != null &&
+                        activeTeam.members[teamMembers[user].id] == true ? (
+                          <View key={i}>
+                            {events[activeEvent.eventId].participants ==
+                              undefined ||
+                              events[activeEvent.eventId].participants[
+                              teamMembers[user].id
+                              ] == undefined ? (
+                                <MemberInvitationBox
+                                  user={teamMembers[user]}
+                                  addToInvitationList={addToInvitationList}
+                                  removeFromInvitationList={removeFromInvitationList}
+                                  allChosen={allChosen}
+                                />
+                              ) : null}
+                          </View>
+                        ) : null;
+                    })}
+                  </ScrollView>
+
+                  <TouchableOpacity
+                    style={styles.invitationButton}
+                    onPress={() => onSendInvitations()}
+                  >
+                    <Text style={styles.buttonText}>Send Invitations</Text>
                   </TouchableOpacity>
                 </View>
-
-                <ScrollView>
-                  {Object.keys(teamMembers).map((user, i) => {
-                    return activeEvent != null &&
-                      activeTeam.members[teamMembers[user].id] == true ? (
-                      <View key={i}>
-                        {events[activeEvent.eventId].participants ==
-                          undefined ||
-                        events[activeEvent.eventId].participants[
-                          teamMembers[user].id
-                        ] == undefined ? (
-                          <MemberInvitationBox
-                            user={teamMembers[user]}
-                            addToInvitationList={addToInvitationList}
-                            removeFromInvitationList={removeFromInvitationList}
-                            allChosen={allChosen}
-                          />
-                        ) : null}
-                      </View>
-                    ) : null;
-                  })}
-                </ScrollView>
-
-                <TouchableOpacity
-                  style={styles.invitationButton}
-                  onPress={() => onSendInvitations()}
-                >
-                  <Text style={styles.buttonText}>Send Invitations</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+              )}
           </View>
         </View>
       </Modal>
@@ -501,6 +505,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
+
 const styles = StyleSheet.create({
   modalEvents: {
     padding: 20,

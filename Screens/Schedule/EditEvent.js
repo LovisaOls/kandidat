@@ -29,6 +29,7 @@ const EditEvent = ({ activeEvent, onClose, onCancel }) => {
     onClose();
     onCancel();
   };
+  
   return (
     <ScrollView>
       <KeyboardAwareScrollView
@@ -48,19 +49,19 @@ const EditEvent = ({ activeEvent, onClose, onCancel }) => {
 
           <View style={styles.typeContainer}>
             <TouchableOpacity
-              style={type == "game" ? styles.typeChosen : styles.type}
+              style={type == "game" ? styles.typeChosenGame : styles.type}
               onPress={() => setType("game")}
             >
               <Text style={styles.buttonText}>Game</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={type == "practice" ? styles.typeChosen : styles.type}
+              style={type == "practice" ? styles.typeChosenPractice: styles.type}
               onPress={() => setType("practice")}
             >
               <Text style={styles.buttonText}>Practice</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={type == "other" ? styles.typeChosen : styles.type}
+              style={type == "other" ? styles.typeChosenOther : styles.type}
               onPress={() => setType("other")}
             >
               <Text style={styles.buttonText}>Other</Text>
@@ -150,8 +151,20 @@ const styles = StyleSheet.create({
     opacity: 10,
     margin: 5,
   },
-  typeChosen: {
+  typeChosenGame: {
     backgroundColor: "#007E34",
+    padding: 12,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  typeChosenPractice: {
+    backgroundColor: "#A247D4",
+    padding: 12,
+    borderRadius: 10,
+    opacity: 10,
+  },
+  typeChosenOther: {
+    backgroundColor: "#FF6347",
     padding: 12,
     borderRadius: 10,
     opacity: 10,

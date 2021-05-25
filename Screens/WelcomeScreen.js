@@ -18,7 +18,6 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 function WelcomeScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const dispatch = useDispatch();
 
   const loginButtonPressed = () => {
@@ -90,6 +89,7 @@ function WelcomeScreen() {
     </View>
   );
 }
+
 const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
@@ -99,12 +99,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   theLogo: {
     alignItems: "center",
     marginTop: 100,
   },
-
   image: {
     marginBottom: 40,
     height: 150,
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   inputView: {
     fontSize: 16,
     height: 48,
@@ -135,7 +132,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     width: screenWidth * 0.8,
   },
-
   forgot_button: {
     fontSize: 16,
     color: "#A247D4",
@@ -144,7 +140,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
-
   loginBtn: {
     backgroundColor: "#007E34",
     marginTop: 20,

@@ -9,8 +9,6 @@ import {
   Clipboard,
   Dimensions,
 } from "react-native";
-
-//import Clipboard from "@react-native-clipboard/clipboard";
 import { Modalize } from "react-native-modalize";
 import Icon from "react-native-vector-icons/Ionicons";
 import TopMenu from "../TopMenu";
@@ -19,19 +17,19 @@ import ParticipationRequests from "./ParticipationRequests";
 import MemberBox from "./MemberBox";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTeamMembers } from "../../actions/index";
+
 export default function Home() {
   const screenHeight = Dimensions.get("window").height;
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const currentUser = useSelector((state) => state.currentUser);
   const [copied, setCopied] = useState(false);
-
+  const modalRef = useRef(null);
+  const { teamMembers } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchTeamMembers(activeTeam.teamId));
   }, [dispatch]);
-  const { teamMembers } = useSelector((state) => state.currentTeams);
-
-  const modalRef = useRef(null);
 
   const onOpen = () => {
     const modal = modalRef.current;
@@ -57,7 +55,7 @@ export default function Home() {
   return (
     <SafeAreaView keyboardShouldPersistTaps="always" style={styles.container}>
       <TopMenu />
-      <View style={styles.TeamInfoHeader}>
+      <View style={styles.teamInfoHeader}>
         {activeTeam.teamPicture ? (
           <Image
             source={{ uri: activeTeam.teamPicture }}
@@ -70,7 +68,7 @@ export default function Home() {
         )}
 
         <View>
-          <Text style={styles.teamName}>{activeTeam.teamName} </Text>
+          <Text style={styles.teamName}> </Text>
           <View
             style={{
               flexDirection: "row",
@@ -128,6 +126,7 @@ export default function Home() {
     </SafeAreaView>
   );
 }
+
 const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
@@ -141,9 +140,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     margin: 10,
   },
-  TeamInfoHeader: {
+  teamInfoHeader: {
     marginHorizontal: 10,
     flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5, 
+    
   },
   name: {
     fontSize: 18,
@@ -187,7 +190,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
-    padding: 10,
   },
   noImage: {
     width: screenWidth * 0.35,
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   place: {
-    fontSize: 16,
+    fontSize: 22,
     color: "#333",
   },
   teamName: {

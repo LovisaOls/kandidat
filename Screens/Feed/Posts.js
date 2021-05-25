@@ -4,16 +4,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFeed } from "../../actions/index";
 import { like } from "../../actions/index";
-
 import { removeLike } from "../../actions/index";
 import { removePost } from "../../actions/index";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 const Posts = ({ item, onOpenComments, setActivePost }) => {
   const currentUser = useSelector((state) => state.currentUser);
-
   const { activeTeam } = useSelector((state) => state.currentTeams);
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch(fetchFeed(activeTeam.teamId));
   }, [dispatch]);

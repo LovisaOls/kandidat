@@ -95,10 +95,10 @@ export default function RegistrationScreen() {
               <Image source={{ uri: image }} style={styles.image} />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.image} onPress={pickImage}>
-              <Text style={styles.imageText}>Add Profile Picture</Text>
-            </TouchableOpacity>
-          )}
+              <TouchableOpacity style={styles.image} onPress={pickImage}>
+                <Text style={styles.imageText}>Add Profile Picture</Text>
+              </TouchableOpacity>
+            )}
           <TextInput
             style={styles.input}
             placeholder="First Name"
@@ -140,9 +140,9 @@ export default function RegistrationScreen() {
             autoCapitalize="none"
           />
           <View style={{ alignItems: "center" }}>
-            <View style={{ flexDirection: "row" }}> 
-            <Icon name="ios-hammer-outline" size={15}></Icon>
-            <Text style={styles.passwordText}>Password requirements:</Text>
+            <View style={{ flexDirection: "row" }}>
+              <Icon name="ios-hammer-outline" size={15}></Icon>
+              <Text style={styles.passwordText}>Password requirements:</Text>
             </View>
             <Text style={styles.passwordSmallText}>
               at least six letters and/or characters
@@ -162,6 +162,7 @@ export default function RegistrationScreen() {
     </SafeAreaView>
   );
 }
+
 const screenWidth = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
@@ -170,7 +171,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "100%",
   },
-
   title: {
     margin: 10,
     fontWeight: "bold",
@@ -204,13 +204,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   buttonTitle: {
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
   },
-
   cancelText: {
     fontSize: 16,
     color: "#A247D4",

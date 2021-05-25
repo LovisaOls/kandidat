@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
 import { setActiveTeam } from "../../actions/index";
 
@@ -61,15 +60,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 5,
     borderBottomLeftRadius: 0,
     borderTopLeftRadius: 0,
-  },
-  teamBoxPending: {
-    width: "100%",
-    borderRadius: 10,
-    backgroundColor: "#DDDDDD",
-    marginVertical: 1,
-    paddingHorizontal: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
   },
 });
 

@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
-
   title: {
     margin: 10,
     fontWeight: "bold",
@@ -189,7 +188,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     backgroundColor: "#DDDDDD",
   },
-
   button: {
     backgroundColor: "#007E34",
     marginTop: 20,
@@ -200,13 +198,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-
   buttonTitle: {
     fontSize: 16,
     color: "white",
     fontWeight: "bold",
   },
-
   cancelText: {
     fontSize: 16,
     color: "#A247D4",

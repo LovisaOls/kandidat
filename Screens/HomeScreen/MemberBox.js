@@ -63,6 +63,7 @@ const MemberBox = ({ user }) => {
       setSureAssignVisible(true);
     }
   };
+  
   const onEditPressed = () => {
     setModalVisible(true);
   };

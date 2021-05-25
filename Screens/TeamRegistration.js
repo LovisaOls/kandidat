@@ -28,7 +28,6 @@ function TeamRegistration() {
   const [image, setImage] = useState(null);
   const { allTeams } = useSelector((state) => state.currentTeams);
   const [join, setJoin] = useState(true);
-
   const [data, setData] = useState(null);
   const searchData = allTeams != undefined ? Object.keys(allTeams) : null;
 
@@ -159,79 +158,81 @@ function TeamRegistration() {
                     <Text>TeamId: {allTeams[item].teamId}</Text>
                   </View>
                   {currentUser.teams == undefined ||
-                  currentUser.teams[item] == undefined ? (
-                    <TouchableOpacity
-                      style={styles.joinButton}
-                      onPress={() => onJoinTeamPress(allTeams[item].teamId)}
-                    >
-                      <Text style={styles.buttonText}>Join</Text>
-                    </TouchableOpacity>
-                  ) : null}
+                    currentUser.teams[item] == undefined ? (
+                      <TouchableOpacity
+                        style={styles.joinButton}
+                        onPress={() => onJoinTeamPress(allTeams[item].teamId)}
+                      >
+                        <Text style={styles.buttonText}>Join</Text>
+                      </TouchableOpacity>
+                    ) : null}
                 </View>
               )}
             ></FlatList>
           ) : null}
         </View>
       ) : (
-        <ScrollView style={styles.modeBox}>
-          <KeyboardAwareScrollView
-            resetScrollToCoords={{ x: 0, y: 0 }}
-            scrollEnabled={false}
-          >
-            <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                {image ? (
-                  <TouchableOpacity onPress={pickImage}>
-                    <Image source={{ uri: image }} style={styles.image} />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity style={styles.image} onPress={pickImage}>
-                    <Text style={styles.imageText}>Add Team Picture</Text>
-                  </TouchableOpacity>
-                )}
-                <View>
-                  <TextInput
-                    style={styles.inputNewTeam}
-                    placeholder="Team name"
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setTeamName(text)}
-                    value={teamName}
-                    autoCapitalize="none"
-                  ></TextInput>
+          <ScrollView style={styles.modeBox}>
+            <KeyboardAwareScrollView
+              resetScrollToCoords={{ x: 0, y: 0 }}
+              scrollEnabled={false}
+            >
+              <View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {image ? (
+                    <TouchableOpacity onPress={pickImage}>
+                      <Image source={{ uri: image }} style={styles.image} />
+                    </TouchableOpacity>
+                  ) : (
+                      <TouchableOpacity style={styles.image} onPress={pickImage}>
+                        <Text style={styles.imageText}>Add Team Picture</Text>
+                      </TouchableOpacity>
+                    )}
+                  <View>
+                    <TextInput
+                      style={styles.inputNewTeam}
+                      placeholder="Team name"
+                      placeholderTextColor="#aaaaaa"
+                      onChangeText={(text) => setTeamName(text)}
+                      value={teamName}
+                      autoCapitalize="none"
+                    ></TextInput>
 
-                  <TextInput
-                    style={styles.inputNewTeam}
-                    placeholder="City"
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setCity(text)}
-                    value={city}
-                    autoCapitalize="none"
-                  ></TextInput>
+                    <TextInput
+                      style={styles.inputNewTeam}
+                      placeholder="City"
+                      placeholderTextColor="#aaaaaa"
+                      onChangeText={(text) => setCity(text)}
+                      value={city}
+                      autoCapitalize="none"
+                    ></TextInput>
+                  </View>
                 </View>
+                <TouchableOpacity
+                  style={styles.submitButton}
+                  onPress={() => addTeamButtonPressed()}
+                >
+                  <Text style={styles.buttonText}> Create Team </Text>
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={styles.submitButton}
-                onPress={() => addTeamButtonPressed()}
-              >
-                <Text style={styles.buttonText}> Create Team </Text>
-              </TouchableOpacity>
-            </View>
-          </KeyboardAwareScrollView>
-        </ScrollView>
-      )}
+            </KeyboardAwareScrollView>
+          </ScrollView>
+        )}
       <TouchableOpacity onPress={() => onCancelPress()}>
         <Text style={styles.cancelText}> Cancel </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
 const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",

@@ -35,6 +35,7 @@ export default function Schedule() {
       modal.open();
     }
   };
+
   const onClose = () => {
     const modal = modalRef.current;
     if (modal) {
@@ -49,17 +50,18 @@ export default function Schedule() {
       Object.keys(events).map((eventId) => {
         {
           structuredEvents[Object.keys(events[eventId].eventDetails)] ==
-          undefined
+            undefined
             ? (structuredEvents[Object.keys(events[eventId].eventDetails)] = [
-                Object.values(events[eventId].eventDetails),
-              ])
+              Object.values(events[eventId].eventDetails),
+            ])
             : structuredEvents[Object.keys(events[eventId].eventDetails)].push(
-                Object.values(events[eventId].eventDetails)
-              );
+              Object.values(events[eventId].eventDetails)
+            );
         }
       });
     }
   }
+
   function renderItems(item) {
     return (
       <View>
@@ -70,10 +72,10 @@ export default function Schedule() {
                 item[0].type == "game"
                   ? "#007E34"
                   : item[0].type == "practice"
-                  ? "#A247D4"
-                  : item[0].type == "other"
-                  ? "#FF6347"
-                  : null,
+                    ? "#A247D4"
+                    : item[0].type == "other"
+                      ? "#FF6347"
+                      : null,
             },
             styles.eventList,
           ]}
@@ -92,6 +94,7 @@ export default function Schedule() {
   }
 
   structureEvents();
+  
   return (
     <SafeAreaView style={styles.container}>
       <TopMenu />

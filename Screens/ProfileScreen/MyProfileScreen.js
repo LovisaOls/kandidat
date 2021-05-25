@@ -15,20 +15,19 @@ import TeamComponent from "./TeamComponent";
 import { Actions } from "react-native-router-flux";
 import Icon from "react-native-vector-icons/Ionicons";
 import { ScrollView } from "react-native-gesture-handler";
-
 import "firebase/database";
 require("firebase/auth");
 import * as firebase from "firebase";
-
 import * as ImagePicker from "expo-image-picker";
 import { updateUser } from "../../actions/index";
 
-
 function MyProfileScreen() {
   const currentUser = useSelector((state) => state.currentUser);
-
   const { userTeams } = useSelector((state) => state.currentTeams);
-  //FUNKTIONER
+  const [modalVisible, setModalVisible] = useState(false);
+  const [image, setImage] = useState(null);
+  const dispatch = useDispatch();
+
   const onAddTeamPressed = () => {
     Actions.TeamRegistration();
   };
@@ -38,17 +37,11 @@ function MyProfileScreen() {
       .auth()
       .signOut()
       .then(() => {
-        // Sign-out successful.
         console.log("Signed Out");
       })
       .catch((error) => {
-        // An error happened.
       });
   };
-
-  const [modalVisible, setModalVisible] = useState(false);
-  const [image, setImage] = useState(null);
-  const dispatch = useDispatch();
 
   const addProfilePic = () => {
     setModalVisible(true);
@@ -106,8 +99,6 @@ function MyProfileScreen() {
   };
 
   const changeUser = (url) => {
-    console.log(url)
-    console.log(currentUser)
     dispatch(updateUser(currentUser.id, url));
     cancel();
   };
@@ -125,10 +116,10 @@ function MyProfileScreen() {
                 style={styles.image}
               />
             ) : (
-              <View style={styles.initialCircle}>
-                <Icon style={styles.initialText} name="person-outline"></Icon>
-              </View>
-            )}
+                <View style={styles.initialCircle}>
+                  <Icon style={styles.initialText} name="person-outline"></Icon>
+                </View>
+              )}
           </TouchableOpacity>
 
           <View>
@@ -179,10 +170,10 @@ function MyProfileScreen() {
                 <Image source={{ uri: image }} style={styles.image} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.noImage} onPress={pickImage}>
-                <Text style={styles.imageText}>Open picture library</Text>
-              </TouchableOpacity>
-            )}
+                <TouchableOpacity style={styles.noImage} onPress={pickImage}>
+                  <Text style={styles.imageText}>Open picture library</Text>
+                </TouchableOpacity>
+              )}
             <TouchableOpacity
               style={styles.signOutButton}
               onPress={() => uploadProfilePic()}
@@ -195,7 +186,9 @@ function MyProfileScreen() {
     </SafeAreaView>
   );
 }
+
 const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

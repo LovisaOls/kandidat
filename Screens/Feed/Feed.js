@@ -80,7 +80,7 @@ export default function Feed() {
       <View style={styles.header}>
         <Text style={styles.title}>Feed</Text>
         <TouchableOpacity
-          style={styles.smallBtn}
+          style={styles.smallButton}
           onPress={() => onCreatePostPressed()}
         >
           <Text style={styles.buttonText}>+</Text>
@@ -104,7 +104,7 @@ export default function Feed() {
         ) : (
             <View>
               <Text style={styles.noPostsText}>
-                Click on the plus to create the first post!
+                Click on the Plus to Create the First Post!
             </Text>
             </View>
           )}
@@ -222,43 +222,45 @@ export default function Feed() {
           style={styles.modalBackground}
           onPress={() => onCancelPostPressed()}
         >
-            <View style={styles.modalView}>
-              <Text style={styles.title}>Create new Post</Text>
-              <View style={styles.inputPostBox}>
-                <TextInput
-                  placeholder={"What's on your mind?"}
-                  numberOfLines={20}
-                  value={textValue}
-                  onChangeText={(res) => {
-                    setValue(res);
-                  }}
-                  multiline
-                  style={styles.input}
-                ></TextInput>
+          <View style={styles.modalView}>
+            <Text style={styles.title}>Create new Post</Text>
+            <View style={styles.inputPostBox}>
+              <TextInput
+                placeholder={"What's on your mind?"}
+                numberOfLines={20}
+                value={textValue}
+                onChangeText={(res) => {
+                  setValue(res);
+                }}
+                multiline
+                style={styles.input}
+              ></TextInput>
 
-                <TouchableOpacity
-                  style={styles.commentButton}
-                  onPress={() => onPostInFeedPressed()}
-                >
-                  {textValue == "" ? (
-                    <Icon
-                      name="chatbubble-ellipses-outline"
-                      size={25}
-                      color="white"
-                    ></Icon>
-                  ) : (
-                      <Icon name="arrow-up-outline" size={25} color="white"></Icon>
-                    )}
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={styles.commentButton}
+                onPress={() => onPostInFeedPressed()}
+              >
+                {textValue == "" ? (
+                  <Icon
+                    name="chatbubble-ellipses-outline"
+                    size={25}
+                    color="white"
+                  ></Icon>
+                ) : (
+                    <Icon name="arrow-up-outline" size={25} color="white"></Icon>
+                  )}
+              </TouchableOpacity>
             </View>
+          </View>
         </TouchableOpacity>
       </Modal>
     </SafeAreaView>
   );
 }
+
 const screenHeight = Dimensions.get("window").height;
 const screenWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
@@ -288,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     margin: 10,
   },
-  smallBtn: {
+  smallButton: {
     width: "15%",
     borderRadius: 20,
     height: 40,

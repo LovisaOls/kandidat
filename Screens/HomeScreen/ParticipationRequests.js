@@ -12,7 +12,6 @@ import {
   declineParticipation,
   acceptParticipation,
 } from "../../actions/index";
-
 import { ScrollView } from "react-native-gesture-handler";
 
 const ParticipationRequests = () => {
@@ -38,6 +37,7 @@ const ParticipationRequests = () => {
   const onDeclinePressed = (eventId) => {
     dispatch(declineParticipation(eventId, currentUser.id));
   };
+
   return (
     <View>
       <Text style={styles.title}>Participation Requests</Text>
@@ -47,68 +47,69 @@ const ParticipationRequests = () => {
             return events[eventId].participants != undefined &&
               events[eventId].participants[currentUser.id] == "pending"
               ? Object.keys(events[eventId].eventDetails).map((date) => {
-                  return date >= today ? (
-                    <View
-                      key={key}
-                      style={[
-                        styles.requestBox,
-                        {
-                          borderLeftColor:
-                            events[eventId].eventDetails[date].type == "game"
-                              ? "#007E34"
-                              : events[eventId].eventDetails[date].type ==
-                                "practice"
+                return date >= today ? (
+                  <View
+                    key={key}
+                    style={[
+                      styles.requestBox,
+                      {
+                        borderLeftColor:
+                          events[eventId].eventDetails[date].type == "game"
+                            ? "#007E34"
+                            : events[eventId].eventDetails[date].type ==
+                              "practice"
                               ? "#A247D4"
                               : events[eventId].eventDetails[date].type ==
                                 "other"
-                              ? "#FF6347"
-                              : null,
-                        },
-                      ]}
-                    >
-                      <View style={{ width: "50%" }}>
-                        <View
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                        >
-                          <Text style={styles.eventTitle}>
-                            {events[eventId].eventDetails[date].title}
-                          </Text>
-                        </View>
-                        <View style={{ flexDirection: "row" }}>
-                          <Text style={styles.eventDate}>{date} </Text>
-                          <Text style={styles.eventDate}>
-                            {events[eventId].eventDetails[date].time}
-                          </Text>
-                        </View>
-                      </View>
+                                ? "#FF6347"
+                                : null,
+                      },
+                    ]}
+                  >
+                    <View style={{ width: "50%" }}>
                       <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "flex-end",
-                        }}
+                        style={{ flexDirection: "row", alignItems: "center" }}
                       >
-                        <TouchableOpacity
-                          style={[styles.editButton, { width: null }]}
-                          onPress={() => onAcceptPressed(eventId)}
-                        >
-                          <Text style={styles.buttonText}>Accept</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={[styles.buttonSkip, { width: null }]}
-                          onPress={() => onDeclinePressed(eventId)}
-                        >
-                          <Text style={styles.textStyleSkip}>Decline</Text>
-                        </TouchableOpacity>
+                        <Text style={styles.eventTitle}>
+                          {events[eventId].eventDetails[date].title}
+                        </Text>
+                      </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <Text style={styles.eventDate}>{date} </Text>
+                        <Text style={styles.eventDate}>
+                          {events[eventId].eventDetails[date].time}
+                        </Text>
                       </View>
                     </View>
-                  ) : null;
-                })
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={[styles.editButton, { width: null }]}
+                        onPress={() => onAcceptPressed(eventId)}
+                      >
+                        <Text style={styles.buttonText}>Accept</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.buttonSkip, { width: null }]}
+                        onPress={() => onDeclinePressed(eventId)}
+                      >
+                        <Text style={styles.textStyleSkip}>Decline</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : null;
+              })
               : null;
           })}
       </ScrollView>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   name: {
     fontSize: 20,
