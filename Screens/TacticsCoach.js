@@ -9,17 +9,16 @@ import {
   Modal,
   Dimensions,
 } from "react-native";
-import Draggable from "react-native-draggable"; // first, run "npm run source" to get Draggable.js
+import Draggable from "react-native-draggable"; 
 import firebase from "firebase/app";
 import "firebase/database";
 require("firebase/auth");
 import { useDispatch, useSelector } from "react-redux";
 import { Actions } from "react-native-router-flux";
-import { fetchTactics } from "../actions/index";
+import { fetchTactics, removeTactic } from "../actions/indexTactic";
 import { Modalize } from "react-native-modalize";
 import TopMenu from "./TopMenu";
 import Icon from "react-native-vector-icons/Ionicons";
-import { removeTactic } from "../actions/index";
 
 export default function TacticsCoach() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
