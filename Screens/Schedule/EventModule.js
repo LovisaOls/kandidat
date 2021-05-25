@@ -30,6 +30,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const [sureRemoveVisible, setSureRemoveVisible] = useState(false);
   const [editVisible, setEditVisible] = useState(false);
   const [invitationList, setInvitationList] = useState([]);
+  const [allChosen, setAllChosen] = useState(false);
   const dispatch = useDispatch();
   const onChangePressed = () => {
     setEditModalVisible(true);
@@ -58,8 +59,10 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
       setEditModalVisible(false);
       setEditVisible(false);
       setSureRemoveVisible(false);
+      setAllChosen(false);
     } else if (inviteModalVisible) {
       setInviteModalVisible(false);
+      setAllChosen(false);
     }
   };
 
@@ -76,6 +79,7 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const onSendInvitations = () => {
     dispatch(sendInvitations(invitationList, activeEvent.eventId));
     setInviteModalVisible(false);
+    setAllChosen(false);
   };
 
   const onAcceptPressed = () => {
@@ -84,6 +88,35 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
   const onDeclinePressed = () => {
     dispatch(declineParticipation(activeEvent.eventId, currentUser.id));
   };
+
+  const allChosenPressed = () => {
+    if (!allChosen) {
+      setAllChosen(true);
+      Object.keys(teamMembers).map((user) => {
+        return activeEvent != null &&
+          activeTeam.members[teamMembers[user].id] == true
+          ? events[activeEvent.eventId].participants == undefined ||
+            events[activeEvent.eventId].participants[teamMembers[user].id] ==
+              undefined
+            ? addToInvitationList(teamMembers[user].id)
+            : null
+          : null;
+      });
+    } else {
+      setAllChosen(false);
+      Object.keys(teamMembers).map((user) => {
+        return activeEvent != null &&
+          activeTeam.members[teamMembers[user].id] == true
+          ? events[activeEvent.eventId].participants == undefined ||
+            events[activeEvent.eventId].participants[teamMembers[user].id] ==
+              undefined
+            ? removeFromInvitationList(teamMembers[user].id)
+            : null
+          : null;
+      });
+    }
+  };
+
   return (
     <View style={styles.modal}>
       {activeEvent != null ? (
@@ -403,32 +436,62 @@ const EventModule = ({ activeEvent, setActiveEvent, onClose }) => {
                 ></Icon>
               </TouchableOpacity>
             </View>
-            <ScrollView>
-              {Object.keys(teamMembers).map((user, i) => {
-                return activeEvent != null &&
-                  activeTeam.members[teamMembers[user].id] == true ? (
-                  <View key={i}>
-                    {events[activeEvent.eventId].participants == undefined ||
-                    events[activeEvent.eventId].participants[
-                      teamMembers[user].id
-                    ] == undefined ? (
-                      <MemberInvitationBox
-                        user={teamMembers[user]}
-                        addToInvitationList={addToInvitationList}
-                        removeFromInvitationList={removeFromInvitationList}
-                      />
-                    ) : null}
-                  </View>
-                ) : null;
-              })}
-            </ScrollView>
-            <TouchableOpacity
-              style={styles.invitationButton}
-              onPress={() => onSendInvitations()}
-            >
-              <Text style={styles.buttonText}>Send Invitations</Text>
-            </TouchableOpacity>
 
+            {activeEvent &&
+            events[activeEvent.eventId].participants != undefined &&
+            Object.keys(events[activeEvent.eventId].participants).length ==
+              Object.values(activeTeam.members).filter((obj) => obj == true)
+                .length ? (
+              <Text style={styles.description}>
+                Everybody in the team is already invited!
+              </Text>
+            ) : (
+              <View style={{ maxHeight: screenHeight * 0.6 }}>
+                <View style={styles.invitationBox}>
+                  <Text style={{ fontWeight: "bold" }}>Invite all</Text>
+                  <TouchableOpacity onPress={() => allChosenPressed()}>
+                    {allChosen ? (
+                      <Icon name="close-circle" size={35} color="green"></Icon>
+                    ) : (
+                      <Icon
+                        name="add-circle-outline"
+                        size={35}
+                        color="green"
+                      ></Icon>
+                    )}
+                  </TouchableOpacity>
+                </View>
+
+                <ScrollView>
+                  {Object.keys(teamMembers).map((user, i) => {
+                    return activeEvent != null &&
+                      activeTeam.members[teamMembers[user].id] == true ? (
+                      <View key={i}>
+                        {events[activeEvent.eventId].participants ==
+                          undefined ||
+                        events[activeEvent.eventId].participants[
+                          teamMembers[user].id
+                        ] == undefined ? (
+                          <MemberInvitationBox
+                            user={teamMembers[user]}
+                            addToInvitationList={addToInvitationList}
+                            removeFromInvitationList={removeFromInvitationList}
+                            allChosen={allChosen}
+                          />
+                        ) : null}
+                      </View>
+                    ) : null;
+                  })}
+                </ScrollView>
+
+                <TouchableOpacity
+                  style={styles.invitationButton}
+                  onPress={() => onSendInvitations()}
+                >
+                  <Text style={styles.buttonText}>Send Invitations</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
       </Modal>
@@ -587,6 +650,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     opacity: 0.6,
+  },
+  invitationBox: {
+    marginVertical: 2,
+    marginHorizontal: 5,
+    padding: 5,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 export default EventModule;

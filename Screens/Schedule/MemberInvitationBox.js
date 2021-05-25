@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { set } from "react-native-reanimated";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const MemberInvitationBox = ({
   user,
   addToInvitationList,
   removeFromInvitationList,
+  allChosen,
 }) => {
+  useEffect(() => {
+    setPlayerChosen(allChosen);
+  }, [allChosen]);
   const [playerChosen, setPlayerChosen] = useState(false);
   const onPlayerChosen = () => {
     if (!playerChosen) {
@@ -42,19 +47,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  chosen: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    backgroundColor: "green",
-  },
-  notChosen: {
-    height: 30,
-    width: 30,
-    borderRadius: 15,
-    borderColor: "green",
-    borderWidth: 2,
   },
 });
 export default MemberInvitationBox;
