@@ -11,7 +11,7 @@ import { Agenda } from "react-native-calendars";
 import { Modalize } from "react-native-modalize";
 import { Actions } from "react-native-router-flux";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchEvents } from "../../actions/index";
+import { fetchEvents } from "../../actions/indexSchedule";
 import TopMenu from "../TopMenu";
 import EventModule from "./EventModule";
 

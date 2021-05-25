@@ -15,7 +15,7 @@ import {
   sendInvitations,
   acceptParticipation,
   declineParticipation,
-} from "../../actions/index";
+} from "../../actions/indexSchedule";
 import EditEvent from "./EditEvent";
 import MemberInvitationBox from "./MemberInvitationBox";
 import { ScrollView } from "react-native-gesture-handler";

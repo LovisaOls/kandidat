@@ -11,7 +11,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
-import { createEvent } from "../../actions/index";
+import { createEvent } from "../../actions/indexSchedule";
 import { useSelector, useDispatch } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { Alert } from "react-native";
