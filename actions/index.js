@@ -2,9 +2,10 @@ import "firebase/database";
 require("firebase/auth");
 import { Alert } from "react-native";
 import * as firebase from "firebase";
-
 import { Actions } from "react-native-router-flux";
 //Kallas i welcome screen - loggar in en användare med email och password
+
+
 export const signIn = (email, password) => {
   return (dispatch) => {
     //Make async call to database
@@ -171,46 +172,6 @@ export const setActiveTeam = (teamId) => {
   };
 };
 
-export const fetchFeed = (teamId) => {
-  return (dispatch) => {
-    firebase
-      .database()
-      .ref("/feed/")
-      .orderByChild("teamId")
-      .equalTo(teamId)
-      .limitToLast(25)
-      .on("value", (snapshot) => {
-        dispatch({ type: "FETCH_FEED", feedPosts: snapshot.val() });
-      });
-  };
-};
-
-export const fetchEvents = (teamId) => {
-  return (dispatch) => {
-    firebase
-      .database()
-      .ref("/events/")
-      .orderByChild("teamId")
-      .equalTo(teamId)
-      .on("value", (snapshot) => {
-        dispatch({ type: "FETCH_EVENTS", scheduleEvents: snapshot.val() });
-      });
-  };
-};
-
-export const fetchTactics = (teamId) => {
-  return (dispatch) => {
-    firebase
-      .database()
-      .ref("/tactics/")
-      .orderByChild("teamId")
-      .equalTo(teamId)
-      .on("value", (snapshot) => {
-        dispatch({ type: "FETCH_TACTICS", lineUpTactics: snapshot.val() });
-      });
-  };
-};
-
 export const fetchTeamMembers = (teamId) => {
   return (dispatch) => {
     let teamMembers;
@@ -233,49 +194,6 @@ export const fetchTeamMembers = (teamId) => {
   };
 };
 
-export const createComment = (postId, commentText, firstname, lastname) => {
-  return (dispatch) => {
-    const commentRef = firebase
-      .database()
-      .ref(`/feed/${postId}/comments/`)
-      .push();
-    commentRef.set({
-      authorFirstName: firstname,
-      authorLastName: lastname,
-      text: commentText,
-    });
-    dispatch({ type: "COMMENT_ADDED" });
-  };
-};
-
-export const like = (postId, userId) => {
-  return (dispatch) => {
-    const likesRef = firebase
-      .database()
-      .ref(`/feed/${postId}/likes/`)
-      .child(userId)
-      .set(true);
-  };
-};
-
-export const removeLike = (postId, userId) => {
-  return (dispatch) => {
-    firebase.database().ref(`/feed/${postId}/likes/${userId}`).remove();
-  };
-};
-
-export const removePost = (postId) => {
-  return (dispatch) => {
-    firebase.database().ref(`/feed/${postId}`).remove();
-  };
-};
-
-export const removeTactic = (tacticId) => {
-  return () => {
-    firebase.database().ref(`/tactics/${tacticId}`).remove();
-  };
-};
-
 export const fetchAllTeams = () => {
   return (dispatch) => {
     firebase
@@ -283,111 +201,6 @@ export const fetchAllTeams = () => {
       .ref("/teams/")
       .on("value", (snapshot) => {
         dispatch({ type: "FETCH_ALL_TEAMS", allTeams: snapshot.val() });
-      });
-  };
-};
-
-export const removeEvent = (eventId) => {
-  return () => {
-    firebase.database().ref(`/events/${eventId}`).remove();
-  };
-};
-
-export const createEvent = (
-  teamId,
-  date,
-  title,
-  type,
-  place,
-  description,
-  members
-) => {
-  return () => {
-    const eventRef = firebase.database().ref("/events/").push();
-    const eventKey = eventRef.key;
-    const monthFormatted = ("0" + (date.getMonth() + 1)).slice(-2);
-    const dateFormatted = ("0" + date.getDate()).slice(-2);
-    const hoursFormatted = ("0" + date.getHours()).slice(-2);
-    const minutesFormatted = ("0" + date.getMinutes()).slice(-2);
-    eventRef
-      .set({
-        teamId: teamId,
-      })
-      .then(
-        firebase
-          .database()
-          .ref(`/events/${eventKey}/eventDetails/`)
-          .child(`${date.getFullYear()}-${monthFormatted}-${dateFormatted}`)
-          .set({
-            title: title,
-            type: type,
-            time: `${hoursFormatted}:${minutesFormatted}`,
-            place: place,
-            description: description,
-            date: `${date.getFullYear()}-${monthFormatted}-${dateFormatted}`,
-            eventId: eventKey,
-          })
-      )
-      .then(() => {
-        Actions.pop();
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-};
-
-export const createPost = (currentUser, teamId, textValue) => {
-  return () => {
-    const dateTime = new Date();
-    const postRef = firebase.database().ref("/feed/").push();
-    const postKey = postRef.key;
-
-    postRef
-      .set({
-        authorFirstName: currentUser.firstName,
-        authorLastName: currentUser.lastName,
-        authorId: currentUser.id,
-        authorPicture: currentUser.profilePicture
-          ? currentUser.profilePicture
-          : null,
-        teamId: teamId,
-        text: textValue,
-        createdOn: dateTime.getTime(),
-        postId: postKey,
-        comments: [],
-        likes: [],
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-};
-export const updateEvent = (
-  eventId,
-  title,
-  type,
-  place,
-  description,
-  date,
-  time
-) => {
-  return () => {
-    firebase
-      .database()
-      .ref("/events/" + eventId + "/eventDetails/")
-      .child(date)
-      .set({
-        title: title,
-        type: type,
-        place: place,
-        description: description,
-        time: time,
-        date: date,
-        eventId: eventId,
-      })
-      .catch((error) => {
-        alert(error);
       });
   };
 };
@@ -402,31 +215,3 @@ export const updateUser = (userId, url) => {
   };
 };
 
-export const sendInvitations = (invitationList, eventId) => {
-  return () => {
-    for (let userId in invitationList) {
-      firebase
-        .database()
-        .ref(`/events/${eventId}/participants/`)
-        .child(invitationList[userId])
-        .set("pending");
-    }
-  };
-};
-
-export const declineParticipation = (eventId, userId) => {
-  return () => {
-    firebase
-      .database()
-      .ref(`/events/${eventId}/participants/${userId}`)
-      .set(false);
-  };
-};
-export const acceptParticipation = (eventId, userId) => {
-  return () => {
-    firebase
-      .database()
-      .ref(`/events/${eventId}/participants/${userId}`)
-      .set(true);
-  };
-};

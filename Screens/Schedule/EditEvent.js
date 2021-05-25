@@ -4,7 +4,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { ScrollView } from "react-native-gesture-handler";
-import { updateEvent } from "../../actions/index";
+import { updateEvent } from "../../actions/indexSchedule";
 
 const EditEvent = ({ activeEvent, onClose, onCancel }) => {
   const [title, setTitle] = useState(activeEvent.title);

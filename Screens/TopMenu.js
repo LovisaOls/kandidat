@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     margin: 10,
+    marginTop: 40,
   },
   teamName: {
     fontSize: 24,

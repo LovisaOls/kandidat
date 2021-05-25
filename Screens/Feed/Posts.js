@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFeed } from "../../actions/index";
-import { like } from "../../actions/index";
-import { removeLike } from "../../actions/index";
-import { removePost } from "../../actions/index";
+import {
+  fetchFeed,
+  removeLike,
+  removePost,
+  like,
+} from "../../actions/indexFeed";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 
 const Posts = ({ item, onOpenComments, setActivePost }) => {

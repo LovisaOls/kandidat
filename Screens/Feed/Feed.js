@@ -16,7 +16,7 @@ import { Modalize } from "react-native-modalize";
 import TopMenu from "../TopMenu";
 import Posts from "./Posts";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFeed, createComment, createPost } from "../../actions/index";
+import { fetchFeed, createComment, createPost } from "../../actions/indexFeed";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function Feed() {
