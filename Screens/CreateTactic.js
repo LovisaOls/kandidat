@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   View,
   ImageBackground,
@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  Dimensions
+  Dimensions,
 } from "react-native";
-import Draggable from "react-native-draggable"; // first, run "npm run source" to get Draggable.js
+import Draggable from "react-native-draggable";
+import { createTactic } from "../actions/index";
+
 import TopMenu from "../Screens/TopMenu";
 import firebase from "firebase/app";
 import "firebase/database";
@@ -20,9 +22,7 @@ import { Actions } from "react-native-router-flux";
 import { color } from "react-native-reanimated";
 
 export default function CreateTactic() {
-
   const { activeTeam } = useSelector((state) => state.currentTeams);
-
 
   const [title, setTitle] = useState("");
 
@@ -115,88 +115,71 @@ export default function CreateTactic() {
     setPositionY11(yPos);
   };
 
+  const dispatch = useDispatch();
   const onCreateLineUp = () => {
-    const tacticRef = firebase.database().ref("/tactics/").push();
-    const tacticKey = tacticRef.key;
+    dispatch(
+      createTactic(
+        activeTeam,
+        initial1,
+        positionX1,
+        positionY1,
+        initial2,
+        positionX2,
+        positionY2,
+        initial3,
+        positionX3, 
+        positionY3,
+        initial4,
+        positionX4, 
+        positionY4,
+        initial5,
+        positionX5, 
+        positionY5,
+        initial6,
+        positionX6, 
+        positionY6,
+        initial7,
+        positionX7, 
+        positionY7,
+        initial8,
+        positionX8, 
+        positionY8,
+        initial9,
+        positionX9, 
+        positionY9,
+        initial10,
+        positionX10, 
+        positionY10,
+        initial11,
+        positionX11, 
+        positionY11, 
+        title
+      )
+    );
 
-    tacticRef
-      .set({
-        teamId: activeTeam.teamId,
-        tacticId: tacticKey,
-        title: title,
-
-        initial1: initial1,
-        positionX1: positionX1,
-        positionY1: positionY1,
-
-        initial2: initial2,
-        positionX2: positionX2,
-        positionY2: positionY2,
-
-        initial3: initial3,
-        positionX3: positionX3,
-        positionY3: positionY3,
-
-        initial4: initial4,
-        positionX4: positionX4,
-        positionY4: positionY4,
-
-        initial5: initial5,
-        positionX5: positionX5,
-        positionY5: positionY5,
-
-        initial6: initial6,
-        positionX6: positionX6,
-        positionY6: positionY6,
-
-        initial7: initial7,
-        positionX7: positionX7,
-        positionY7: positionY7,
-
-        initial8: initial8,
-        positionX8: positionX8,
-        positionY8: positionY8,
-
-        initial9: initial9,
-        positionX9: positionX9,
-        positionY9: positionY9,
-
-        initial10: initial10,
-        positionX10: positionX10,
-        positionY10: positionY10,
-
-        initial11: initial11,
-        positionX11: positionX11,
-        positionY11: positionY11,
-      })
-      .then(() => {
-        Actions.TacticsCoach();
-      })
-      .catch((error) => {
-        alert(error);
-      });
+ 
   };
 
   const screenHeight = Dimensions.get("screen").height;
   const screenWidth = Dimensions.get("screen").width;
 
-  
-
   return (
-
     <SafeAreaView style={styles.container}>
       <TopMenu />
 
-
       <View style={styles.theHeader}>
         {title ? (
-          <TouchableOpacity style={styles.button} onPress={() => onCreateLineUp()}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => onCreateLineUp()}
+          >
             <Text style={styles.buttonTitle}> Save Team </Text>
           </TouchableOpacity>
-        ) : (<TouchableOpacity style={styles.button} >
-          <Text style={styles.buttonTitle}> Save Team </Text>
-        </TouchableOpacity>)}
-
+        ) : (
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonTitle}> Save Team </Text>
+          </TouchableOpacity>
+        )}
 
         <TouchableOpacity onPress={() => Actions.TacticsCoach()}>
           <Text style={styles.cancelText}> Cancel </Text>
@@ -216,219 +199,249 @@ export default function CreateTactic() {
           source={require("../assets/hejhej.png")}
           style={{
             flex: 1,
-            align: 'center'
+            align: "center",
           }}
         ></ImageBackground>
-      
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions1(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer1(text)}
-            value={initial1}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions1(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer1(text)}
+              value={initial1}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions2(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer2(text)}
-            value={initial2}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions2(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer2(text)}
+              value={initial2}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions3(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer3(text)}
-            value={initial3}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions3(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer3(text)}
+              value={initial3}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions4(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer4(text)}
-            value={initial4}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions4(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer4(text)}
+              value={initial4}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions5(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer5(text)}
-            value={initial5}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions5(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer5(text)}
+              value={initial5}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions6(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer6(text)}
-            value={initial6}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions6(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer6(text)}
+              value={initial6}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions7(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer7(text)}
-            value={initial7}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions7(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer7(text)}
+              value={initial7}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions8(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer8(text)}
-            value={initial8}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions8(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer8(text)}
+              value={initial8}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions9(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer9(text)}
-            value={initial9}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions9(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer9(text)}
+              value={initial9}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions10(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer10(text)}
-            value={initial10}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions10(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer10(text)}
+              value={initial10}
+            ></TextInput>
+          </View>
+        </Draggable>
 
-      <Draggable
-        x={30}
-        y={60}
-        minX={0}
-        minY={0}
-        onDragRelease={(e) =>
-          setPositions11(((e.nativeEvent.pageX)/(screenWidth)),(e.nativeEvent.pageY)/(screenHeight))
-        }
-      >
-        <View style={styles.players}>
-          <TextInput
-            placeholder={"...."}
-            onChangeText={(text) => setPlayer11(text)}
-            value={initial11}
-          ></TextInput>
-        </View>
-      </Draggable>
+        <Draggable
+          x={30}
+          y={60}
+          minX={0}
+          minY={0}
+          onDragRelease={(e) =>
+            setPositions11(
+              e.nativeEvent.pageX / screenWidth,
+              e.nativeEvent.pageY / screenHeight
+            )
+          }
+        >
+          <View style={styles.players}>
+            <TextInput
+              placeholder={"...."}
+              onChangeText={(text) => setPlayer11(text)}
+              value={initial11}
+            ></TextInput>
+          </View>
+        </Draggable>
       </View>
 
-      <View style={styles.bottomMenu}>
-      </View>
+      <View style={styles.bottomMenu}></View>
     </SafeAreaView>
   );
 }
 
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
-
 
 const styles = StyleSheet.create({
   container: {
@@ -442,47 +455,46 @@ const styles = StyleSheet.create({
   },
 
   theField: {
-    width:"100%",
+    width: "100%",
     height: "100%",
-    flex:1,
-    justifyContent: 'center'
+    flex: 1,
+    justifyContent: "center",
   },
 
   theHeader: {
     height: screenHeight * 0.11,
-    alignItems: 'center',
+    alignItems: "center",
   },
 
   button: {
-    backgroundColor: 'red',
-    width: screenWidth*0.7,
+    backgroundColor: "red",
+    width: screenWidth * 0.7,
     height: "30%",
     marginBottom: 5,
     borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   cancelText: {
     fontSize: 16,
-    color: 'blue',
-    alignContent: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
-    marginBottom: 5
+    color: "blue",
+    alignContent: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    marginBottom: 5,
   },
-
 
   input: {
     fontSize: 16,
     width: screenWidth * 0.7,
     borderRadius: 12,
-    textAlign: 'center',
+    textAlign: "center",
     backgroundColor: "white",
     borderWidth: 0.25,
   },
 
   bottomMenu: {
     height: 50,
-  }
+  },
 });
