@@ -43,6 +43,8 @@ export default function TacticsCoach() {
 
   const onTacticPressed = (tactic) => {
     setActiveTactic(tactic.tacticId);
+    const modal = modalRef.current;
+    modal.close()
   };
 
   const deleteTactic = (tactic) => {
