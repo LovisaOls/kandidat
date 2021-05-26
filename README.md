@@ -9,7 +9,7 @@ We wanted to combine all of these features into one application in order to make
 
 In order to run the MyTeam application a few preperations has to be made. The team MyTeam recommends Visual Studio Code as an environment. This application can also only be run on iOS devices so a simulator for this will be required, preferebly XCode. 
 
-1. Install Node JS.
+1. Install Node JS and NPM. 
 2. Clone the project onto your computer.
 3. Run "npm install" in terminal.
 5. Run the application. 
