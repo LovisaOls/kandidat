@@ -11,7 +11,8 @@ In order to run the MyTeam application a few preperations has to be made. The te
 
 1. Install Node JS.
 2. Clone the project onto your computer.
-3. Run the application. 
+3. Run "npm install" in terminal.
+5. Run the application. 
 
 Team MyTeam really hopes you enjoy our application!
 
