@@ -9,6 +9,7 @@ import {
   Text,
   TextInput,
   Dimensions,
+  Alert
 } from "react-native";
 import Draggable from "react-native-draggable";
 import { createTactic } from "../actions/index";
@@ -127,37 +128,37 @@ export default function CreateTactic() {
         positionX2,
         positionY2,
         initial3,
-        positionX3, 
+        positionX3,
         positionY3,
         initial4,
-        positionX4, 
+        positionX4,
         positionY4,
         initial5,
-        positionX5, 
+        positionX5,
         positionY5,
         initial6,
-        positionX6, 
+        positionX6,
         positionY6,
         initial7,
-        positionX7, 
+        positionX7,
         positionY7,
         initial8,
-        positionX8, 
+        positionX8,
         positionY8,
         initial9,
-        positionX9, 
+        positionX9,
         positionY9,
         initial10,
-        positionX10, 
+        positionX10,
         positionY10,
         initial11,
-        positionX11, 
-        positionY11, 
+        positionX11,
+        positionY11,
         title
       )
     );
 
- 
+
   };
 
   const screenHeight = Dimensions.get("screen").height;
@@ -168,30 +169,42 @@ export default function CreateTactic() {
       <TopMenu />
 
       <View style={styles.theHeader}>
-        {title ? (
-          <TouchableOpacity
+        <View style={styles.saveTeamHeader}>
+
+          {title ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => onCreateLineUp()}
+            >
+              <Text style={styles.buttonTitle}> Save Team </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
             style={styles.button}
-            onPress={() => onCreateLineUp()}
+            onPress={() => Alert.alert("You need to name the tactic with a title")}
           >
             <Text style={styles.buttonTitle}> Save Team </Text>
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonTitle}> Save Team </Text>
+
+
+          )}
+        </View>
+
+        <View style={styles.cancel}>
+          <TouchableOpacity onPress={() => Actions.TacticsCoach()}>
+            <Text style={styles.cancelText}> Cancel </Text>
           </TouchableOpacity>
-        )}
+        </View>
 
-        <TouchableOpacity onPress={() => Actions.TacticsCoach()}>
-          <Text style={styles.cancelText}> Cancel </Text>
-        </TouchableOpacity>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          placeholderTextColor="#aaaaaa"
-          onChangeText={(text) => setTitle(text)}
-          value={title}
-        />
+        <View style={styles.inputView}>
+          <TextInput
+            style={styles.input}
+            placeholder="Title"
+            placeholderTextColor="#aaaaaa"
+            onChangeText={(text) => setTitle(text)}
+            value={title}
+          />
+        </View>
       </View>
 
       <View style={styles.theField}>
@@ -199,15 +212,12 @@ export default function CreateTactic() {
           source={require("../assets/field_1.png")}
           style={{
             flex: 1,
-            align: "center",
+            align: 'center'
           }}
         ></ImageBackground>
-      </View>
-
-    
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -227,8 +237,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -248,8 +258,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -269,8 +279,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -290,8 +300,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -311,8 +321,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -332,8 +342,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -353,8 +363,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -374,8 +384,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -395,8 +405,8 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
           minY={0}
           onDragRelease={(e) =>
@@ -416,10 +426,13 @@ export default function CreateTactic() {
         </Draggable>
 
         <Draggable
-          x={30}
-          y={60}
+          x={screenWidth * 0.1}
+          y={screenHeight * 0.3}
           minX={0}
+          maxY={"100%"}
           minY={0}
+          renderSize={36}
+          isCircle={true}
           onDragRelease={(e) =>
             setPositions11(
               e.nativeEvent.pageX / screenWidth,
@@ -435,9 +448,10 @@ export default function CreateTactic() {
             ></TextInput>
           </View>
         </Draggable>
-      
+      </View>
 
       <View style={styles.bottomMenu}></View>
+
     </SafeAreaView>
   );
 }
@@ -447,76 +461,77 @@ const screenWidth = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-
-  players: {
-    backgroundColor: "red",
-    padding: 5,
-    borderRadius: 15,
-  },
-
-  theField: {
-    width: "100%",
-    height: "100%",
-    flex: 1,
-    justifyContent: "center",
+    height: screenHeight,
   },
 
   theHeader: {
     height: screenHeight * 0.11,
+  },
+
+  saveTeamHeader: {
+    height: screenHeight * 0.045,
     alignItems: "center",
   },
 
   button: {
     backgroundColor: "#007E34",
-    width: "70%",
-    height: "30%",
-    marginBottom: 5,
     borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    width: "70%",
+    height: "70%"
+  },
+
+  buttonTitle: {
+    fontSize: 14,
+    color: "white",
+    fontWeight: "bold",
+  },
+
+  cancel: {
+    height: screenHeight * 0.02,
     alignItems: "center",
     justifyContent: "center",
   },
 
-  buttonTitle: {
-      fontSize: 12,
-      color: "white",
-      fontWeight: "bold",
+  cancelText: {
+    fontSize: 14,
+    color: "#A247D4",
+    textAlign: "center",
   },
 
-  cancelText: {
-    fontSize: 16,
-    color: "blue",
-    alignContent: "center",
+  inputView: {
+    height: screenHeight * 0.045,
+    alignItems: "center",
     justifyContent: "center",
-    textAlign: "center",
-    marginBottom: 5,
   },
 
   input: {
     fontSize: 16,
-    width: screenWidth * 0.7,
-    borderRadius: 12,
-    textAlign: "center",
-    backgroundColor: "white",
-    borderWidth: 0.25,
+    borderRadius: 10,
+    backgroundColor: "#DDDDDD",
+    paddingLeft: 10,
+    marginHorizontal: 15,
+    marginVertical: 5,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "70%",
+    height: "80%"
   },
-
 
   players: {
     backgroundColor: "red",
-    padding: 5,
-    borderRadius: 15,
+    padding: 6,
+    borderRadius: 15
   },
 
   theField: {
-    width:"100%",
-    height: "100%",
-    flex:1,
-    justifyContent: 'center'
+    height: screenHeight * 0.71,
+    width: "100%",
+    justifyContent: "center",
   },
 
   bottomMenu: {
-    height: 50,
-  },
+    height: screenHeight * 0.05
+  }
 });
