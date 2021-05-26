@@ -11,7 +11,7 @@ import {
   fetchEvents,
   declineParticipation,
   acceptParticipation,
-} from "../../actions/index";
+} from "../../actions/indexSchedule";
 
 import { ScrollView } from "react-native-gesture-handler";
 

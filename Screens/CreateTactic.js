@@ -12,7 +12,7 @@ import {
   Alert
 } from "react-native";
 import Draggable from "react-native-draggable";
-import { createTactic } from "../actions/index";
+import { createTactic } from "../actions/indexTactic";
 
 import TopMenu from "../Screens/TopMenu";
 import firebase from "firebase/app";
