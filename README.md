@@ -8,7 +8,7 @@ This thesis describes the independent project in IT-systems conducted by team My
 In order to run the MyTeam application a few preperations has to be made. The team MyTeam recommends Visual Studio Code as an environment. This application can also only be run on iOS devices so a simulator for this will be rrequired, preferebly XCode. 
 
 1. Install Node JS.
-2. CLone the project onto your computer.
+2. Clone the project onto your computer.
 3. Run the application. 
 
 Team MyTeam really hopes you enjoy our application!
