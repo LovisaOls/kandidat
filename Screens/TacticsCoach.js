@@ -75,10 +75,7 @@ export default function TacticsCoach() {
 
             </>
           ) : (
-
             <Text style={styles.coachTitle}>Tactics</Text>
-
-
           )}
         </View>
 
@@ -86,13 +83,16 @@ export default function TacticsCoach() {
           <TouchableOpacity onPress={() => onOpen()}>
             <Text style={styles.chooseTacticText}> CHOOSE TACTIC </Text>
           </TouchableOpacity>
-        </View>
-
-        <View style={styles.tacticTitle}>
           <Text style={styles.tacticTitleText}>
             {activeTactic && tactics[activeTactic].title}
           </Text>
         </View>
+
+{/*         <View style={styles.tacticTitle}>
+          <Text style={styles.tacticTitleText}>
+            {activeTactic && tactics[activeTactic].title}
+          </Text>
+        </View> */}
       </View>
 
       <View style={styles.theField}>
@@ -321,7 +321,7 @@ export default function TacticsCoach() {
             modalHeight={screenHeight * 0.85}
           >
             <View style={styles.modal}>
-              <Text style={styles.title}> PICK A TACTIC </Text>
+              <Text style={styles.modalTitle}> Choose a tactic </Text>
               {Object.keys(tactics).map((i, index) => {
                 return (
                   <TouchableOpacity
@@ -329,26 +329,20 @@ export default function TacticsCoach() {
                     onPress={() => onTacticPressed(tactics[i])}
                   >
                     <View style={styles.viewTactics}>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        <View>
-                          <Text style={styles.nameTeamMember}>
-                            {tactics[i].title}
-                          </Text>
-                        </View>
+
+                        <Text style={styles.modalTacticsText}>
+                          {tactics[i].title}
+                        </Text>
                         {activeTeam.members[currentUser.id] == "coach" ? (
-                          <View>
-                            <TouchableOpacity>
+                            <TouchableOpacity style={styles.trashIcon}>
                               <Icon
                                 onPress={() => deleteTactic(tactics[i])}
                                 name="ios-trash-outline"
                                 size={20}
                               ></Icon>
                             </TouchableOpacity>
-                          </View>
                         ) : (null)}
-                      </View>
+                     
                     </View>
                   </TouchableOpacity>
                 );
@@ -358,7 +352,7 @@ export default function TacticsCoach() {
         </>
       ) : null}
 
-    
+
     </SafeAreaView>
   );
 }
@@ -378,8 +372,7 @@ const styles = StyleSheet.create({
   titleHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: screenHeight * 0.05,
-    backgroundColor: "yellow"
+    height: screenHeight * 0.06,
   },
 
 
@@ -392,12 +385,12 @@ const styles = StyleSheet.create({
 
   smallBtn: {
     width: "15%",
-    height: "100%",
     borderRadius: 20,
-    marginRight: 10,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#007E34",
+    marginRight: 10,
   },
 
   buttonText: {
@@ -407,38 +400,36 @@ const styles = StyleSheet.create({
   },
 
   chooseTitle: {
-    height: screenHeight * 0.03,
-    backgroundColor: "red"
+    height: screenHeight * 0.05,
+    alignItems: "center",
+    flexDirection: "row",
   },
 
   chooseTacticText: {
-    fontSize: 12,
-    color: "blue",
-    alignContent: "center",
-    justifyContent: "center",
+    fontSize: 14,
+    color: "#A247D4",
     textAlign: "center",
+    marginLeft: "3%"
   },
 
-  tacticTitle: {
-    height: screenHeight * 0.04,
-    marginBottom: 7,
-    /* backgroundColor: "green" */
-  },
+/*   tacticTitle: {
+    height: screenHeight * 0.035,
+  }, */
 
   tacticTitleText: {
     fontSize: 18,
-    alignContent: "center",
+    alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
+    paddingLeft: "15%"
   },
 
 
 
   theField: {
-    height: screenHeight*0.71,
+    height: screenHeight * 0.71,
     width: "100%",
     justifyContent: "center",
-    backgroundColor: "black",
   },
 
   players: {
@@ -456,17 +447,33 @@ const styles = StyleSheet.create({
     padding: 20,
   },
 
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
+  },
+
+  modalTacticsText: {
+    fontSize: 18,
+
+  },
 
   viewTactics: {
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    margin: 1,
+    margin: 2,
     padding: 15,
+    justifyContent: "space-between",
+    flexDirection: "row" 
+
+  },
+
+  trashIcon: {
+    justifyContent: "flex-end"
   },
 
   bottomMenu: {
-    backgroundColor: "blue",
     height: screenHeight * 0.05
   }
 });
