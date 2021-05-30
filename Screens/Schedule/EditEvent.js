@@ -48,19 +48,31 @@ const EditEvent = ({ activeEvent, onClose, onCancel }) => {
 
           <View style={styles.typeContainer}>
             <TouchableOpacity
-              style={type == "game" ? styles.typeChosen : styles.type}
+              style={
+                type == "game"
+                  ? [styles.typeChosen, { backgroundColor: "#007E34" }]
+                  : styles.type
+              }
               onPress={() => setType("game")}
             >
               <Text style={styles.buttonText}>Game</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={type == "practice" ? styles.typeChosen : styles.type}
+              style={
+                type == "practice"
+                  ? [styles.typeChosen, { backgroundColor: "#A247D4" }]
+                  : styles.type
+              }
               onPress={() => setType("practice")}
             >
               <Text style={styles.buttonText}>Practice</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={type == "other" ? styles.typeChosen : styles.type}
+              style={
+                type == "other"
+                  ? [styles.typeChosen, { backgroundColor: "#FF6347" }]
+                  : styles.type
+              }
               onPress={() => setType("other")}
             >
               <Text style={styles.buttonText}>Other</Text>
