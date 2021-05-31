@@ -3,43 +3,7 @@ require("firebase/auth");
 import * as firebase from "firebase";
 import { Actions } from "react-native-router-flux";
 
-export const createTactic = (
-  activeTeam,
-  initial1,
-  positionX1,
-  positionY1,
-  initial2,
-  positionX2,
-  positionY2,
-  initial3,
-  positionX3,
-  positionY3,
-  initial4,
-  positionX4,
-  positionY4,
-  initial5,
-  positionX5,
-  positionY5,
-  initial6,
-  positionX6,
-  positionY6,
-  initial7,
-  positionX7,
-  positionY7,
-  initial8,
-  positionX8,
-  positionY8,
-  initial9,
-  positionX9,
-  positionY9,
-  initial10,
-  positionX10,
-  positionY10,
-  initial11,
-  positionX11,
-  positionY11,
-  title
-) => {
+export const createTactic = (activeTeam, title, allPlayerInfo) => {
   return () => {
     const tacticRef = firebase.database().ref("/tactics/").push();
     const tacticKey = tacticRef.key;
@@ -49,50 +13,18 @@ export const createTactic = (
         teamId: activeTeam.teamId,
         tacticId: tacticKey,
         title: title,
-
-        initial1: initial1,
-        positionX1: positionX1,
-        positionY1: positionY1,
-
-        initial2: initial2,
-        positionX2: positionX2,
-        positionY2: positionY2,
-
-        initial3: initial3,
-        positionX3: positionX3,
-        positionY3: positionY3,
-
-        initial4: initial4,
-        positionX4: positionX4,
-        positionY4: positionY4,
-
-        initial5: initial5,
-        positionX5: positionX5,
-        positionY5: positionY5,
-
-        initial6: initial6,
-        positionX6: positionX6,
-        positionY6: positionY6,
-
-        initial7: initial7,
-        positionX7: positionX7,
-        positionY7: positionY7,
-
-        initial8: initial8,
-        positionX8: positionX8,
-        positionY8: positionY8,
-
-        initial9: initial9,
-        positionX9: positionX9,
-        positionY9: positionY9,
-
-        initial10: initial10,
-        positionX10: positionX10,
-        positionY10: positionY10,
-
-        initial11: initial11,
-        positionX11: positionX11,
-        positionY11: positionY11,
+        players: [],
+      })
+      .then(() => {
+        console.log("info", allPlayerInfo);
+        Object.keys(allPlayerInfo).map((player) => {
+          {
+            tacticRef.child("players/" + allPlayerInfo[player].playerId).set({
+              xPosition: allPlayerInfo[player].xPos,
+              yPosition: allPlayerInfo[player].yPos,
+            });
+          }
+        });
       })
       .then(() => {
         Actions.TacticsCoach();

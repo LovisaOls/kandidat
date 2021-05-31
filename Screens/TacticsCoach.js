@@ -8,11 +8,9 @@ import {
   Text,
   Modal,
   Dimensions,
+  Alert,
 } from "react-native";
-import Draggable from "react-native-draggable"; 
-import firebase from "firebase/app";
-import "firebase/database";
-require("firebase/auth");
+import Draggable from "react-native-draggable";
 import { useDispatch, useSelector } from "react-redux";
 import { Actions } from "react-native-router-flux";
 import { fetchTactics, removeTactic } from "../actions/indexTactic";
@@ -22,6 +20,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export default function TacticsCoach() {
   const { activeTeam } = useSelector((state) => state.currentTeams);
+  const { teamMembers } = useSelector((state) => state.currentTeams);
+
   const currentUser = useSelector((state) => state.currentUser);
 
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ export default function TacticsCoach() {
   const onTacticPressed = (tactic) => {
     setActiveTactic(tactic.tacticId);
     const modal = modalRef.current;
-    modal.close()
+    modal.close();
   };
 
   const deleteTactic = (tactic) => {
@@ -59,12 +59,10 @@ export default function TacticsCoach() {
     <SafeAreaView style={styles.container}>
       <TopMenu />
 
-
       <View style={styles.theHeader}>
         <View style={styles.titleHeader}>
           {activeTeam.members[currentUser.id] == "coach" ? (
             <>
-
               <Text style={styles.coachTitle}>Tactics</Text>
               <TouchableOpacity
                 style={styles.smallBtn}
@@ -72,26 +70,19 @@ export default function TacticsCoach() {
               >
                 <Text style={styles.buttonText}> + </Text>
               </TouchableOpacity>
-
             </>
           ) : (
-
             <Text style={styles.coachTitle}>Tactics</Text>
-
-
           )}
         </View>
 
         <View style={styles.chooseTitle}>
-          <TouchableOpacity onPress={() => onOpen()}>
-            <Text style={styles.chooseTacticText}> CHOOSE TACTIC </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.tacticTitle}>
           <Text style={styles.tacticTitleText}>
             {activeTactic && tactics[activeTactic].title}
           </Text>
+          <TouchableOpacity onPress={() => onOpen()}>
+            <Text style={styles.chooseTacticText}> Choose Tactic </Text>
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -100,216 +91,55 @@ export default function TacticsCoach() {
           source={require("../assets/field_1.png")}
           style={{
             flex: 1,
-            align: 'center'
+            align: "center",
           }}
         ></ImageBackground>
       </View>
 
-      <View style={styles.bottomMenu}>
-      </View>
+      <View style={styles.bottomMenu}></View>
 
-      {activeTactic && tactics ? (
+      {activeTactic && tactics[activeTactic] ? (
         <>
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX1 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY1 * screenHeight - 15
-            }
-            disabled={true}
-            isCircle={true}
-            renderSize={13}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial1}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX2 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY2 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial2}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX3 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY3 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial3}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX4 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY4 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial4}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX5 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY5 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial5}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX6 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY6 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial6}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              (activeTactic && tactics[activeTactic].positionX7) * screenWidth -
-              25
-            }
-            y={
-              (activeTactic && tactics[activeTactic].positionY7) *
-              screenHeight -
-              15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial7}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX8 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY8 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial8}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX9 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY9 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial9}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX10 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY10 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial10}
-              </Text>
-            </View>
-          </Draggable>
-
-          <Draggable
-            x={
-              activeTactic &&
-              tactics[activeTactic].positionX11 * screenWidth - 25
-            }
-            y={
-              activeTactic &&
-              tactics[activeTactic].positionY11 * screenHeight - 15
-            }
-            disabled={true}
-          >
-            <View style={styles.players}>
-              <Text style={styles.initialText}>
-                {activeTactic && tactics[activeTactic].initial11}
-              </Text>
-            </View>
-          </Draggable>
+          {Object.keys(tactics[activeTactic].players).map((player) => {
+            return (
+              <Draggable
+                x={
+                  tactics[activeTactic] &&
+                  tactics[activeTactic].players[player].xPosition *
+                    screenWidth -
+                    25
+                }
+                y={
+                  tactics[activeTactic] &&
+                  tactics[activeTactic].players[player].yPosition *
+                    screenHeight -
+                    15
+                }
+                disabled={true}
+              >
+                <View style={styles.players}>
+                  {Object.keys(teamMembers).map((user) => {
+                    return teamMembers[user].id == player ? (
+                      <TouchableOpacity
+                        onPress={() =>
+                          Alert.alert(
+                            teamMembers[user].firstName +
+                              " " +
+                              teamMembers[user].lastName
+                          )
+                        }
+                      >
+                        <Text style={styles.playerText}>
+                          {teamMembers[user].firstName[0]}
+                          {teamMembers[user].lastName[0]}
+                        </Text>
+                      </TouchableOpacity>
+                    ) : null;
+                  })}
+                </View>
+              </Draggable>
+            );
+          })}
         </>
       ) : null}
 
@@ -321,7 +151,7 @@ export default function TacticsCoach() {
             modalHeight={screenHeight * 0.85}
           >
             <View style={styles.modal}>
-              <Text style={styles.title}> PICK A TACTIC </Text>
+              <Text style={styles.modalTitle}> Choose a tactic </Text>
               {Object.keys(tactics).map((i, index) => {
                 return (
                   <TouchableOpacity
@@ -329,26 +159,18 @@ export default function TacticsCoach() {
                     onPress={() => onTacticPressed(tactics[i])}
                   >
                     <View style={styles.viewTactics}>
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        <View>
-                          <Text style={styles.nameTeamMember}>
-                            {tactics[i].title}
-                          </Text>
-                        </View>
-                        {activeTeam.members[currentUser.id] == "coach" ? (
-                          <View>
-                            <TouchableOpacity>
-                              <Icon
-                                onPress={() => deleteTactic(tactics[i])}
-                                name="ios-trash-outline"
-                                size={20}
-                              ></Icon>
-                            </TouchableOpacity>
-                          </View>
-                        ) : (null)}
-                      </View>
+                      <Text style={styles.modalTacticsText}>
+                        {tactics[i].title}
+                      </Text>
+                      {activeTeam.members[currentUser.id] == "coach" ? (
+                        <TouchableOpacity style={styles.trashIcon}>
+                          <Icon
+                            onPress={() => deleteTactic(tactics[i])}
+                            name="ios-trash-outline"
+                            size={20}
+                          ></Icon>
+                        </TouchableOpacity>
+                      ) : null}
                     </View>
                   </TouchableOpacity>
                 );
@@ -357,8 +179,6 @@ export default function TacticsCoach() {
           </Modalize>
         </>
       ) : null}
-
-    
     </SafeAreaView>
   );
 }
@@ -378,10 +198,8 @@ const styles = StyleSheet.create({
   titleHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: screenHeight * 0.05,
-    backgroundColor: "yellow"
+    height: screenHeight * 0.06,
   },
-
 
   coachTitle: {
     fontSize: 24,
@@ -389,15 +207,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 
-
   smallBtn: {
     width: "15%",
-    height: "100%",
     borderRadius: 20,
-    marginRight: 10,
+    height: 40,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#007E34",
+    marginRight: 10,
   },
 
   buttonText: {
@@ -407,66 +224,75 @@ const styles = StyleSheet.create({
   },
 
   chooseTitle: {
-    height: screenHeight * 0.03,
-    backgroundColor: "red"
+    height: screenHeight * 0.05,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderRadius: 5,
+    marginHorizontal: 10,
   },
 
   chooseTacticText: {
-    fontSize: 12,
-    color: "blue",
-    alignContent: "center",
-    justifyContent: "center",
+    fontSize: 16,
+    color: "#A247D4",
     textAlign: "center",
+    margin: 5,
   },
-
-  tacticTitle: {
-    height: screenHeight * 0.04,
-    marginBottom: 7,
-    /* backgroundColor: "green" */
-  },
-
   tacticTitleText: {
     fontSize: 18,
-    alignContent: "center",
+    alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
+    marginLeft: 10,
   },
-
-
 
   theField: {
-    height: screenHeight*0.71,
+    height: screenHeight * 0.71,
     width: "100%",
     justifyContent: "center",
-    backgroundColor: "black",
   },
-
   players: {
-    backgroundColor: "red",
-    padding: 5,
-    borderRadius: 15,
+    height: screenWidth * 0.08,
+    width: screenWidth * 0.08,
+    borderRadius: (screenWidth * 0.08) / 2,
+    backgroundColor: "#FF6347",
+    justifyContent: "center",
+    alignItems: "center",
   },
-
-
-  initialText: {
-    fontSize: 12,
+  playerText: {
+    color: "white",
+    fontWeight: "bold",
   },
 
   modal: {
     padding: 20,
   },
 
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    margin: 10,
+  },
+
+  modalTacticsText: {
+    fontSize: 18,
+  },
 
   viewTactics: {
     width: "100%",
     borderRadius: 10,
     backgroundColor: "#DDDDDD",
-    margin: 1,
+    margin: 2,
     padding: 15,
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+
+  trashIcon: {
+    justifyContent: "flex-end",
   },
 
   bottomMenu: {
-    backgroundColor: "blue",
-    height: screenHeight * 0.05
-  }
+    height: screenHeight * 0.05,
+  },
 });
